@@ -1,0 +1,76 @@
+name: build-allora-apk
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "apps/mobile/**"
+      - "packages/**"
+      - ".github/workflows/build-allora-apk.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build-allora-apk
+  cancel-in-progress: true
+
+jobs:
+  apk:
+    name: Build ALLORA Android APK
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    env:
+      CI: "1"
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+      - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: 24
+          cache: pnpm
+      - uses: actions/setup-java@c5195efecf7bdfc987ee8bae7a71cb8b11521c00 # v4.7.1
+        with:
+          distribution: temurin
+          java-version: 17
+      - uses: gradle/actions/setup-gradle@48b5f213c81028ace310571dc5ec0fbbca0b2947 # v4.4.3
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Generate Android project
+        run: |
+          pnpm --filter @rakazo/mobile exec expo prebuild --platform android --no-install
+          sed -i 's/MaxMetaspaceSize=512m/MaxMetaspaceSize=1g/' apps/mobile/android/gradle.properties
+
+      - name: Build release APK (arm64)
+        working-directory: apps/mobile/android
+        run: ./gradlew app:assembleRelease -PreactNativeArchitectures=arm64-v8a,armeabi-v7a --no-daemon
+
+      - name: Collect APK
+        run: |
+          set -euo pipefail
+          apk="$(ls apps/mobile/android/app/build/outputs/apk/release/*.apk | head -n1)"
+          cp "$apk" "$RUNNER_TEMP/allora.apk"
+
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: allora-apk
+          path: ${{ runner.temp }}/allora.apk
+
+      - name: Publish to the "android" release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          if gh release view android --repo "$GITHUB_REPOSITORY" > /dev/null 2>&1; then
+            gh release upload android "$RUNNER_TEMP/allora.apk" --clobber --repo "$GITHUB_REPOSITORY"
+          else
+            gh release create android "$RUNNER_TEMP/allora.apk" --repo "$GITHUB_REPOSITORY" \
+              --target "$GITHUB_SHA" --title "ALLORA for Android" \
+              --notes "Install allora.apk on your Android phone. On first launch, enter your ALLORA server URL." \
+              --latest=false
+          fi
