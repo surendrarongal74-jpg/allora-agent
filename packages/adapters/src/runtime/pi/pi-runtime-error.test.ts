@@ -260,7 +260,7 @@ describe("Pi runtime errors", () => {
     await expect(failure).rejects.not.toBeInstanceOf(ModelAccountError);
   });
 
-  it("keeps a named provider's bare 400 a server error, since Rakazo may have built it wrong", async () => {
+  it("keeps a named provider's bare 400 a server error, since ALLORA may have built it wrong", async () => {
     provider.errorMessage = '400 "Invalid request parameters"';
     const failure = consume();
     await expect(failure).rejects.not.toBeInstanceOf(ModelAccountError);

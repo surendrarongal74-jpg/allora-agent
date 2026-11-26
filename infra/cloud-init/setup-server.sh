@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Installs Rakazo from published images on a fresh Ubuntu server, then optionally serves it on a domain
+# Installs ALLORA from published images on a fresh Ubuntu server, then optionally serves it on a domain
 # with automatic HTTPS. Run as root. Safe to rerun: the cloud-init user-data runs it on first boot, and
 # the operator reruns it with --domain or --close-signup.
 
@@ -13,7 +13,7 @@ readonly HTTPS_PROJECT="rakazo-https"
 readonly CADDY_IMAGE="${CADDY_IMAGE:-caddy:2@sha256:df7f1c2fb114453b951de51a98efc010db1655a92c2e86be6706714e2417a78d}"
 
 fail() {
-  echo "Rakazo setup failed: $*" >&2
+  echo "ALLORA setup failed: $*" >&2
   exit 1
 }
 
@@ -151,14 +151,14 @@ fi
 public_host="$(env_value RAKAZO_HOST)"
 {
   if [[ "$public_host" == localhost ]]; then
-    echo "Rakazo answers only on this server. To open it, run this on your computer:"
+    echo "ALLORA answers only on this server. To open it, run this on your computer:"
     echo "  ssh -N -L 5173:127.0.0.1:5173 root@SERVER_IP"
     echo "then open http://127.0.0.1:5173"
     echo
     echo "To serve it on your own domain with HTTPS, point the domain's DNS at this server, then run:"
     echo "  sudo bash ${INSTALL_DIR}/setup-server.sh --domain app.example.com"
   else
-    echo "Rakazo is at https://${public_host} once its DNS points at this server."
+    echo "ALLORA is at https://${public_host} once its DNS points at this server."
     if [[ "$(env_value SIGNUPS_ENABLED)" != false ]]; then
       echo "Anyone can sign up. Once your account exists, close signup:"
       echo "  sudo bash ${INSTALL_DIR}/setup-server.sh --close-signup"

@@ -76,6 +76,6 @@ export function welcomeEmail(
       <Text>{copy("signature")}</Text>
     </>,
     unsubscribeUrl,
-    { src: "https://rakazo.com/email/welcome.jpg", alt: "Rakazo" },
+    { src: "https://rakazo.com/email/welcome.jpg", alt: "ALLORA" },
   );
 }

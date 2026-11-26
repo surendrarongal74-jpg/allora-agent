@@ -28,7 +28,7 @@ import { openRouterMediaModels } from "../providers/media/openrouter/openrouter-
 import { OpenRouterUsageLookup } from "./endpoints/openrouter-usage.js";
 
 /**
- * What Rakazo knows about a model provider beyond the model registry it runs on. A provider
+ * What ALLORA knows about a model provider beyond the model registry it runs on. A provider
  * without an entry is used exactly as the registry describes it.
  */
 export interface ModelProviderDefinition {
@@ -62,7 +62,7 @@ export interface ModelProviderDefinition {
     /** Resolved when a request is made, so the environment cannot report them up front. */
     resolvedAtRequest?: boolean;
   };
-  /** Subscription sign-in Rakazo offers. */
+  /** Subscription sign-in ALLORA offers. */
   signIn?: {
     mode: ModelOAuthSignInMode;
     loginLabel: string;
@@ -125,7 +125,7 @@ export const modelProviders = {
       loginLabel: "Sign in with ChatGPT",
       hint: "ChatGPT Plus/Pro",
       billing:
-        "Sign in with ChatGPT Plus or Pro. Uses your OpenAI subscription. Rakazo does not pay.",
+        "Sign in with ChatGPT Plus or Pro. Uses your OpenAI subscription. ALLORA does not pay.",
       setup: {
         label: "Turn on device code sign-in in ChatGPT security settings",
         url: "https://chatgpt.com/#settings/Security",
@@ -200,6 +200,9 @@ export const modelProviders = {
   // Retired, answered with "does not exist" / "no longer available".
   groq: {
     recommendedModel: "openai/gpt-oss-120b",
+    keyCheck: { url: "https://api.groq.com/openai/v1/models", headers: bearer, rejected: unauthorized },
+    // ALLORA: Groq's free tier is the deployment default.
+    deployment: { keyEnv: "GROQ_API_KEY", defaultModel: "openai/gpt-oss-120b" },
     unservedModels: ["llama-3.1-8b-instant", "llama-3.3-70b-versatile"],
   },
   minimax: { recommendedModel: "MiniMax-M3", unservedModels: ["MiniMax-M2.7"] },
@@ -210,7 +213,7 @@ export const modelProviders = {
       mode: "device-code",
       loginLabel: "Sign in with GitHub Copilot",
       hint: "Copilot",
-      billing: "Sign in with GitHub Copilot. Uses your Copilot subscription. Rakazo does not pay.",
+      billing: "Sign in with GitHub Copilot. Uses your Copilot subscription. ALLORA does not pay.",
     },
   },
   xai: {
@@ -218,7 +221,7 @@ export const modelProviders = {
       mode: "device-code",
       loginLabel: "Sign in with SuperGrok or X Premium",
       hint: "SuperGrok / key",
-      billing: "Sign in with SuperGrok or X Premium, or paste an xAI API key. Rakazo does not pay.",
+      billing: "Sign in with SuperGrok or X Premium, or paste an xAI API key. ALLORA does not pay.",
     },
   },
   deepseek: {

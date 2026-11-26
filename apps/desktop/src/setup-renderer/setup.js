@@ -59,10 +59,10 @@
   const PHASE_LABELS = {
     "checking-docker": t("Getting ready…"),
     preparing: t("Getting ready…"),
-    pulling: t("Downloading Rakazo…"),
-    starting: t("Starting Rakazo…"),
+    pulling: t("Downloading ALLORA…"),
+    starting: t("Starting ALLORA…"),
     "waiting-healthy": t("Almost ready…"),
-    ready: t("Rakazo is ready."),
+    ready: t("ALLORA is ready."),
   };
   const TERMINAL_PHASES = new Set([
     "idle",
@@ -263,7 +263,7 @@
     stackHint.hidden = phase !== "docker-missing";
     stackHint.textContent = dockerDesktop
       ? t(
-          "Docker Desktop is a free app that runs Rakazo in the background. Install it and open it once.",
+          "Docker Desktop is a free app that runs ALLORA in the background. Install it and open it once.",
         )
       : t("Install Docker Engine and start it.");
   }
@@ -420,7 +420,7 @@
       if (generation !== requestGeneration) return result;
       if (result.ok) {
         serverUrl.value = result.url;
-        setCheckStatus(t("Rakazo answered at {url}.", { url: result.url }), "ok");
+        setCheckStatus(t("ALLORA answered at {url}.", { url: result.url }), "ok");
       } else {
         setCheckStatus(result.error ?? t("Could not reach that address."), "error");
       }
@@ -560,7 +560,7 @@
         continueButton.focus();
       }
     } catch {
-      setStatus(t("Setup could not start. Quit Rakazo and try again."), "error");
+      setStatus(t("Setup could not start. Quit ALLORA and try again."), "error");
       setBusy(true);
     }
   }

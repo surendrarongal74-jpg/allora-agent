@@ -2,7 +2,7 @@
 
 [English](../self-host-production.md) | ไทย
 
-รัน Rakazo บนเซิร์ฟเวอร์สาธารณะ พร้อม HTTPS อัตโนมัติ โฮสต์ที่ผ่านการ hardening และ deploy แบบไม่มี downtime
+รัน ALLORA บนเซิร์ฟเวอร์สาธารณะ พร้อม HTTPS อัตโนมัติ โฮสต์ที่ผ่านการ hardening และ deploy แบบไม่มี downtime
 
 สำหรับคลัสเตอร์ node เดียว ดู [การติดตั้ง Kubernetes / k3s](../self-host-kubernetes.md) การวาง login gate แบบใช้ cookie ไว้หน้า deployment ใดก็ตาม ต้องใช้ [screen routing ที่รู้จัก capability](../self-host-kubernetes.md#add-a-login-gate-without-breaking-the-computer) ด้วย เพราะ iframe ของหน้าจออาจไม่มี cookie ชั้นนอกแม้ผู้ใช้ลงชื่อเข้าใช้แล้ว
 

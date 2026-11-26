@@ -220,7 +220,7 @@ COPY --chmod=644 rakazo-browser.desktop /usr/share/applications/rakazo-browser.d
 # Every type start.sh would register for rakazo-browser, so a boot whose home does not
 # override them skips the slow xdg-mime and xdg-settings calls.
 COPY --chmod=644 mimeapps.list /etc/xdg/mimeapps.list
-# Rakazo keeps credentials itself; the browser's save prompts would cover pages.
+# ALLORA keeps credentials itself; the browser's save prompts would cover pages.
 # Pop-ups open: one a page opens after making a report would be blocked unseen.
 COPY --chmod=644 browser-policy.json /etc/chromium/policies/managed/rakazo-browser.json
 COPY --chmod=644 browser-policy.json /etc/brave/policies/managed/rakazo-browser.json

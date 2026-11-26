@@ -1,6 +1,6 @@
 # Import an OpenClaw, Hermes, Grok Bot or ChatGPT agent
 
-Moving from OpenClaw, Hermes Agent, Grok Bot or another assistant such as ChatGPT or Claude? Rakazo
+Moving from OpenClaw, Hermes Agent, Grok Bot or another assistant such as ChatGPT or Claude? ALLORA
 can turn it into a new bot, with its instructions, memory and skills, next to the bots you already
 have.
 

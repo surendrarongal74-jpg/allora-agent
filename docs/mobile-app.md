@@ -60,7 +60,7 @@ working status while a bot runs.
 
 ## Shortcuts and Siri
 
-On iPhone, Rakazo adds actions to Shortcuts, Siri and the Action button:
+On iPhone, ALLORA adds actions to Shortcuts, Siri and the Action button:
 
 - **Message Bot** and **Ask Bot**: send a message. Ask Bot also returns the reply.
 - **Record Message**: talk, then pause or press again to send it to the bot whose chat you opened last.
@@ -69,8 +69,8 @@ On iPhone, Rakazo adds actions to Shortcuts, Siri and the Action button:
 
 ## Share to a bot
 
-On iOS, open another app's share sheet and choose **Rakazo** to share text, a link, images or files.
+On iOS, open another app's share sheet and choose **ALLORA** to share text, a link, images or files.
 Pick a bot to open the chat with the shared content in the draft, then review it before sending.
 
-On Android, share text, images, audio, video, PDFs or files from another app to Rakazo.
+On Android, share text, images, audio, video, PDFs or files from another app to ALLORA.
 Pick a bot to open the chat with the shared content in the draft, then review it before sending.

@@ -1561,7 +1561,7 @@ describe("userTurnInstructions", () => {
       archiveBot,
       "Connected plugins: none",
       "Agent skills",
-      expect.stringContaining("read the Rakazo skill"),
+      expect.stringContaining("read the ALLORA skill"),
       "Taught skills",
       ...stableTail,
       "Group context",

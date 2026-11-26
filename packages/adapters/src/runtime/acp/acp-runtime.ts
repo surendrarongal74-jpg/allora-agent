@@ -49,7 +49,7 @@ import {
 import { contentHash, turnText } from "./acp-turn.js";
 import { unknownToolText } from "./acp-turn.prompt.js";
 
-/** The MCP server name the CLI sees Rakazo's tools under. */
+/** The MCP server name the CLI sees ALLORA's tools under. */
 export const ACP_TOOL_SERVER = "rakazo";
 
 /**
@@ -83,9 +83,9 @@ interface AcpAgentRuntimeOptions {
 /**
  * Runs the turns of the deployment model `descriptor` names through that agent CLI over the Agent
  * Client Protocol; every other model keeps running on `fallback`. The CLI runs the bot's loop with
- * its own tools off: it gets Rakazo's instructions as its system prompt and Rakazo's tools through
- * a loopback MCP endpoint, where each call runs the way any Rakazo tool call runs, approvals and
- * pauses included. Rakazo stores and shows the chat as it does for any bot.
+ * its own tools off: it gets ALLORA's instructions as its system prompt and ALLORA's tools through
+ * a loopback MCP endpoint, where each call runs the way any ALLORA tool call runs, approvals and
+ * pauses included. ALLORA stores and shows the chat as it does for any bot.
  */
 export function acpAgentRuntime(
   fallback: AgentRuntime,
@@ -159,7 +159,7 @@ export function acpAgentRuntime(
   return runtime;
 }
 
-/** The CLI used a tool of its own, which Rakazo keeps off. */
+/** The CLI used a tool of its own, which ALLORA keeps off. */
 class OwnToolUseError extends Error {}
 
 class TurnAborted extends Error {}
@@ -174,7 +174,7 @@ async function runAcpTurn(
 ): Promise<void> {
   const refusal = options.accessCheck
     ? await options.accessCheck()
-    : `${descriptor.label} runs only inside the Rakazo API and worker.`;
+    : `${descriptor.label} runs only inside the ALLORA API and worker.`;
   if (refusal) throw new Error(refusal);
   signal.throwIfAborted();
 
@@ -247,7 +247,7 @@ async function runAcpTurn(
     let thinking = false;
     let replaying = false;
 
-    // One call at a time, as Rakazo's tools expect where one call can change what the next acts on
+    // One call at a time, as ALLORA's tools expect where one call can change what the next acts on
     // or pause the turn.
     let toolsDone: Promise<unknown> = Promise.resolve();
     const callTool = (name: string, args: Record<string, unknown>): Promise<CallToolResult> => {
@@ -298,7 +298,7 @@ async function runAcpTurn(
 
     const refuse = (reason: string) => {
       violation ??= new OwnToolUseError(
-        `${descriptor.label} tried to use its own tools (${reason}), which Rakazo keeps off. The turn was stopped.`,
+        `${descriptor.label} tried to use its own tools (${reason}), which ALLORA keeps off. The turn was stopped.`,
       );
       cancelTurn();
       // After any answer the agent is owed has gone out.
@@ -336,7 +336,7 @@ async function runAcpTurn(
             : typeof update.name === "string"
               ? update.name
               : undefined;
-          // Every call the CLI reports must be one of Rakazo's; anything else means its own
+          // Every call the CLI reports must be one of ALLORA's; anything else means its own
           // tools were not off after all.
           if (update.sessionUpdate === "tool_call" || name !== undefined) {
             if (!name || !ownToolCalls.has(name)) refuse(name ?? "an unnamed tool");
@@ -382,7 +382,7 @@ async function runAcpTurn(
         },
         async onRequest(method, params) {
           if (method === "session/request_permission") {
-            // Rakazo's own tools are allowed up front, so a request is for one of the CLI's.
+            // ALLORA's own tools are allowed up front, so a request is for one of the CLI's.
             const toolCall = (params.toolCall ?? {}) as Update;
             refuse(String(toolCall.name ?? toolCall.title ?? "a permission request"));
             return { outcome: { outcome: "cancelled" } };
@@ -436,7 +436,7 @@ async function runAcpTurn(
         if (sessionCapabilities.resume) {
           opened = await step(agent.request<Update>("session/resume", resume));
         } else {
-          // Loading replays the session's history as updates; Rakazo already shows it.
+          // Loading replays the session's history as updates; ALLORA already shows it.
           replaying = true;
           opened = await step(agent.request<Update>("session/load", resume));
         }
@@ -537,7 +537,7 @@ async function runAcpTurn(
         `${descriptor.label} reached its limit of steps in one turn before it finished.`,
       );
     }
-    // Only a finished turn, or one Rakazo cancelled itself, is complete.
+    // Only a finished turn, or one ALLORA cancelled itself, is complete.
     if (stopReason !== "end_turn" && !(stopReason === "cancelled" && cancelled)) {
       throw new Error(`${descriptor.label} stopped the turn before it finished.`);
     }

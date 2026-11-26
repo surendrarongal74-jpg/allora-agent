@@ -21,7 +21,7 @@ import type { MediaKind } from "./media-models.js";
 
 /**
  * What made a generation, saved on its job: the run owner's own model connection, which costs
- * them nothing on Rakazo's side, or the deployment's hosted provider, which metering charges.
+ * them nothing on ALLORA's side, or the deployment's hosted provider, which metering charges.
  */
 export const mediaSourceSchema = z.discriminatedUnion("kind", [
   z.object({

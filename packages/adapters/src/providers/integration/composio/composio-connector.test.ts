@@ -1742,7 +1742,7 @@ describe("composio tool mapping", () => {
     ).toEqual(["first"]);
   });
 
-  it("only fetches live Composio slugs when a Rakazo row is still pending or errored", () => {
+  it("only fetches live Composio slugs when a ALLORA row is still pending or errored", () => {
     expect(needsLivePluginSync([{ status: "connected" }, { status: "revoked" }])).toBe(false);
     expect(needsLivePluginSync([{ status: "pending" }])).toBe(true);
     expect(needsLivePluginSync([{ status: "error" }])).toBe(true);
@@ -1757,7 +1757,7 @@ describe("composio tool mapping", () => {
     ).toEqual([{ provider: "github", displayName: "GitHub" }]);
   });
 
-  it("plans DB sync when Composio is connected but Rakazo is still pending", () => {
+  it("plans DB sync when Composio is connected but ALLORA is still pending", () => {
     expect(
       planLiveConnectionSync(
         [

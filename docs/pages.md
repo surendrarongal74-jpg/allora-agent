@@ -45,7 +45,7 @@ On web and desktop, **Download PDF** saves a copy through your browser's print d
 
 ### Share with specific people
 
-Choose **Specific people** and enter each person's verified Rakazo account email. Send the
+Choose **Specific people** and enter each person's verified ALLORA account email. Send the
 review link, or have them open **Pages shared with you** from their account menu. They can
 read the page from the revision you shared onward and join its review. Remove a person from
 **Share** to revoke their access. Switching away from **Specific people** removes those grants. If someone verifies their

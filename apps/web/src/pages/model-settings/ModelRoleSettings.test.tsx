@@ -556,7 +556,7 @@ it("saves credit and personal routes to the same model without mixing their iden
   const credit = [...document.querySelectorAll<HTMLElement>('[role="option"]')].find(
     (entry) =>
       optionName(entry) === "Chat" &&
-      entry.closest("[cmdk-group]")?.textContent?.startsWith("Rakazo credits"),
+      entry.closest("[cmdk-group]")?.textContent?.startsWith("ALLORA credits"),
   );
   await click(credit);
   expect(saved).toEqual({

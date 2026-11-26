@@ -37,7 +37,7 @@ export type ServiceCall = {
   botId?: string;
 };
 
-/** The offline web, except that the docs pages the Rakazo skill links serve this checkout's docs. */
+/** The offline web, except that the docs pages the ALLORA skill links serve this checkout's docs. */
 export function evalWeb(): FakeWebProvider {
   const web = new FakeWebProvider();
   const docs = new URL("../../../../docs/", import.meta.url);

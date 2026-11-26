@@ -154,7 +154,7 @@ export class MnemoverseMemoryProvider implements SemanticMemoryProvider {
     request: SemanticMemorySaveRequest,
     context: AdapterContext,
   ): Promise<SemanticMemoryResponse> {
-    // Compaction summaries stay in Rakazo; Mnemoverse holds durable facts only.
+    // Compaction summaries stay in ALLORA; Mnemoverse holds durable facts only.
     if (request.source.kind === "history") return { ok: true, value: undefined };
     return writeMnemoverse(
       this.connection,

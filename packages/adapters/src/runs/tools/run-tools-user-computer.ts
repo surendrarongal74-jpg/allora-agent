@@ -42,7 +42,7 @@ export {
 export type UserComputerState = "connected" | "offline" | undefined;
 
 const USER_COMPUTER_UNAVAILABLE =
-  'The user\'s computer is not connected. If the task needs it, ask them to open the Rakazo desktop app and turn on "Let bots use this computer" in its settings.';
+  'The user\'s computer is not connected. If the task needs it, ask them to open the ALLORA desktop app and turn on "Let bots use this computer" in its settings.';
 
 /**
  * Whose own computer this run may reach: the bot owner's, when their own message started it or it

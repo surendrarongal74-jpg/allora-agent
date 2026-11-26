@@ -16,7 +16,7 @@ type PersonalCliRoute = (
 
 /**
  * How each signed-in CLI runs a deployment model: one that only answers as the model inside
- * Rakazo's own loop, or an agent CLI that runs the bot's loop itself over the Agent Client Protocol.
+ * ALLORA's own loop, or an agent CLI that runs the bot's loop itself over the Agent Client Protocol.
  */
 const routes: Record<string, PersonalCliRoute> = {
   [CLAUDE_CODE_PROVIDER_ID]: (modelId, accessCheck) => {

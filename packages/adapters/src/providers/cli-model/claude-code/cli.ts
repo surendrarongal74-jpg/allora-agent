@@ -3,7 +3,7 @@ import { createInterface } from "node:readline";
 import { cliEnv, stopProcessTree } from "../../../cli-models/cli-process.js";
 
 /**
- * Runs the official `claude` executable found on the server's PATH, exactly as installed. Rakazo
+ * Runs the official `claude` executable found on the server's PATH, exactly as installed. ALLORA
  * never signs it in, never reads its sign-in, and never passes it a key: the operator signs in
  * once with `claude auth login`, or opts in to the CLI's own headless token below, and every
  * model request is the CLI's own.
@@ -20,8 +20,8 @@ export const CLAUDE_CODE_MIN_VERSION = "2.1.280";
 const OPT_IN_TOKEN_NAME = "CLAUDE_CODE_OAUTH_TOKEN";
 
 /**
- * Documented CLI settings. Rakazo owns the conversation, its compaction, memory and instructions,
- * so the CLI keeps none of its own, and every Rakazo tool is listed to the model up front.
+ * Documented CLI settings. ALLORA owns the conversation, its compaction, memory and instructions,
+ * so the CLI keeps none of its own, and every ALLORA tool is listed to the model up front.
  */
 const BRIDGE_ENV = {
   DISABLE_AUTOUPDATER: "1",
@@ -203,11 +203,11 @@ function versionAtLeast(version: string, minimum: string): boolean {
 }
 
 export const CLAUDE_CODE_NOT_INSTALLED_ERROR =
-  "Claude Code is not installed on this server. Install it for the user that runs the Rakazo worker, then run `claude auth login`.";
+  "Claude Code is not installed on this server. Install it for the user that runs the ALLORA worker, then run `claude auth login`.";
 
 /** Shaped like a provider HTTP error so the run error view classifies it as a sign-in problem. */
 export const CLAUDE_CODE_SIGNED_OUT_ERROR =
-  "Claude Code API error (401): Claude Code on this server is not signed in. Run `claude auth login` as the user that runs the Rakazo worker.";
+  "Claude Code API error (401): Claude Code on this server is not signed in. Run `claude auth login` as the user that runs the ALLORA worker.";
 
 const READY_CACHE_MS = 60_000;
 const ready = new Map<string, number>();

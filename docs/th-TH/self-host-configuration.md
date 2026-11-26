@@ -2,7 +2,7 @@
 
 [English](../self-host-configuration.md) | ไทย
 
-Rakazo อ่านการตั้งค่าจากตัวแปรสภาพแวดล้อม ปกติเก็บในไฟล์ `.env` ข้างไฟล์ Compose
+ALLORA อ่านการตั้งค่าจากตัวแปรสภาพแวดล้อม ปกติเก็บในไฟล์ `.env` ข้างไฟล์ Compose
 
 ## ที่อยู่ของการตั้งค่า
 
@@ -60,13 +60,13 @@ BOAT_API_KEY=             # when SANDBOX_PROVIDER=boat
 
 `MODEL_STREAM_MAX_RETRIES` (0 ถึง 5 ค่าเริ่มต้น `1`) ลองใหม่เมื่อ stream ของโมเดลล้มเหลวกลางทาง การลองใหม่มากขึ้นช่วยให้ turn ที่ยาวรอดจากความขัดข้องสั้น ๆ ของผู้ให้บริการ
 
-ตั้งระยะหมดเวลาของโมเดลได้ในหน่วยมิลลิวินาที ค่าที่ไม่ถูกต้องหรืออยู่นอกช่วงจะใช้ค่าเริ่มต้น ระยะที่ยาวขึ้นช่วยได้เมื่อหลาย bot ใช้ inference server ในเครื่องร่วมกันและ server ต่อคิวคำขอ สำหรับ server ใน `RAKAZO_LOCAL_MODELS` และการเชื่อมต่อโมเดลแบบ compatible ที่เพิ่มในแอป ค่าเหล่านี้เป็นขีดจำกัดเดียวที่ Rakazo ใช้ และ stream ที่ถูกตัดจะบอกเหตุผลไว้ในรายละเอียด error ของ run เช่น `terminated (other side closed)` ผู้ให้บริการในตัวยังตัด response ที่ไม่มีข้อมูลนาน 5 นาที และ proxy หรือ load balancer ที่อยู่ระหว่างทางอาจตัด stream ที่เงียบเร็วกว่านั้น
+ตั้งระยะหมดเวลาของโมเดลได้ในหน่วยมิลลิวินาที ค่าที่ไม่ถูกต้องหรืออยู่นอกช่วงจะใช้ค่าเริ่มต้น ระยะที่ยาวขึ้นช่วยได้เมื่อหลาย bot ใช้ inference server ในเครื่องร่วมกันและ server ต่อคิวคำขอ สำหรับ server ใน `RAKAZO_LOCAL_MODELS` และการเชื่อมต่อโมเดลแบบ compatible ที่เพิ่มในแอป ค่าเหล่านี้เป็นขีดจำกัดเดียวที่ ALLORA ใช้ และ stream ที่ถูกตัดจะบอกเหตุผลไว้ในรายละเอียด error ของ run เช่น `terminated (other side closed)` ผู้ให้บริการในตัวยังตัด response ที่ไม่มีข้อมูลนาน 5 นาที และ proxy หรือ load balancer ที่อยู่ระหว่างทางอาจตัด stream ที่เงียบเร็วกว่านั้น
 
 - `MODEL_STREAM_TIMEOUT_MS` (ค่าเริ่มต้น `120000` ช่วง `1000`–`2147483647`) คือเวลารวมสำหรับการลองใหม่กับโมเดลเดิม และยังคุมเวลารอ response header เมื่อใช้ OpenAI Chat Completions, Responses หรือ Codex API, Anthropic Messages, Mistral หรือ Azure OpenAI API อื่น เช่น Google, Vertex AI, Bedrock และโมเดลที่ route ผ่านบางตัว ใช้ timeout ของ client ตัวเอง
-- `MODEL_STREAM_IDLE_TIMEOUT_MS` (ค่าเริ่มต้น `180000` ช่วง `0`–`2147483647`) จำกัดเวลาที่ response ที่เริ่มแล้วเงียบได้ ตั้งเป็น `0` เพื่อปิดตัวเฝ้าความเงียบของ Rakazo ยังยกเลิกคำขอเองได้ การปิดการป้องกันนี้อาจทำให้คำขอที่ค้างรอไปเรื่อย ๆ ถ้าทั้งผู้ให้บริการและผู้เรียกไม่ยุติคำขอ
+- `MODEL_STREAM_IDLE_TIMEOUT_MS` (ค่าเริ่มต้น `180000` ช่วง `0`–`2147483647`) จำกัดเวลาที่ response ที่เริ่มแล้วเงียบได้ ตั้งเป็น `0` เพื่อปิดตัวเฝ้าความเงียบของ ALLORA ยังยกเลิกคำขอเองได้ การปิดการป้องกันนี้อาจทำให้คำขอที่ค้างรอไปเรื่อย ๆ ถ้าทั้งผู้ให้บริการและผู้เรียกไม่ยุติคำขอ
 - `MODEL_CONNECT_TIMEOUT_MS` (ค่าเริ่มต้น `30000` ช่วง `1000`–`300000`) จำกัดเวลาเชื่อมต่อกับโมเดลหรือ speech connection แบบ OpenAI-compatible ที่เพิ่มในแอป server ใน `RAKAZO_LOCAL_MODELS` และผู้ให้บริการในตัวยังใช้ connection timeout ของ Node
 
-### เข้าถึง Rakazo จากที่อยู่ที่สอง
+### เข้าถึง ALLORA จากที่อยู่ที่สอง
 
 การ sign-in และการเรียก API รับเฉพาะจาก `WEB_ORIGIN`, `API_URL`, `BETTER_AUTH_URL` และแอปมือถือ ถ้าคุณเปิดการติดตั้งเดียวกันจากที่อยู่อื่นด้วย เช่น ชื่อ Tailscale หรือ IP ใน LAN เบราว์เซอร์หรือแอป desktop จะได้ `403 INVALID_ORIGIN` ให้ใส่ที่อยู่นั้นใน `RAKAZO_EXTRA_AUTH_ORIGINS` คั่นด้วยจุลภาค:
 
@@ -83,12 +83,12 @@ RAKAZO_EXTRA_AUTH_ORIGINS=https://rakazo.your-tailnet.ts.net,http://192.168.1.20
 | `TICKET_BOARD_ENABLED`    | `false`          | เปิด ticket board ให้ทุกบัญชี ถ้าไม่ตั้ง แต่ละคนเปิดเองใน **ตั้งค่า (Settings) → Labs** ตั้งบน API และ worker                      |
 | `USER_DEVICES_ENABLED`    | เปิด              | `false` ห้ามแอป desktop ที่ sign-in อยู่ให้ bot รันคำสั่งบนเครื่องของผู้ใช้เอง ตั้งบน API และ worker                               |
 | `PI_SESSION_RECORDING`    | ปิด               | `true` บันทึก agent session เป็น JSONL ใต้ `DATA_DIR/pi-sessions` ไฟล์ไม่ได้เข้ารหัส อย่าใช้บนการติดตั้งที่ใช้ร่วมกันหรือ multi-tenant |
-| `PRIVACY_POLICY_URL`      | นโยบายของ Rakazo | นโยบายความเป็นส่วนตัวที่ลิงก์จากประกาศการแชร์ข้อมูลกับ AI ตั้งบน API                                                            |
+| `PRIVACY_POLICY_URL`      | นโยบายของ ALLORA | นโยบายความเป็นส่วนตัวที่ลิงก์จากประกาศการแชร์ข้อมูลกับ AI ตั้งบน API                                                            |
 | `AUTH_RATE_LIMIT_ENABLED` | เปิดใน production | จำกัดอัตราการ sign-in และ route ที่เกี่ยวกับ credential อื่น `true` เปิดให้การติดตั้งที่รันโดยไม่มี `NODE_ENV=production` ตั้งบน API    |
 
 ## การเก็บประวัติแชท
 
-Rakazo เก็บประวัติแชทไว้จนกว่าจะมีคนล้างแชทหรือลบ bot ถ้าต้องการลบอัตโนมัติ ให้ตั้ง `CHAT_HISTORY_RETENTION_DAYS` บน API และ worker เป็นจำนวนวันเต็ม:
+ALLORA เก็บประวัติแชทไว้จนกว่าจะมีคนล้างแชทหรือลบ bot ถ้าต้องการลบอัตโนมัติ ให้ตั้ง `CHAT_HISTORY_RETENTION_DAYS` บน API และ worker เป็นจำนวนวันเต็ม:
 
 ```env
 CHAT_HISTORY_RETENTION_DAYS=180
@@ -100,7 +100,7 @@ CHAT_HISTORY_RETENTION_DAYS=180
 
 ## role ของฐานข้อมูล
 
-Rakazo ใช้ login ของ Postgres สองตัว:
+ALLORA ใช้ login ของ Postgres สองตัว:
 
 - owner (`POSTGRES_USER` หรือ `DATABASE_MIGRATION_URL` นอก Compose) รัน migration และเป็นเจ้าของตาราง
 - login ของแอป (`rakazo_app` กับ `POSTGRES_APP_PASSWORD` หรือ `DATABASE_URL`) ไม่ใช่ superuser ข้าม row-level security ไม่ได้ สร้าง object ไม่ได้ และอ่านเขียนได้เฉพาะตารางของแอป

@@ -1458,8 +1458,8 @@ msgid "Allow once"
 msgstr "อนุญาตครั้งเดียว"
 
 #: apps/web/src/lib/calls/dictation.ts
-msgid "Allow Rakazo to use Speech Recognition and the microphone in System Settings."
-msgstr "อนุญาตให้ Rakazo ใช้การจดจำเสียงพูดและไมโครโฟนในการตั้งค่าระบบ"
+msgid "Allow ALLORA to use Speech Recognition and the microphone in System Settings."
+msgstr "อนุญาตให้ ALLORA ใช้การจดจำเสียงพูดและไมโครโฟนในการตั้งค่าระบบ"
 
 #: apps/mobile/lib/calls/call-session.ts
 #: apps/mobile/lib/composer/composer-dictation.ts
@@ -2670,8 +2670,8 @@ msgstr "เลือกโฟลเดอร์"
 
 #: apps/web/src/components/billing/CreditChoice.tsx
 #: apps/web/src/components/billing/SubscriptionGate.tsx
-msgid "Choose how to use Rakazo"
-msgstr "เลือกวิธีใช้งาน Rakazo"
+msgid "Choose how to use ALLORA"
+msgstr "เลือกวิธีใช้งาน ALLORA"
 
 #: apps/web/src/pages/shell/bots/agent-import.tsx
 msgid "Choose your {home} folder, or a backup of it."
@@ -3170,8 +3170,8 @@ msgstr "เชื่อมต่อ AI"
 
 #. js-lingui-explicit-id
 #: packages/i18n/src/run-error.ts
-msgid "Connect your own API key in Models or choose Rakazo credits in Billing."
-msgstr "เชื่อมต่อ API key ของคุณในหน้าโมเดล หรือเลือกเครดิต Rakazo ในหน้าการเรียกเก็บเงิน"
+msgid "Connect your own API key in Models or choose ALLORA credits in Billing."
+msgstr "เชื่อมต่อ API key ของคุณในหน้าโมเดล หรือเลือกเครดิต ALLORA ในหน้าการเรียกเก็บเงิน"
 
 #. js-lingui-explicit-id
 #: packages/i18n/src/plugin-catalog.ts
@@ -5653,8 +5653,8 @@ msgid "Ends {day}"
 msgstr "สิ้นสุด {day}"
 
 #: apps/web/src/pages/shell/composer/github-star-prompt.tsx
-msgid "Enjoying Rakazo?"
-msgstr "ชอบ Rakazo ไหม"
+msgid "Enjoying ALLORA?"
+msgstr "ชอบ ALLORA ไหม"
 
 #: packages/i18n/src/user-error.ts
 msgid "Enter a password"
@@ -6398,7 +6398,7 @@ msgstr "ทีมของคุณมีกี่คน"
 #: apps/mobile/app/(settings)/signup-survey.tsx
 #: apps/web/src/components/account/SignupSurvey.tsx
 msgid "How did you hear about us?"
-msgstr "รู้จัก Rakazo ได้อย่างไร"
+msgstr "รู้จัก ALLORA ได้อย่างไร"
 
 #: apps/mobile/components/routines/routine-schedule-editor.tsx
 #: apps/web/src/pages/routines/RoutineSchedule.tsx
@@ -6416,8 +6416,8 @@ msgstr "วิธีตรวจสอบ"
 
 #: apps/mobile/app/(settings)/signup-survey.tsx
 #: apps/web/src/components/account/SignupSurvey.tsx
-msgid "How will you use Rakazo?"
-msgstr "คุณจะใช้ Rakazo อย่างไร"
+msgid "How will you use ALLORA?"
+msgstr "คุณจะใช้ ALLORA อย่างไร"
 
 #: apps/mobile/components/models/compatible-endpoint-form.tsx
 msgid "http://127.0.0.1:8000/v1"
@@ -6540,8 +6540,8 @@ msgid "In use"
 msgstr "ใช้งานอยู่"
 
 #: apps/mobile/app/(settings)/model-connection.tsx
-msgid "In your browser, sign in and paste this code when asked. Then return to Rakazo."
-msgstr "เข้าสู่ระบบในเบราว์เซอร์ แล้ววางรหัสนี้เมื่อระบบขอ จากนั้นกลับมาที่ Rakazo"
+msgid "In your browser, sign in and paste this code when asked. Then return to ALLORA."
+msgstr "เข้าสู่ระบบในเบราว์เซอร์ แล้ววางรหัสนี้เมื่อระบบขอ จากนั้นกลับมาที่ ALLORA"
 
 #: apps/web/src/pages/settings/BillingSettingsPanel.tsx
 msgid "Inactive"
@@ -8252,8 +8252,8 @@ msgid "Not in {organizationName}. They'll only see this Space."
 msgstr "ไม่ได้อยู่ใน {organizationName} จะเห็นเฉพาะสเปซนี้เท่านั้น"
 
 #: apps/web/src/pages/shell/bots/import-status.ts
-msgid "Not in Rakazo's catalog"
-msgstr "ไม่อยู่ในแคตตาล็อกของ Rakazo"
+msgid "Not in ALLORA's catalog"
+msgstr "ไม่อยู่ในแคตตาล็อกของ ALLORA"
 
 #: apps/mobile/app/(settings)/integrations.tsx
 #: apps/web/src/pages/plugins/plugin-browse.tsx
@@ -8281,8 +8281,8 @@ msgid "Not on an HTTPS site"
 msgstr "ไม่ใช่ไซต์ HTTPS"
 
 #: apps/web/src/pages/plugins/source-form.tsx
-msgid "Not reviewed by Rakazo. Only add it if you trust this address."
-msgstr "Rakazo ยังไม่ได้ตรวจสอบ เพิ่มเฉพาะเมื่อคุณเชื่อถือที่อยู่นี้"
+msgid "Not reviewed by ALLORA. Only add it if you trust this address."
+msgstr "ALLORA ยังไม่ได้ตรวจสอบ เพิ่มเฉพาะเมื่อคุณเชื่อถือที่อยู่นี้"
 
 #. js-lingui-explicit-id
 #: packages/i18n/src/vault.ts
@@ -8307,12 +8307,12 @@ msgstr "ส่งไม่สำเร็จ แตะเพื่อลอง�
 
 #: apps/web/src/pages/shell/bots/agent-import-plan.tsx
 #: apps/web/src/pages/shell/bots/import-status.ts
-msgid "Not supported in Rakazo"
-msgstr "Rakazo ไม่รองรับ"
+msgid "Not supported in ALLORA"
+msgstr "ALLORA ไม่รองรับ"
 
 #: apps/web/src/pages/shell/bots/agent-import-plan.tsx
-msgid "Not used by Rakazo"
-msgstr "Rakazo ไม่ใช้ส่วนนี้"
+msgid "Not used by ALLORA"
+msgstr "ALLORA ไม่ใช้ส่วนนี้"
 
 #. js-lingui-explicit-id
 #: packages/i18n/src/plugin-catalog.ts
@@ -8571,8 +8571,8 @@ msgstr "เปิดรูปภาพที่ {0} จาก {1}"
 #: apps/web/src/pages/auth/JoinOrganization.tsx
 #: apps/web/src/pages/auth/Redeem.tsx
 #: apps/web/src/pages/SharedPage.tsx
-msgid "Open Rakazo"
-msgstr "เปิด Rakazo"
+msgid "Open ALLORA"
+msgstr "เปิด ALLORA"
 
 #: apps/web/src/components/models/SubscriptionSignInSteps.tsx
 msgid "Open settings"
@@ -9248,27 +9248,27 @@ msgstr "อ้างถึงส่วนที่เลือก"
 #: apps/mobile/app/bot-settings.tsx
 #: apps/web/src/pages/settings/AccountSettingsOverlay.tsx
 #: apps/web/src/pages/shell/bots/avatar-studio-popover.tsx
-msgid "Rakazo"
-msgstr "Rakazo"
+msgid "ALLORA"
+msgstr "ALLORA"
 
 #: apps/mobile/app/(settings)/billing.tsx
 #: apps/mobile/components/models/model-role-settings.tsx
 #: apps/web/src/pages/model-settings/ModelRoleSettings.tsx
 #: apps/web/src/pages/onboarding/use-onboarding-model.ts
-msgid "Rakazo credits"
-msgstr "เครดิต Rakazo"
+msgid "ALLORA credits"
+msgstr "เครดิต ALLORA"
 
 #: apps/mobile/lib/billing/self-hosted-support.ts
-msgid "Rakazo is free to self-host. If you'd like to support it, subscribers can email support@rakazo.com for help."
-msgstr "Rakazo โฮสต์เองได้ฟรี หากคุณต้องการสนับสนุน ผู้สมัครสมาชิกสามารถส่งอีเมลไปที่ support@rakazo.com เพื่อขอความช่วยเหลือได้"
+msgid "ALLORA is free to self-host. If you'd like to support it, subscribers can email support@rakazo.com for help."
+msgstr "ALLORA โฮสต์เองได้ฟรี หากคุณต้องการสนับสนุน ผู้สมัครสมาชิกสามารถส่งอีเมลไปที่ support@rakazo.com เพื่อขอความช่วยเหลือได้"
 
 #: apps/web/src/components/models/ProviderSettingsForm.tsx
-msgid "rakazo-shared and IDs starting with bot- are reserved for Rakazo."
-msgstr "rakazo-shared และ ID ที่ขึ้นต้นด้วย bot- สงวนไว้สำหรับ Rakazo"
+msgid "rakazo-shared and IDs starting with bot- are reserved for ALLORA."
+msgstr "rakazo-shared และ ID ที่ขึ้นต้นด้วย bot- สงวนไว้สำหรับ ALLORA"
 
 #: apps/mobile/app/(settings)/account.tsx
-msgid "Rate Rakazo"
-msgstr "ให้คะแนน Rakazo"
+msgid "Rate ALLORA"
+msgstr "ให้คะแนน ALLORA"
 
 #: apps/mobile/components/thread/message-row.tsx
 #: apps/web/src/pages/shell/chat/message-hover-actions.tsx
@@ -9331,8 +9331,8 @@ msgid "Recall from banks"
 msgstr "เรียกคืนจากแบงก์"
 
 #: apps/web/src/components/models/ProviderSettingsForm.tsx
-msgid "Recall from this peer; save to Rakazo’s own peers."
-msgstr "เรียกคืนจากเพียร์นี้ บันทึกไปยังเพียร์ของ Rakazo เอง"
+msgid "Recall from this peer; save to ALLORA’s own peers."
+msgstr "เรียกคืนจากเพียร์นี้ บันทึกไปยังเพียร์ของ ALLORA เอง"
 
 #: apps/web/src/components/models/ProviderSettingsForm.tsx
 msgid "Recall only"
@@ -10038,8 +10038,8 @@ msgstr "กลับไปที่กล่องจดหมาย"
 
 #: apps/web/src/pages/integrations/McpOAuthCallback.tsx
 #: apps/web/src/pages/integrations/SlackInstallCallback.tsx
-msgid "Return to Rakazo"
-msgstr "กลับไปที่ Rakazo"
+msgid "Return to ALLORA"
+msgstr "กลับไปที่ ALLORA"
 
 #: apps/mobile/app/page.tsx
 #: apps/web/src/components/pages/PageViewHost.tsx
@@ -10937,8 +10937,8 @@ msgstr "เข้าสู่ระบบที่ {host} แล้ววาง�
 
 #: apps/mobile/app/sign-in.tsx
 #: apps/web/src/pages/auth/Auth.tsx
-msgid "Sign in to Rakazo"
-msgstr "เข้าสู่ระบบ Rakazo"
+msgid "Sign in to ALLORA"
+msgstr "เข้าสู่ระบบ ALLORA"
 
 #: packages/i18n/src/user-error.ts
 msgid "Sign in to your account, then link this provider in settings"
@@ -10968,8 +10968,8 @@ msgid "Sign up"
 msgstr "สมัครใช้งาน"
 
 #: apps/mobile/app/sign-in.tsx
-msgid "Sign up for Rakazo"
-msgstr "สมัครใช้งาน Rakazo"
+msgid "Sign up for ALLORA"
+msgstr "สมัครใช้งาน ALLORA"
 
 #: apps/web/src/pages/plugins/PluginsOverlay.tsx
 msgid "Sign-in cancelled. Retry in Manage MCP servers."
@@ -11321,8 +11321,8 @@ msgid "Start recording"
 msgstr "เริ่มบันทึก"
 
 #: apps/mobile/app/paywall.tsx
-msgid "Start using Rakazo"
-msgstr "เริ่มใช้ Rakazo"
+msgid "Start using ALLORA"
+msgstr "เริ่มใช้ ALLORA"
 
 #: apps/mobile/app/(settings)/billing.tsx
 #: apps/web/src/components/billing/ModelCredits.tsx
@@ -11488,8 +11488,8 @@ msgstr "การสนับสนุน $25 / เดือน"
 
 #: apps/mobile/app/(settings)/account.tsx
 #: apps/mobile/lib/billing/self-hosted-support.ts
-msgid "Support Rakazo"
-msgstr "สนับสนุน Rakazo"
+msgid "Support ALLORA"
+msgstr "สนับสนุน ALLORA"
 
 #: apps/mobile/app/(settings)/model-settings.tsx
 #: apps/web/src/pages/model-settings/model-settings-panel.tsx
@@ -11644,8 +11644,8 @@ msgid "That isn't a Grok Bot export. Paste the Bot's whole reply."
 msgstr "นี่ไม่ใช่ไฟล์ส่งออกของ Grok Bot ให้วางคำตอบทั้งหมดของบอท"
 
 #: apps/mobile/lib/api/endpoint.ts
-msgid "That URL did not look like a Rakazo server"
-msgstr "URL นี้ดูเหมือนไม่ใช่เซิร์ฟเวอร์ Rakazo"
+msgid "That URL did not look like a ALLORA server"
+msgstr "URL นี้ดูเหมือนไม่ใช่เซิร์ฟเวอร์ ALLORA"
 
 #: apps/mobile/lib/api/endpoint.ts
 msgid "That URL is missing a host"
@@ -11786,8 +11786,8 @@ msgstr "ลิงก์ที่แชร์จะใช้ไม่ได้"
 
 #: apps/mobile/app/meeting-transcript.tsx
 #: apps/web/src/pages/shell/meetings/meeting-transcript.tsx
-msgid "The transcript will be removed from Rakazo."
-msgstr "ระบบจะนำบทถอดเสียงออกจาก Rakazo"
+msgid "The transcript will be removed from ALLORA."
+msgstr "ระบบจะนำบทถอดเสียงออกจาก ALLORA"
 
 #: apps/mobile/app/(settings)/billing.tsx
 #: apps/web/src/components/billing/ModelCredits.tsx
@@ -11955,8 +11955,8 @@ msgid "This draft isn't available"
 msgstr "ฉบับร่างนี้ไม่พร้อมใช้งาน"
 
 #: apps/web/src/lib/bots/agent-import-errors.ts
-msgid "This export is newer than Rakazo can read. Update Rakazo and try again."
-msgstr "ไฟล์ส่งออกนี้ใหม่เกินกว่า Rakazo จะอ่านได้ ให้อัปเดต Rakazo แล้วลองอีกครั้ง"
+msgid "This export is newer than ALLORA can read. Update ALLORA and try again."
+msgstr "ไฟล์ส่งออกนี้ใหม่เกินกว่า ALLORA จะอ่านได้ ให้อัปเดต ALLORA แล้วลองอีกครั้ง"
 
 #: apps/web/src/lib/bots/agent-import-errors.ts
 msgid "This export is too large to import."
@@ -12129,8 +12129,8 @@ msgstr "สเปซนี้มีห้องนิรภัยเฉพาะ
 
 #: apps/mobile/app/(settings)/model-connection.tsx
 #: apps/web/src/pages/model-settings/connection-controls.tsx
-msgid "This subscription sign-in is not available in Rakazo yet. Use a deployment credential or choose another provider."
-msgstr "การเข้าสู่ระบบด้วยการสมัครใช้งานนี้ยังไม่พร้อมใช้งานใน Rakazo ให้ใช้ข้อมูลรับรองสำหรับ deployment หรือเลือกผู้ให้บริการอื่น"
+msgid "This subscription sign-in is not available in ALLORA yet. Use a deployment credential or choose another provider."
+msgstr "การเข้าสู่ระบบด้วยการสมัครใช้งานนี้ยังไม่พร้อมใช้งานใน ALLORA ให้ใช้ข้อมูลรับรองสำหรับ deployment หรือเลือกผู้ให้บริการอื่น"
 
 #: apps/mobile/app/(settings)/bot-template.tsx
 msgid "This template is no longer available."
@@ -12597,8 +12597,8 @@ msgid "Update progress"
 msgstr "ความคืบหน้าการอัปเดต"
 
 #: apps/web/src/lib/integrations/meeting-calendar-connect.ts
-msgid "Update Rakazo to connect your calendar from the desktop app."
-msgstr "อัปเดต Rakazo เพื่อเชื่อมต่อปฏิทินจากแอปเดสก์ท็อป"
+msgid "Update ALLORA to connect your calendar from the desktop app."
+msgstr "อัปเดต ALLORA เพื่อเชื่อมต่อปฏิทินจากแอปเดสก์ท็อป"
 
 #: apps/mobile/lib/api/client-update.ts
 #: apps/web/src/lib/platform/client-update.ts
@@ -12774,8 +12774,8 @@ msgstr "ใช้การป้อนข้อมูลแบบป้องก
 
 #: apps/mobile/app/(settings)/billing.tsx
 #: apps/web/src/components/billing/ModelCredits.tsx
-msgid "Use Rakazo credits"
-msgstr "ใช้เครดิต Rakazo"
+msgid "Use ALLORA credits"
+msgstr "ใช้เครดิต ALLORA"
 
 #: apps/mobile/components/settings/space-bots-model.tsx
 msgid "Use space default"
@@ -13029,8 +13029,8 @@ msgstr "ยินดีต้อนรับกลับ"
 #: apps/mobile/app/(settings)/_layout.tsx
 #: apps/mobile/app/sign-in.tsx
 #: apps/web/src/components/account/SignupSurvey.tsx
-msgid "Welcome to Rakazo"
-msgstr "ยินดีต้อนรับสู่ Rakazo"
+msgid "Welcome to ALLORA"
+msgstr "ยินดีต้อนรับสู่ ALLORA"
 
 #: apps/web/src/pages/shell/create-delete-dialogs.tsx
 msgid "What about its memories?"
@@ -13042,8 +13042,8 @@ msgstr "สเปซนี้ใช้อะไรได้บ้าง"
 
 #: apps/mobile/app/(settings)/signup-survey.tsx
 #: apps/web/src/components/account/SignupSurvey.tsx
-msgid "What do you most want Rakazo to help with?"
-msgstr "ต้องการให้ Rakazo ช่วยอะไรมากที่สุด"
+msgid "What do you most want ALLORA to help with?"
+msgstr "ต้องการให้ ALLORA ช่วยอะไรมากที่สุด"
 
 #: apps/web/src/pages/shell/chat/message-cards.tsx
 msgid "What do you want me on first?"

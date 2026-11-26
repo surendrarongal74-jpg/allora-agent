@@ -114,7 +114,7 @@ async function prompt(params) {
     content: { type: "text", text: "hmm" },
   });
   if (text.includes("silent")) return { stopReason: "end_turn" };
-  // Rakazo's continuation after an approval: call the approved request as listed, as a model would.
+  // ALLORA's continuation after an approval: call the approved request as listed, as a model would.
   const approved = text.includes("approved the exact tool request")
     ? /^(\w+): (\{.*\})$/m.exec(text)
     : null;

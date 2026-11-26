@@ -177,7 +177,7 @@ Nothing below is in the app download. All of it is fetched the first time **This
   the app pins the image tag of its own version.
 - Docker users: when a Docker stack exists (its compose file is in the stack folder), no native
   stack exists yet (`.native-ports`), the saved setup is **This computer** and Docker answers, the
-  app asks once ("Run Rakazo without Docker?" with **Move** and **Keep Docker**) and remembers the
+  app asks once ("Run ALLORA without Docker?" with **Move** and **Keep Docker**) and remembers the
   answer in `.desktop-stack-choice`. **Keep Docker** keeps today's path. **Move** keeps the same
   `.env` (so `BETTER_AUTH_SECRET`, `ENCRYPTION_KEY` and the other secrets carry over) and, on the
   next start, after the database VM is up and before migrations: empties the `rakazo` database,

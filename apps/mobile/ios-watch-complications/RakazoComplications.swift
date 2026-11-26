@@ -90,25 +90,25 @@ struct ChatComplicationView: View {
   var body: some View {
     content
       .widgetURL(chat.flatMap(WatchShelf.voiceURL(for:)))
-      .accessibilityLabel(chat?.name ?? "Rakazo")
+      .accessibilityLabel(chat?.name ?? "ALLORA")
   }
 
   @ViewBuilder private var content: some View {
     switch family {
     case .accessoryInline:
-      Label(chat?.name ?? "Rakazo", systemImage: "mic.fill")
+      Label(chat?.name ?? "ALLORA", systemImage: "mic.fill")
     case .accessoryRectangular:
       HStack(spacing: 8) {
         ChatComplicationAvatar(chat: chat).frame(width: 36, height: 36)
         VStack(alignment: .leading, spacing: 2) {
-          Text(chat?.name ?? "Rakazo").font(.headline).lineLimit(1).widgetAccentable()
+          Text(chat?.name ?? "ALLORA").font(.headline).lineLimit(1).widgetAccentable()
           Image(systemName: "mic.fill").font(.footnote).foregroundStyle(.secondary)
         }
         Spacer(minLength: 0)
       }
     case .accessoryCorner:
       ChatComplicationAvatar(chat: chat)
-        .widgetLabel { Text(chat?.name ?? "Rakazo") }
+        .widgetLabel { Text(chat?.name ?? "ALLORA") }
     default:
       ChatComplicationAvatar(chat: chat)
     }

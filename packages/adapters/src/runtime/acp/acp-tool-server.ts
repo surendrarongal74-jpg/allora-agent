@@ -25,8 +25,8 @@ export interface ToolServer {
 }
 
 /**
- * Lists this turn's Rakazo tools to the agent on a loopback-only MCP endpoint and hands every call
- * to `call`, which runs it the way Rakazo runs any tool, approvals included. A random bearer token
+ * Lists this turn's ALLORA tools to the agent on a loopback-only MCP endpoint and hands every call
+ * to `call`, which runs it the way ALLORA runs any tool, approvals included. A random bearer token
  * minted for the turn is the only way in, and the endpoint closes when the turn ends.
  */
 export async function startToolServer(

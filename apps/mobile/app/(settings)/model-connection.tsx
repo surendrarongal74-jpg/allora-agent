@@ -583,7 +583,7 @@ export default function ModelConnection() {
   ) : null;
 
   const signInHost = oauth?.mode === "auth-url" ? new URL(oauth.verificationUri).hostname : "";
-  const deviceCodeInstructions = t`In your browser, sign in and paste this code when asked. Then return to Rakazo.`;
+  const deviceCodeInstructions = t`In your browser, sign in and paste this code when asked. Then return to ALLORA.`;
   const catalogConnectionControls =
     !isOpenAiCompatible && selected ? (
       <>
@@ -801,7 +801,7 @@ export default function ModelConnection() {
         ) : null}
         {selected.auth === "oauth" && !subscriptionSignIn ? (
           <Text style={styles.secondary}>
-            {t`This subscription sign-in is not available in Rakazo yet. Use a deployment credential or choose another provider.`}
+            {t`This subscription sign-in is not available in ALLORA yet. Use a deployment credential or choose another provider.`}
           </Text>
         ) : null}
       </>

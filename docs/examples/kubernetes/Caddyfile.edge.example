@@ -2,7 +2,7 @@
 # RAKAZO_PRIVATE_UPSTREAM: private ingress host:port (reachable only by the edge).
 # RAKAZO_AUTH_UPSTREAM: local oauth2-proxy host:port, proxying to the same ingress.
 {$RAKAZO_PUBLIC_HOST} {
-	# Keep the full path: the token in it is checked by Rakazo, not by this matcher.
+	# Keep the full path: the token in it is checked by ALLORA, not by this matcher.
 	@screen path /novnc/session/* //novnc/session/*
 	handle @screen {
 		header {

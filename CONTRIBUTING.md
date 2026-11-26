@@ -1,6 +1,6 @@
-# Contributing to Rakazo
+# Contributing to ALLORA
 
-Thanks for helping improve Rakazo. Keep changes focused and testable.
+Thanks for helping improve ALLORA. Keep changes focused and testable.
 
 ## Run locally
 

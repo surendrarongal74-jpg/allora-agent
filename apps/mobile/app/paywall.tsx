@@ -320,7 +320,7 @@ export default function Paywall() {
         </View>
         <View style={styles.footer}>
           <NativeActionButton
-            label={started === "byok" ? t`Connect your AI` : t`Start using Rakazo`}
+            label={started === "byok" ? t`Connect your AI` : t`Start using ALLORA`}
             onPress={() => {
               router.back();
               if (started === "byok") router.push("/models");
@@ -439,7 +439,7 @@ export default function Paywall() {
           {status.freePeriodEnded ? (
             <>
               <Text style={[styles.lead, { color: tokens.mutedForeground }]}>
-                {t`Thanks for being an early user. Running Rakazo in the cloud has real costs, so it's now paid. It's still free if you self-host.`}
+                {t`Thanks for being an early user. Running ALLORA in the cloud has real costs, so it's now paid. It's still free if you self-host.`}
               </Text>
               <LegalLink label={t`Self-hosting guide`} url={SELF_HOST_URL} />
             </>

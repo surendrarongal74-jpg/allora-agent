@@ -1,6 +1,6 @@
 /**
  * The CLI keeps each bot's conversation in a session of its own, which this worker continues on
- * the next turn so the CLI's context and prompt cache carry over. Rakazo's stored chat stays the
+ * the next turn so the CLI's context and prompt cache carry over. ALLORA's stored chat stays the
  * record: a session is only a cache of it, kept in this process's memory. A turn that finds none
  * (a restart, another worker) starts a new session from the chat history.
  */

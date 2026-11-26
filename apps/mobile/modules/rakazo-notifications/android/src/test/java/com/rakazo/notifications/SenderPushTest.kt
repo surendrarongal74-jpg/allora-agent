@@ -18,7 +18,7 @@ class SenderPushTest {
   )
 
   @Test
-  fun `a Rakazo push without a session is dropped instead of handed to Expo`() {
+  fun `a ALLORA push without a session is dropped instead of handed to Expo`() {
     assertEquals(
       PushDisposition.DROP,
       SenderPush.disposition(push(), hasSession = { false }, openThread = { false }, foreground = { false }),
@@ -34,7 +34,7 @@ class SenderPushTest {
   }
 
   @Test
-  fun `a message without the Rakazo push copy still goes to Expo without a session`() {
+  fun `a message without the ALLORA push copy still goes to Expo without a session`() {
     assertEquals(
       PushDisposition.EXPO,
       SenderPush.disposition(JSONObject(mapOf("kind" to "other")), hasSession = { false }, openThread = { false }, foreground = { false }),

@@ -14,26 +14,26 @@
 
 ## 自托管记忆
 
-Supermemory、Honcho 和 Hindsight 可以运行在你自己的网络中。在 **Settings → Memory** 打开 **Advanced**，选择 **Self-hosted** 并输入实例 base URL。操作者必须设置 `MCP_ALLOW_PRIVATE_ENDPOINT=true`；之后工作区拥有者可以保存本地端点。它必须是回环地址，或解析到私有地址（Compose 服务名、RFC1918 或 unique-local 地址，或 Railway 私网等 `.internal` 名称）；Rakazo 会为每次请求固定解析出的地址。Space 成员使用已保存的连接，但看不到密钥。
+Supermemory、Honcho 和 Hindsight 可以运行在你自己的网络中。在 **Settings → Memory** 打开 **Advanced**，选择 **Self-hosted** 并输入实例 base URL。操作者必须设置 `MCP_ALLOW_PRIVATE_ENDPOINT=true`；之后工作区拥有者可以保存本地端点。它必须是回环地址，或解析到私有地址（Compose 服务名、RFC1918 或 unique-local 地址，或 Railway 私网等 `.internal` 名称）；ALLORA 会为每次请求固定解析出的地址。Space 成员使用已保存的连接，但看不到密钥。
 
-使用 [Honcho](https://github.com/plastic-labs/honcho) 时，在 Honcho 服务器启用 `AUTH_USE_AUTH`，并用 `scripts/generate_jwt.py --admin` 生成的管理员 JWT 作为密钥，让每个 Space 拥有独立 workspace。如果输入的是某个 workspace，也可以使用 workspace 范围 JWT。Honcho 需要自己的带 pgvector 的 PostgreSQL、LLM 提供商和 embedding 提供商；首次启动前设置 `EMBEDDING_VECTOR_DIMENSIONS`。Rakazo 只把显式保存的事实存入 Honcho；会话摘要保留在 Rakazo。Honcho v3.2 及以上支持机器人遗忘已保存事实。
+使用 [Honcho](https://github.com/plastic-labs/honcho) 时，在 Honcho 服务器启用 `AUTH_USE_AUTH`，并用 `scripts/generate_jwt.py --admin` 生成的管理员 JWT 作为密钥，让每个 Space 拥有独立 workspace。如果输入的是某个 workspace，也可以使用 workspace 范围 JWT。Honcho 需要自己的带 pgvector 的 PostgreSQL、LLM 提供商和 embedding 提供商；首次启动前设置 `EMBEDDING_VECTOR_DIMENSIONS`。ALLORA 只把显式保存的事实存入 Honcho；会话摘要保留在 ALLORA。Honcho v3.2 及以上支持机器人遗忘已保存事实。
 
-使用 [Hindsight](https://github.com/vectorize-io/hindsight) 1.0 及以上时，如果服务器没有认证，密钥可选。Hindsight 需要自己的 LLM 提供商来提取事实。Rakazo 为每个机器人创建一个 bank；Shared 范围则为每个 Space 创建一个。Bank 名称使用保留的 `rakazo-` 前缀和固定长度标识符哈希，避免旧标识符冲突。Rakazo 不配置 bank，因此如需提取任务请在 Hindsight 中设置。Rakazo 会发送每个完成的回合（除非关闭 **Learn from conversations**）和机器人保存的事实；**Recall from banks** 下的 bank 只读。该列表中的 bank 必须在同一个 Hindsight 服务器或 Cloud 账号上；在自己机器上内嵌运行 Hindsight 的应用会把 bank 留在那里。所有以 `rakazo-` 开头的名称都保留，不能在那里列出，包括其他应用用该前缀创建的 bank。
+使用 [Hindsight](https://github.com/vectorize-io/hindsight) 1.0 及以上时，如果服务器没有认证，密钥可选。Hindsight 需要自己的 LLM 提供商来提取事实。ALLORA 为每个机器人创建一个 bank；Shared 范围则为每个 Space 创建一个。Bank 名称使用保留的 `rakazo-` 前缀和固定长度标识符哈希，避免旧标识符冲突。ALLORA 不配置 bank，因此如需提取任务请在 Hindsight 中设置。ALLORA 会发送每个完成的回合（除非关闭 **Learn from conversations**）和机器人保存的事实；**Recall from banks** 下的 bank 只读。该列表中的 bank 必须在同一个 Hindsight 服务器或 Cloud 账号上；在自己机器上内嵌运行 Hindsight 的应用会把 bank 留在那里。所有以 `rakazo-` 开头的名称都保留，不能在那里列出，包括其他应用用该前缀创建的 bank。
 
 ## MCP 服务器
 
 远程 MCP 服务器和已安装的 API / GraphQL 连接器默认使用公网 HTTPS。部署拥有者可以附加 localhost、同一局域网或 Docker 网络中的服务器。在 API 和 worker 上设置 `MCP_ALLOW_PRIVATE_ENDPOINT=true` 可为所有用户启用这些地址。云元数据地址始终被阻止。公开部署请保持该配置未设置。
 
-使用 OAuth 的远程 MCP 服务器通常会在第一次 **Connect OAuth** 时把 Rakazo 注册到提供商。有些提供商只接受在其控制台创建的 client。对这类服务器，在添加时打开 **Advanced**，输入 client ID（以及机密 client 的 secret），并把那里显示的 **Redirect URI**（`<your web origin>/mcp/oauth/callback`）加入 client 的允许回调。client 与服务器的其他凭据一起加密保存，并在 **Disconnect** 后保留；切换到不同 client 会丢弃当前授权。首次使用时，client 会绑定到 MCP 服务器指向的授权服务器，之后 Rakazo 拒绝发送到其他位置。替换 client 会清除绑定。
+使用 OAuth 的远程 MCP 服务器通常会在第一次 **Connect OAuth** 时把 ALLORA 注册到提供商。有些提供商只接受在其控制台创建的 client。对这类服务器，在添加时打开 **Advanced**，输入 client ID（以及机密 client 的 secret），并把那里显示的 **Redirect URI**（`<your web origin>/mcp/oauth/callback`）加入 client 的允许回调。client 与服务器的其他凭据一起加密保存，并在 **Disconnect** 后保留；切换到不同 client 会丢弃当前授权。首次使用时，client 会绑定到 MCP 服务器指向的授权服务器，之后 ALLORA 拒绝发送到其他位置。替换 client 会清除绑定。
 
-Stdio MCP 服务器也可以使用 OAuth。它不能自行授权（MCP 规范要求从环境读取凭据），因此 Rakazo 替它运行流程。只有在 API 和 worker 设置 `MCP_STDIO_ENABLED=true`，且命令列入 `MCP_STDIO_ALLOWED_COMMANDS` 时才启用。stdio 服务器在 API 和 worker 内部运行，拥有它们的访问权限，因此只有管理员（`RAKAZO_ADMIN_EMAILS` 中的已验证账号）能在 **Settings** 或智能体导入中添加或编辑；没有管理员时无人可以添加。机器人永远不能添加 stdio 服务器。所有人仍可添加远程服务器；管理员添加的 stdio 服务器对可用范围内的所有人继续工作。添加服务器时输入 OAuth client、其 **Authorization server**（issuer，例如 `https://accounts.google.com`）和 **Scopes**，然后像远程服务器一样点击 **Connect OAuth**。有些提供商只在额外参数要求下签发 refresh token：Google 请把 **Authorization parameters** 设为 `access_type=offline&prompt=consent`。通过环境变量把授权传给进程：
+Stdio MCP 服务器也可以使用 OAuth。它不能自行授权（MCP 规范要求从环境读取凭据），因此 ALLORA 替它运行流程。只有在 API 和 worker 设置 `MCP_STDIO_ENABLED=true`，且命令列入 `MCP_STDIO_ALLOWED_COMMANDS` 时才启用。stdio 服务器在 API 和 worker 内部运行，拥有它们的访问权限，因此只有管理员（`RAKAZO_ADMIN_EMAILS` 中的已验证账号）能在 **Settings** 或智能体导入中添加或编辑；没有管理员时无人可以添加。机器人永远不能添加 stdio 服务器。所有人仍可添加远程服务器；管理员添加的 stdio 服务器对可用范围内的所有人继续工作。添加服务器时输入 OAuth client、其 **Authorization server**（issuer，例如 `https://accounts.google.com`）和 **Scopes**，然后像远程服务器一样点击 **Connect OAuth**。有些提供商只在额外参数要求下签发 refresh token：Google 请把 **Authorization parameters** 设为 `access_type=offline&prompt=consent`。通过环境变量把授权传给进程：
 
 - 值可以引用 `{{oauth.access_token}}`、`{{oauth.refresh_token}}`、`{{oauth.client_id}}`、`{{oauth.client_secret}}`、`{{oauth.expires_at}}`（epoch 毫秒）、`{{oauth.scope}}` 或 `{{oauth.token_type}}`，可以单独使用，也可以嵌入其他文本。
 - 变量也可以是 **File**：其模板（通常是 JSON，使用相同引用）会在进程启动时写入私有临时目录，变量收到该文件路径。适合需要凭据或 token 文件路径的包。
 
-Rakazo 会在传入的 access token 快过期前刷新授权并重启进程，长时间运行的进程不会拿着失效 token。只收到 refresh token 的进程自行刷新。进程停止时会删除临时文件。
+ALLORA 会在传入的 access token 快过期前刷新授权并重启进程，长时间运行的进程不会拿着失效 token。只收到 refresh token 的进程自行刷新。进程停止时会删除临时文件。
 
-以 `npx [-y] <package>[@version]`（或 `npx -p <package> <bin>`）启动的服务器不会每次启动都下载。Rakazo 会用 `npm install` 安装一次包到 `MCP_PACKAGES_DIR`（默认 `DATA_DIR/mcp-packages`，API 和 worker 共享），不运行安装脚本，然后直接运行其 bin；`npx` 仍必须在 `MCP_STDIO_ALLOWED_COMMANDS` 中。安装有自己的超时 `MCP_STDIO_INSTALL_TIMEOUT_MS`（默认 180000），与握手超时 `MCP_STDIO_STARTUP_TIMEOUT_MS`（默认 30000）分开。请固定版本，让每次启动运行同一份代码；服务器环境变量中可以设置 `NPM_CONFIG_REGISTRY` 等 npm 配置。其他任何 `npx` 形式（本地路径、git 和 tarball URL、未知 `npx` 标志）都会被拒绝。`npx` 是唯一支持的包启动器；其他包管理器和运行器（`npm`、`pnpm`、`yarn`、`bun`、`bunx`、`deno`、`uv`、`uvx`、`pipx` 等）即使加入允许列表也会被拒绝。要运行其他生态的服务器，请在主机上安装并允许其二进制。允许的解释器或 shell（`node`、`python`、`sh`）会执行参数中的任意代码，只有可接受时才应允许。每个服务器在 API 和 worker 中为每个用户各运行一个进程，由该用户的机器人共享，并在 `MCP_STDIO_IDLE_MS`（默认 900000，15 分钟）无使用后停止。服务器启动失败时，原因（包括凭据已脱敏的 stderr 末尾）会显示在 **Settings** 的服务器条目上，其机器人会被告知服务器不可用，而不是静默丢失工具。
+以 `npx [-y] <package>[@version]`（或 `npx -p <package> <bin>`）启动的服务器不会每次启动都下载。ALLORA 会用 `npm install` 安装一次包到 `MCP_PACKAGES_DIR`（默认 `DATA_DIR/mcp-packages`，API 和 worker 共享），不运行安装脚本，然后直接运行其 bin；`npx` 仍必须在 `MCP_STDIO_ALLOWED_COMMANDS` 中。安装有自己的超时 `MCP_STDIO_INSTALL_TIMEOUT_MS`（默认 180000），与握手超时 `MCP_STDIO_STARTUP_TIMEOUT_MS`（默认 30000）分开。请固定版本，让每次启动运行同一份代码；服务器环境变量中可以设置 `NPM_CONFIG_REGISTRY` 等 npm 配置。其他任何 `npx` 形式（本地路径、git 和 tarball URL、未知 `npx` 标志）都会被拒绝。`npx` 是唯一支持的包启动器；其他包管理器和运行器（`npm`、`pnpm`、`yarn`、`bun`、`bunx`、`deno`、`uv`、`uvx`、`pipx` 等）即使加入允许列表也会被拒绝。要运行其他生态的服务器，请在主机上安装并允许其二进制。允许的解释器或 shell（`node`、`python`、`sh`）会执行参数中的任意代码，只有可接受时才应允许。每个服务器在 API 和 worker 中为每个用户各运行一个进程，由该用户的机器人共享，并在 `MCP_STDIO_IDLE_MS`（默认 900000，15 分钟）无使用后停止。服务器启动失败时，原因（包括凭据已脱敏的 stderr 末尾）会显示在 **Settings** 的服务器条目上，其机器人会被告知服务器不可用，而不是静默丢失工具。
 
 工具发现对远程和 stdio MCP 服务器都最多保留 `MCP_MAX_TOOLS` 个工具（默认 250），最多读取 `MCP_MAX_PAGES` 页（默认 20）。在 `.env` 中设置正的安全整数可以修改，例如 `MCP_MAX_TOOLS=1000` 和 `MCP_MAX_PAGES=100`。未设置、为空或无效时使用默认值。达到任一上限或服务器没有下一页时停止发现，并仍受现有响应大小和超时限制约束。Docker 部署需要把两个设置放在 API 和 worker 上；修改后重建这些容器。
 
@@ -49,7 +49,7 @@ Rakazo 会在传入的 access token 快过期前刷新授权并重启进程，�
 
 当 Outlook 登录没有请求对应的 `.Shared` 权限时，对共享邮箱的调用会被拒绝；Composio 默认 Outlook 配置创建的连接曾被观察到缺少该权限。要让机器人读取或代发共享邮箱，请在 Composio 控制台创建 Outlook auth config，列出默认权限加上需要的 `.Shared` 变体（`Mail.Read.Shared`、`Mail.ReadWrite.Shared`、`Mail.Send.Shared`），并让新的 Outlook 连接使用该配置。该用户的账号还需要在 Exchange 中拥有邮箱的 Full Access，租户管理员可能需要同意 `.Shared` 权限。新配置只影响新连接，因此修改前已连接的人必须断开并重新连接 Outlook。
 
-`INTEGRATIONS_CATALOG_URL` 让 API 连接器搜索指向兼容 [integrations.sh](https://integrations.sh/) 的目录，例如你托管的镜像。填写 base URL。Rakazo 会追加 `api/search`。未设置时，**Search public MCP directory** 仍可按需搜索公共目录。每个服务自行处理授权。
+`INTEGRATIONS_CATALOG_URL` 让 API 连接器搜索指向兼容 [integrations.sh](https://integrations.sh/) 的目录，例如你托管的镜像。填写 base URL。ALLORA 会追加 `api/search`。未设置时，**Search public MCP directory** 仍可按需搜索公共目录。每个服务自行处理授权。
 
 ## 消息应用
 
@@ -73,7 +73,7 @@ Rakazo 会在传入的 access token 快过期前刷新授权并重启进程，�
 
 ### Telegram
 
-Telegram 在 `X-Telegram-Bot-Api-Secret-Token` 中发送 webhook 密钥。接收请求的 API 使用自动传输选择，未注册 webhook 时可以轮询；worker 永远不轮询。启动多个 API 实例前，请先注册托管 webhook。绑定目的地来自已认证的机器人身份，绝不是配置文件中的用户名。运营者注册和验收步骤见[托管 Telegram runbook](../hosted-telegram.md)。名为 `<NAME>`（字母和数字）的额外机器人使用提供商 `telegram-<name>` 和 webhook `/api/v1/messaging/webhook/telegram-<name>`；见[名称由你决定的配置](./self-host-configuration.md#名称由你决定的配置)。Telegram 群聊与 iMessage 一样使用个人群聊绑定：每个绑定成员批准自己的机器人；按房间监听设置只属于 Slack team conversation。请在 BotFather 中运行 `/setprivacy` 并选择 **Disable**（或把机器人设为群管理员），否则它只能收到提及自己的群消息。广播频道帖子不会启动运行。多个机器人可以并存，允许一个人通过不同机器人绑定不同的 Rakazo bot。
+Telegram 在 `X-Telegram-Bot-Api-Secret-Token` 中发送 webhook 密钥。接收请求的 API 使用自动传输选择，未注册 webhook 时可以轮询；worker 永远不轮询。启动多个 API 实例前，请先注册托管 webhook。绑定目的地来自已认证的机器人身份，绝不是配置文件中的用户名。运营者注册和验收步骤见[托管 Telegram runbook](../hosted-telegram.md)。名为 `<NAME>`（字母和数字）的额外机器人使用提供商 `telegram-<name>` 和 webhook `/api/v1/messaging/webhook/telegram-<name>`；见[名称由你决定的配置](./self-host-configuration.md#名称由你决定的配置)。Telegram 群聊与 iMessage 一样使用个人群聊绑定：每个绑定成员批准自己的机器人；按房间监听设置只属于 Slack team conversation。请在 BotFather 中运行 `/setprivacy` 并选择 **Disable**（或把机器人设为群管理员），否则它只能收到提及自己的群消息。广播频道帖子不会启动运行。多个机器人可以并存，允许一个人通过不同机器人绑定不同的 ALLORA bot。
 
 ### 通过 Photon 使用 iMessage
 
@@ -100,21 +100,21 @@ Photon 通过 API 的出站流接收消息，因此不需要公开 URL。如要�
 3. 把机器人 messaging endpoint 设为 `https://your-domain.example/api/v1/messaging/webhook/teams`，必须可通过公网 HTTPS 访问。Microsoft JWT 校验保持开启。
 4. 在 Teams Developer Portal 创建 Teams 应用，使用已有机器人 app ID 和 `personal` scope。填写图标、网站、隐私政策和服务条款，验证并下载应用包。
 5. 请 Microsoft 365 管理员把包上传到组织的 Teams app catalog，并允许目标用户使用。在 Teams 中安装 catalog 应用并打开其私聊。
-6. 在 Rakazo 的 **Settings → Messaging** 下选择机器人，选择 `teams`，并在 10 分钟内把代码私聊发给 Teams 应用。
+6. 在 ALLORA 的 **Settings → Messaging** 下选择机器人，选择 `teams`，并在 10 分钟内把代码私聊发给 Teams 应用。
 
-一个服务器注册服务多个个人绑定用户；它不会把部署绑定到一个 Rakazo 账号、Space 或机器人。回复使用每个用户的已绑定会话，服务器重启后也一样。不支持 Teams 频道、群聊和按用户地址发起新私聊。不需要 Microsoft Graph 历史权限。
+一个服务器注册服务多个个人绑定用户；它不会把部署绑定到一个 ALLORA 账号、Space 或机器人。回复使用每个用户的已绑定会话，服务器重启后也一样。不支持 Teams 频道、群聊和按用户地址发起新私聊。不需要 Microsoft Graph 历史权限。
 
 安装时的 **Permissions needed**，请在 Teams 管理中心检查应用对相关用户是否可用。Developer Portal 预览或个人包上传，还要检查实际分配给该用户的策略中的 **Teams apps → Setup policies → Upload custom apps**。单独的测试用户策略可以启用预览，而不改变组织默认值。变更可能需要几小时。管理员已发布到组织 catalog 时，请安装组织 catalog 版本；Developer Portal 预览是另一条上传路径。
 
-参见 Microsoft 的[自定义应用安装指南](https://learn.microsoft.com/en-us/microsoftteams/platform/concepts/deploy-and-publish/apps-upload)和 [app setup policies](https://learn.microsoft.com/en-us/microsoftteams/teams-app-setup-policies)。在认为安装完成前，请在注册租户中绑定一个用户并验证消息/回复往返。再用绑定到不同 Rakazo 机器人的第二个用户重复测试，确认个人路由。包验证或安装成功本身不能证明消息投递可用。
+参见 Microsoft 的[自定义应用安装指南](https://learn.microsoft.com/en-us/microsoftteams/platform/concepts/deploy-and-publish/apps-upload)和 [app setup policies](https://learn.microsoft.com/en-us/microsoftteams/teams-app-setup-policies)。在认为安装完成前，请在注册租户中绑定一个用户并验证消息/回复往返。再用绑定到不同 ALLORA 机器人的第二个用户重复测试，确认个人路由。包验证或安装成功本身不能证明消息投递可用。
 
 ### Slack
 
 Slack 工作区安装需要在 API 和 worker 上设置 `SLACK_CLIENT_ID`、`SLACK_CLIENT_SECRET` 和 `SLACK_SIGNING_SECRET`。使用公开 API origin（`API_URL`）注册 OAuth 回调 `https://app.example.com/api/v1/messaging/install/slack/callback`。在 Slack 应用的 Manage Distribution 设置中启用分发，让其他工作区可以安装。启用 Slack Events API 投递到 `https://app.example.com/api/v1/messaging/webhook/slack`，订阅 `app_mention`、`message.im`、`message.channels`、`message.groups`、`message.mpim` 和 `app_uninstalled`。启用应用的 Messages tab。安装流程会请求它使用的消息/历史、频道/用户查询、文件读写和 reaction 写入 scope；修改 scope 后需要重新安装 Slack 应用。不使用 Socket Mode。
 
-在 Messaging 设置中选择 Slack 行的 **Connect**。工作区以默认 Space 中的第一个机器人应答，无论当前打开哪个 Space。每个 Slack 工作区属于一个 Rakazo Space 和一个安装拥有者；从另一个 Space 安装会被拒绝。要私聊该机器人，使用 **Link DMs** 并把代码私聊发给 Slack 应用。同一 Space 的队友可以用同样方式绑定自己的机器人。把 Slack 应用邀请进频道并提及它即可在频道中收到回复。机器人的外部会话提供 **Mentions only**、**Listen** 和房间指引。工作区设置和个人绑定在网页、桌面和移动端可用。移动端在系统浏览器中打开 Slack 授权；完成后返回应用。频道监听设置目前只在网页/桌面界面中。
+在 Messaging 设置中选择 Slack 行的 **Connect**。工作区以默认 Space 中的第一个机器人应答，无论当前打开哪个 Space。每个 Slack 工作区属于一个 ALLORA Space 和一个安装拥有者；从另一个 Space 安装会被拒绝。要私聊该机器人，使用 **Link DMs** 并把代码私聊发给 Slack 应用。同一 Space 的队友可以用同样方式绑定自己的机器人。把 Slack 应用邀请进频道并提及它即可在频道中收到回复。机器人的外部会话提供 **Mentions only**、**Listen** 和房间指引。工作区设置和个人绑定在网页、桌面和移动端可用。移动端在系统浏览器中打开 Slack 授权；完成后返回应用。频道监听设置目前只在网页/桌面界面中。
 
-令牌用配置的密钥存储加密。worker 为每个出站操作解析安装，包括排队回复；断开安装会停止后续投递并解绑其个人私聊。Slack 签名的 `app_uninstalled` 事件也会移除安装。断开连接删除 Rakazo 本地凭据；要在 Slack 侧撤销安装，请在 Slack 中移除应用。安装拥有者必须保留 Space 成员身份和活跃机器人。工作区安装需要没有 Slack token rotation 的 workspace-level bot token；Enterprise Grid 组织级安装和轮换 token 会被明确拒绝。
+令牌用配置的密钥存储加密。worker 为每个出站操作解析安装，包括排队回复；断开安装会停止后续投递并解绑其个人私聊。Slack 签名的 `app_uninstalled` 事件也会移除安装。断开连接删除 ALLORA 本地凭据；要在 Slack 侧撤销安装，请在 Slack 中移除应用。安装拥有者必须保留 Space 成员身份和活跃机器人。工作区安装需要没有 Slack token rotation 的 workspace-level bot token；Enterprise Grid 组织级安装和轮换 token 会被明确拒绝。
 
 旧的 `SLACK_BOT_TOKEN` 加 `SLACK_SIGNING_SECRET` 配置仍支持单个工作区。配置 OAuth 模式时优先使用；使用工作区安装前，必须重新绑定旧的静态 Slack 身份/会话。`TEAM_CHAT_BOT_ID` 只为静态配置选择频道机器人，不会覆盖工作区安装或个人私聊。从 Integrations 界面授权的 Slack 工具与这个消息面是独立连接。
 
@@ -138,19 +138,19 @@ CURSOR_API_KEY=replace-with-your-key
 
 ### 连接 T3 Code
 
-T3 Code 在你控制的机器上运行智能体。每个用户连接自己的 T3 Code 环境；无论 `CLOUD_AGENT_PROVIDER` 是什么，它都不需要部署设置，并遵循 MCP 服务器通常的访问规则：分配给它的 Rakazo 智能体，以及它可用的 Space。这些 Rakazo 智能体启动的云端智能体会改在 T3 Code 上运行；已在部署提供商上运行的智能体仍可访问。
+T3 Code 在你控制的机器上运行智能体。每个用户连接自己的 T3 Code 环境；无论 `CLOUD_AGENT_PROVIDER` 是什么，它都不需要部署设置，并遵循 MCP 服务器通常的访问规则：分配给它的 ALLORA 智能体，以及它可用的 Space。这些 ALLORA 智能体启动的云端智能体会改在 T3 Code 上运行；已在部署提供商上运行的智能体仍可访问。
 
 1. 在 T3 Code 中，从 **Use T3 Code in another app (MCP)** 复制地址，以 `/mcp` 结尾。
-2. 在 Rakazo 的 **MCP servers** 中添加为远程服务器，点击 **Connect OAuth**。
+2. 在 ALLORA 的 **MCP servers** 中添加为远程服务器，点击 **Connect OAuth**。
 3. 在打开的 T3 Code 页面，把访问级别设为 **Auto**（没有登录码时默认为 **Read only**）并批准。
 
-Rakazo 通过编排工具和输入 schema、显式 operate 授权，以及匹配的 OAuth resource 与授权 origin 识别兼容连接，而不是显示名称。
+ALLORA 通过编排工具和输入 schema、显式 operate 授权，以及匹配的 OAuth resource 与授权 origin 识别兼容连接，而不是显示名称。
 
 **Read only** 下，服务器不会用于新智能体。**Supervised** 下，每个编辑文件的运行都会等待 T3 Code 中的批准，其卡片在此之前显示运行中。要修改级别，请断开并重新连接服务器；断开会把其运行中的智能体标记为过期。T3 Code 的批准有效期 30 天，不可续期。过期或撤销后，新智能体停止使用该服务器，运行中智能体的卡片标记为过期，服务器显示 **Reconnect OAuth**。移除、禁用或断开服务器，或让它在 Space 中不可用，也会同样结束其智能体。此时如果部署有提供商，新的云端智能体会改用部署提供商。
 
 第 1 步的地址经过 T3 Connect，是公网 HTTPS。直接私有地址（例如 Tailscale）需要在 API 和 worker 上设置 `MCP_ALLOW_PRIVATE_ENDPOINT=true`。该设置是部署级的：会让每个用户的 MCP 服务器都能访问私有地址。
 
-带仓库启动时，会在未归档且 Git remote 匹配的 T3 Code 项目中，从该项目当前 checkout 分支出一个新 worktree；没有匹配项目的仓库会被拒绝。不带仓库启动使用 scratch folder。智能体使用 T3 Code 默认模型；未设置时使用第一个可运行提供商的模型。不支持图片。Rakazo 只在智能体运行结束后发送 follow-up；它会排在 T3 Code 自身启动的回合之后。取消只停止智能体当前运行，或移除尚未开始的 follow-up。当智能体运行结束后另一个运行立即开始（例如 T3 Code 自行继续），卡片会跟踪那个运行。连接访问级别允许时，T3 Code 持有而不启动的 follow-up（如 worktree 设置停止或失败、提供商失败或在 T3 Code 中 **Stop** 后）会在约一分钟后把卡片标记为失败，并从 T3 Code 队列移除。缺少 Rakazo 所用工具的 T3 Code 版本会让卡片失败。
+带仓库启动时，会在未归档且 Git remote 匹配的 T3 Code 项目中，从该项目当前 checkout 分支出一个新 worktree；没有匹配项目的仓库会被拒绝。不带仓库启动使用 scratch folder。智能体使用 T3 Code 默认模型；未设置时使用第一个可运行提供商的模型。不支持图片。ALLORA 只在智能体运行结束后发送 follow-up；它会排在 T3 Code 自身启动的回合之后。取消只停止智能体当前运行，或移除尚未开始的 follow-up。当智能体运行结束后另一个运行立即开始（例如 T3 Code 自行继续），卡片会跟踪那个运行。连接访问级别允许时，T3 Code 持有而不启动的 follow-up（如 worktree 设置停止或失败、提供商失败或在 T3 Code 中 **Stop** 后）会在约一分钟后把卡片标记为失败，并从 T3 Code 队列移除。缺少 ALLORA 所用工具的 T3 Code 版本会让卡片失败。
 
 工具包括 `cloud_agent_launch`、`cloud_agent_status`、`cloud_agent_reply` 和 `cloud_agent_cancel`。三个变更操作都遵守现有操作审批规则和 auto-review 策略。与其他有后果的工具一样，空规则集和禁用 auto-review 默认允许执行。
 

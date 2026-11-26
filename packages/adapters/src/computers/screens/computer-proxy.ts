@@ -135,7 +135,7 @@ export const PREPARE_COMPUTER_PROXY = [
   "  pid=$(cat /run/rakazo-proxy/tinyproxy.pid 2>/dev/null || true)",
   '  [ -n "$pid" ] && [ "$(cat "/proc/$pid/comm" 2>/dev/null)" = tinyproxy ] && echo "$pid" || true',
   "}",
-  // Stops Rakazo's own instance and waits until its port is free, so a restart can bind it.
+  // Stops ALLORA's own instance and waits until its port is free, so a restart can bind it.
   "stop_computer_proxy() {",
   "  pid=$(computer_proxy_pid)",
   '  [ -n "$pid" ] || return 0',
@@ -174,7 +174,7 @@ export const PREPARE_COMPUTER_PROXY = [
   '  rm -f "$new"',
   '  running=0; [ -n "$(computer_proxy_pid)" ] && running=1',
   '  if [ "$running" -eq 1 ] && [ "$changed" -eq 1 ]; then stop_computer_proxy; running=0; fi',
-  // Only Rakazo's own instance is ever stopped; policy-rc.d kept the package's from starting.
+  // Only ALLORA's own instance is ever stopped; policy-rc.d kept the package's from starting.
   '  if [ "$running" -eq 0 ]; then $root tinyproxy -c /etc/rakazo-proxy/tinyproxy.conf; fi',
   "  ready=0",
   "  for _ in $(seq 1 50); do",

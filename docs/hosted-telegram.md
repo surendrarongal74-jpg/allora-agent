@@ -7,7 +7,7 @@ deployment. This runbook does not authorize production changes.
 ## Ownership and configuration
 
 The operator owns one deployment bot and its webhook. Every customer links their own account
-and chosen Rakazo bot to that shared bot. Customers connect their model in Rakazo's existing
+and chosen ALLORA bot to that shared bot. Customers connect their model in ALLORA's existing
 model connection settings using a supported subscription connection or API key; they do not
 register a Telegram bot, supply its token, or configure infrastructure services. This does not
 make an arbitrary consumer LLM subscription usable as an API connection. Existing model access
@@ -126,14 +126,14 @@ link codes, message contents, or unredacted screenshots.
 
 1. Verify the bot's identity and HTTPS ingress; verify an unsigned request and one with an
    incorrect secret are refused without creating an identity or run.
-2. Connect a supported model in Rakazo. In **Settings → Messaging**, select an owned bot,
+2. Connect a supported model in ALLORA. In **Settings → Messaging**, select an owned bot,
    choose Telegram, and verify the destination discovered from the authenticated bot identity appears. Open that
    bot in Telegram, press **Start**, then send only the displayed code in the private chat
    within ten minutes. `/start` by itself does not link an account.
-3. Confirm the link appears in Rakazo and the confirmation returns to the same private chat.
+3. Confirm the link appears in ALLORA and the confirmation returns to the same private chat.
    Send a synthetic prompt; verify one run in the selected bot's Space and a reply in Telegram.
    Confirm the existing billing/model-access gates still refuse unavailable access.
-4. Repeat with a second Rakazo account and a different Telegram sender using the **same**
+4. Repeat with a second ALLORA account and a different Telegram sender using the **same**
    deployment bot. Verify their runs, credentials, memory, approvals and replies stay separate.
    A code selects its issuer's bot; possession of the shared deployment bot is not account access.
 5. Verify a spent or expired code cannot link a different sender, and issuing a fresh code

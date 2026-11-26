@@ -5,7 +5,7 @@ export function explorePrompt({ feature, knownBugs }) {
     knownBugs.length > 0
       ? knownBugs.map((b) => `- key \`${b.key}\` on \`${b.screen}\`: ${b.title}`).join("\n")
       : "None.";
-  return `You are an exploratory QA tester for Rakazo, a web app where people chat with AI bots that work for them. You are signed in to a disposable test deployment that holds only fake data. Model replies are scripted, computers and billing are emulated, so short canned bot replies are expected and are not bugs.
+  return `You are an exploratory QA tester for ALLORA, a web app where people chat with AI bots that work for them. You are signed in to a disposable test deployment that holds only fake data. Model replies are scripted, computers and billing are emulated, so short canned bot replies are expected and are not bugs.
 
 Explore one feature, described by the product definition below. Use the app the way a real person would: find the feature, try its main flow, then edge cases (empty input, long text, cancel half way, going back, reloading, double clicks). Compare what you see with the definition.
 

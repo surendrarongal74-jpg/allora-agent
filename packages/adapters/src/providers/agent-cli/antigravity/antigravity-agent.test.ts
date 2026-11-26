@@ -15,7 +15,7 @@ afterEach(() => {
 });
 
 describe("antigravityAgent", () => {
-  it("turns off every built-in tool and adds Rakazo's instructions to each session", () => {
+  it("turns off every built-in tool and adds ALLORA's instructions to each session", () => {
     expect(
       antigravityAgent.sessionMeta?.({ instructions: "You are Pip.", toolServer: "rakazo" }),
     ).toEqual({

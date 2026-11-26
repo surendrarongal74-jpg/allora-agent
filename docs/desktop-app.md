@@ -1,6 +1,6 @@
 # Desktop app
 
-The desktop app for Mac, Windows and Linux runs the same Rakazo as the web, and can also run
+The desktop app for Mac, Windows and Linux runs the same ALLORA as the web, and can also run
 everything on your own computer.
 
 ## Install
@@ -11,18 +11,18 @@ Download it from [rakazo.com](https://rakazo.com). The Linux AppImage needs FUSE
 
 The first time it opens, the app asks which server to use:
 
-- **Rakazo Cloud**: sign in to your rakazo.com account.
-- **This computer**: run your own Rakazo locally in Docker. If Docker isn't installed, the app offers
+- **ALLORA Cloud**: sign in to your rakazo.com account.
+- **This computer**: run your own ALLORA locally in Docker. If Docker isn't installed, the app offers
   the Docker Desktop download (Docker Engine on Linux) and carries on by itself once Docker is
   installed and open; if Docker is installed but stopped, the app opens it. Everything, including
   your bots' computers, then
   runs on your machine. It is yours alone: once you create your account, it accepts no other, and
   only this computer can reach it, so the mobile app can't connect to it
   ([details](./self-host-clients.md#desktop-this-computer-servers)).
-- **Existing instance**: connect to a Rakazo server you or your team already run. Enter its
+- **Existing instance**: connect to a ALLORA server you or your team already run. Enter its
   **Server address** and choose **Check connection**.
 
-To switch later, use **Change Rakazo Server…** in the app menu (Cmd+Shift+K, or Ctrl+Shift+K on
+To switch later, use **Change ALLORA Server…** in the app menu (Cmd+Shift+K, or Ctrl+Shift+K on
 Windows and Linux).
 
 > [!NOTE]
@@ -60,7 +60,7 @@ The app checks for updates and downloads them in the background. When one is rea
 ## Dictation
 
 On a Mac, dictation uses the Mac's own speech recognition, so it works without a
-[voice provider](./voice-and-calls.md). If you declined the permission prompt, allow Rakazo under
+[voice provider](./voice-and-calls.md). If you declined the permission prompt, allow ALLORA under
 **Speech Recognition** and **Microphone** in System Settings.
 
 ## Shortcuts

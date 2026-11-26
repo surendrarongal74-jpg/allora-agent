@@ -90,7 +90,7 @@ function addWatchTarget(project, root, name, config) {
       INFOPLIST_FILE: `${TARGET}/Info.plist`,
       INFOPLIST_KEY_CFBundleDisplayName: config.name,
       INFOPLIST_KEY_NSMicrophoneUsageDescription:
-        '"Rakazo records your voice to send it as a message."',
+        '"ALLORA records your voice to send it as a message."',
       INFOPLIST_KEY_WKCompanionAppBundleIdentifier: config.ios.bundleIdentifier,
       MARKETING_VERSION: config.version ?? "1.0",
       PRODUCT_BUNDLE_IDENTIFIER: `"${watchBundleIdentifier}"`,

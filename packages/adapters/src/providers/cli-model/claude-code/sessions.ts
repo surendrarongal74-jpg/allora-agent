@@ -7,7 +7,7 @@ import { privateFolder } from "../../../cli-models/cli-process.js";
 
 /**
  * The CLI adds its own reminders (the date, its token budget) to the newest message of each
- * request and keeps them only in its saved session. Replaying Rakazo's transcript drops them, so
+ * request and keeps them only in its saved session. Replaying ALLORA's transcript drops them, so
  * every step's prompt would differ from the step before and nothing past the system prompt would
  * be read from the prompt cache. Each step therefore continues the CLI's own session from where
  * the previous step left it, and sends only the reply and what came after it. The session is
@@ -30,7 +30,7 @@ export interface SavedSession {
 /** Kept a little past the prompt cache's longest lifetime, after which a resume saves nothing. */
 const SESSION_IDLE_MS = 70 * 60_000;
 const MAX_SESSIONS = 100;
-/** Session files older than this in Rakazo's project folder were left by an earlier process. */
+/** Session files older than this in ALLORA's project folder were left by an earlier process. */
 const STALE_FILE_MS = 24 * 60 * 60_000;
 
 /** Keyed by a hash of the transcript each session holds. */
@@ -99,7 +99,7 @@ async function findProjectFolder(session: { id: string; configDir: string }) {
       () => false,
     );
     if (!found) continue;
-    // The folder belongs to Rakazo's own working folder, so anything old in it is a leftover.
+    // The folder belongs to ALLORA's own working folder, so anything old in it is a leftover.
     for (const file of await readdir(folder)) {
       const path = join(folder, file);
       // Another cleanup may have removed it since the listing.
@@ -139,7 +139,7 @@ export async function entryBefore(session: SessionPlace, entry: string) {
   return undefined;
 }
 
-/** Removes a session Rakazo no longer continues, so the CLI's sessions do not pile up. */
+/** Removes a session ALLORA no longer continues, so the CLI's sessions do not pile up. */
 export function forgetSessionFiles(session: SessionPlace): void {
   void bestEffort(
     "Remove a finished Claude Code session",
@@ -161,7 +161,7 @@ const tokenSessionsFolder = privateFolder("rakazo-claude-code-sessions", false);
  * With the setup token the CLI gets a new, empty config dir for each turn, so nothing it stores
  * (such as the account's profile) reaches a later turn. Only its `projects` folder, where it saves
  * sessions, is linked to one that lasts. Returns the new config dir and that lasting folder's
- * parent, which is where Rakazo finds the sessions.
+ * parent, which is where ALLORA finds the sessions.
  */
 export function tokenConfigFolder(parent: string): { configDir: string; sessionsDir: string } {
   const sessionsDir = tokenSessionsFolder();

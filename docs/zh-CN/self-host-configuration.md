@@ -2,7 +2,7 @@
 
 [English](../self-host-configuration.md) | 简体中文
 
-Rakazo 从环境变量读取配置。使用 Compose 时，这些变量通常保存在 Compose 文件旁边的 `.env` 中。
+ALLORA 从环境变量读取配置。使用 Compose 时，这些变量通常保存在 Compose 文件旁边的 `.env` 中。
 
 ## 配置保存在哪里
 
@@ -60,13 +60,13 @@ BOAT_API_KEY=             # SANDBOX_PROVIDER=boat 时使用
 
 `MODEL_STREAM_MAX_RETRIES`（0 到 5，默认 `1`）会在模型流中途失败时重试。更多重试可以让长回合在提供商短暂故障后继续。
 
-模型超时以毫秒配置。无效或超出范围的值会保留默认值。多个机器人共享一个会排队请求的本地推理服务器时，延长超时可能有帮助。对于 `RAKAZO_LOCAL_MODELS` 服务器和应用中添加的兼容模型连接，这些设置是 Rakazo 施加的唯一限制；流被切断时，运行错误详情会说明原因，例如 `terminated (other side closed)`。内置提供商仍会在 5 分钟无数据后丢弃响应，中间的代理或负载均衡器也可能更早切断静默流。
+模型超时以毫秒配置。无效或超出范围的值会保留默认值。多个机器人共享一个会排队请求的本地推理服务器时，延长超时可能有帮助。对于 `RAKAZO_LOCAL_MODELS` 服务器和应用中添加的兼容模型连接，这些设置是 ALLORA 施加的唯一限制；流被切断时，运行错误详情会说明原因，例如 `terminated (other side closed)`。内置提供商仍会在 5 分钟无数据后丢弃响应，中间的代理或负载均衡器也可能更早切断静默流。
 
 - `MODEL_STREAM_TIMEOUT_MS`（默认 `120000`，范围 `1000`–`2147483647`）是重试同一个模型的时间预算，也控制 OpenAI Chat Completions、Responses、Codex、Anthropic Messages、Mistral 或 Azure OpenAI 等待响应头的时间。Google、Vertex AI、Bedrock 和部分路由模型等其他 API 使用各自客户端的超时。
-- `MODEL_STREAM_IDLE_TIMEOUT_MS`（默认 `180000`，范围 `0`–`2147483647`）限制已开始的响应可以静默多久。设为 `0` 可关闭 Rakazo 的不活动看门狗。显式取消请求仍然可用。如果提供商和调用方都不终止请求，关闭该保护会让停滞请求无限等待。
+- `MODEL_STREAM_IDLE_TIMEOUT_MS`（默认 `180000`，范围 `0`–`2147483647`）限制已开始的响应可以静默多久。设为 `0` 可关闭 ALLORA 的不活动看门狗。显式取消请求仍然可用。如果提供商和调用方都不终止请求，关闭该保护会让停滞请求无限等待。
 - `MODEL_CONNECT_TIMEOUT_MS`（默认 `30000`，范围 `1000`–`300000`）限制连接应用中添加的 OpenAI 兼容模型或语音连接的时间。`RAKAZO_LOCAL_MODELS` 服务器和内置提供商保留 Node 自身的连接超时。
 
-### 从第二个地址访问 Rakazo
+### 从第二个地址访问 ALLORA
 
 只有 `WEB_ORIGIN`、`API_URL`、`BETTER_AUTH_URL` 和移动应用可以登录和调用 API。如果同一个部署还会通过其他地址访问，例如 Tailscale 名称或局域网 IP，浏览器或桌面应用会收到 `403 INVALID_ORIGIN`。把这些地址加入 `RAKAZO_EXTRA_AUTH_ORIGINS`，用逗号分隔：
 
@@ -83,12 +83,12 @@ RAKAZO_EXTRA_AUTH_ORIGINS=https://rakazo.your-tailnet.ts.net,http://192.168.1.20
 | `TICKET_BOARD_ENABLED`    | `false`        | 为所有账号开启工单板。否则每个人在 **Settings → Labs** 中自行开启。需设置在 API 和 worker 上。            |
 | `USER_DEVICES_ENABLED`    | 开启           | `false` 阻止已登录的桌面应用允许机器人在用户自己的计算机上运行命令。需设置在 API 和 worker 上。           |
 | `PI_SESSION_RECORDING`    | 关闭           | `true` 会把智能体会话记录为 `DATA_DIR/pi-sessions` 下的 JSONL。文件未加密，不要在共享或多租户部署中使用。 |
-| `PRIVACY_POLICY_URL`      | Rakazo 政策    | AI 数据共享提示中链接的隐私政策。设置在 API 上。                                                          |
+| `PRIVACY_POLICY_URL`      | ALLORA 政策    | AI 数据共享提示中链接的隐私政策。设置在 API 上。                                                          |
 | `AUTH_RATE_LIMIT_ENABLED` | 生产环境中开启 | 对登录及其他凭据路由限流。`true` 会在未设置 `NODE_ENV=production` 的部署中开启它。设置在 API 上。         |
 
 ## 聊天历史保留
 
-Rakazo 会保留聊天历史，直到有人清空聊天或删除机器人。要自动删除，请在 API 和 worker 上把 `CHAT_HISTORY_RETENTION_DAYS` 设为整数天数：
+ALLORA 会保留聊天历史，直到有人清空聊天或删除机器人。要自动删除，请在 API 和 worker 上把 `CHAT_HISTORY_RETENTION_DAYS` 设为整数天数：
 
 ```env
 CHAT_HISTORY_RETENTION_DAYS=180
@@ -100,7 +100,7 @@ CHAT_HISTORY_RETENTION_DAYS=180
 
 ## 数据库角色
 
-Rakazo 使用两个 Postgres 登录：
+ALLORA 使用两个 Postgres 登录：
 
 - 所有者（Compose 中为 `POSTGRES_USER`，Compose 之外为 `DATABASE_MIGRATION_URL`）运行迁移并拥有表。
 - 应用登录（Compose 中为 `rakazo_app` 和 `POSTGRES_APP_PASSWORD`，或 `DATABASE_URL`）不是超级用户，不能绕过行级安全，不能创建对象，只能读写应用表。

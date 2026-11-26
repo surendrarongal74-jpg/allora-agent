@@ -37,7 +37,7 @@ Google Vertex ทำงานแบบเดียวกันด้วย `PI_D
 การอนุมัติมีสามโหมดใน **ตั้งค่า (Settings) → Approvals**: Never ask ข้ามการขออนุมัติปกติ, Auto ให้โมเดลอนุมัติผ่านการกระทำที่ตรงกับคำขอ และ Ask ถามก่อนทุกการเปลี่ยนแปลง space เริ่มต้นที่ Auto ซึ่งจะถามแบบ Ask จนกว่าจะมีโมเดลอนุมัติให้ใช้ แต่ละคนอนุญาตหรือบล็อกเครื่องมือและเว็บไซต์ทีละรายการได้ในทุกโหมด และ space ปรับการอนุมัติแยกจากบัญชีได้
 ทุกโหมดยังบังคับใช้กฎบล็อกและการตรวจความปลอดภัย การซื้อต้องได้รับอนุมัติจากคนเสมอ run ที่ไม่มีคนดูแลและขออนุมัติไม่ได้จะปฏิเสธการซื้อ
 
-ใน **ตั้งค่า (Settings) → Models → Approval model** ผู้ใช้แต่ละคนเลือกโมเดลจากการเชื่อมต่อที่มีอยู่ และเพิ่มตัวสำรองตามลำดับได้ แยกจากโมเดลหลัก การเชื่อมต่อส่วนตัวใช้ credentials ของตัวเอง การเรียกแบบ hosted ใช้กฎ credit ของ Rakazo เหมือนแชท ตัวสำรองจะถูกใช้เฉพาะเมื่อตัวตรวจล้มเหลว การสั่งให้ถามอย่างชัดเจน รวมถึงการตัดสินที่ไม่แน่ใจ ยังต้องให้คนตอบ
+ใน **ตั้งค่า (Settings) → Models → Approval model** ผู้ใช้แต่ละคนเลือกโมเดลจากการเชื่อมต่อที่มีอยู่ และเพิ่มตัวสำรองตามลำดับได้ แยกจากโมเดลหลัก การเชื่อมต่อส่วนตัวใช้ credentials ของตัวเอง การเรียกแบบ hosted ใช้กฎ credit ของ ALLORA เหมือนแชท ตัวสำรองจะถูกใช้เฉพาะเมื่อตัวตรวจล้มเหลว การสั่งให้ถามอย่างชัดเจน รวมถึงการตัดสินที่ไม่แน่ใจ ยังต้องให้คนตอบ
 
 เมื่อไม่ได้เลือกโมเดลอนุมัติ ตัวตรวจของ deployment ยังเป็นค่าเริ่มต้น สำหรับ OpenRouter Jev ให้ตั้ง `RAKAZO_AUTO_REVIEW_PROVIDER=openrouter` และ `RAKAZO_AUTO_REVIEW_MODEL=typesafe/jev-1.14` ซึ่งใช้ `OPENROUTER_API_KEY` และ Decisions API ส่วน TypeSafe โดยตรงยังใช้ได้ผ่าน `RAKAZO_AUTO_REVIEW_PROVIDER=jev` และ `TYPESAFE_API_KEY` ระบบหลักทำงานได้โดยไม่ต้องใช้บริการ hosted ทั้งสอง
 
@@ -70,23 +70,23 @@ RAKAZO_LOCAL_PROMPT_CACHE=off
 
 `RAKAZO_LOCAL_MAX_TOKENS` คือขีดจำกัด output ที่ส่งไปกับทุกคำขอถึงโมเดลในเครื่อง เว้นแต่การเชื่อมต่อตั้งค่า max-tokens ของตัวเอง ค่านี้ไม่เกินหนึ่งในสี่ของ `RAKAZO_LOCAL_CONTEXT_WINDOW` ส่วนที่เหลือจึงเป็นของ prompt ขีดจำกัดที่สูงขึ้นทำให้ prompt มีพื้นที่น้อยลง แชทยาวจึงถูกย่อเร็วขึ้น
 
-server ที่อยู่หลัง key ที่จำกัดอัตรา (free tier หรือโควตา token ขององค์กร) มักตอบ `429` พร้อม `Retry-After` คงที่หนึ่งนาที การเรียกที่ถูกปฏิเสธแต่ละครั้งจึงเสียเวลาหนึ่งนาที ตั้ง `RAKAZO_LOCAL_TOKENS_PER_MINUTE` เป็นขีดจำกัด prompt token ของ server แล้ว Rakazo จะคุมจังหวะการเรียกไปยังผู้ให้บริการในเครื่องให้อยู่ใต้ค่านั้นด้วยหน้าต่างเลื่อนหนึ่งนาที และรอเท่าที่หน้าต่างต้องการเท่านั้น ค่าประมาณจะปรับเทียบกับ prompt token ที่ server รายงาน เผื่อไว้บ้างถ้า client อื่นใช้ key ร่วมกัน ถ้ายังเกิด `429` จะจัดการ `Retry-After` ตามปกติ ถ้าไม่ตั้ง การเรียกจะส่งทันทีที่พร้อม เหมือนขีดจำกัด token อื่น ค่าที่ไม่ใช่จำนวนเต็มบวกจะถูกปฏิเสธเมื่อตั้งค่าผู้ให้บริการในเครื่อง
+server ที่อยู่หลัง key ที่จำกัดอัตรา (free tier หรือโควตา token ขององค์กร) มักตอบ `429` พร้อม `Retry-After` คงที่หนึ่งนาที การเรียกที่ถูกปฏิเสธแต่ละครั้งจึงเสียเวลาหนึ่งนาที ตั้ง `RAKAZO_LOCAL_TOKENS_PER_MINUTE` เป็นขีดจำกัด prompt token ของ server แล้ว ALLORA จะคุมจังหวะการเรียกไปยังผู้ให้บริการในเครื่องให้อยู่ใต้ค่านั้นด้วยหน้าต่างเลื่อนหนึ่งนาที และรอเท่าที่หน้าต่างต้องการเท่านั้น ค่าประมาณจะปรับเทียบกับ prompt token ที่ server รายงาน เผื่อไว้บ้างถ้า client อื่นใช้ key ร่วมกัน ถ้ายังเกิด `429` จะจัดการ `Retry-After` ตามปกติ ถ้าไม่ตั้ง การเรียกจะส่งทันทีที่พร้อม เหมือนขีดจำกัด token อื่น ค่าที่ไม่ใช่จำนวนเต็มบวกจะถูกปฏิเสธเมื่อตั้งค่าผู้ให้บริการในเครื่อง
 
-Rakazo คงข้อความก่อนหน้าของ run ไว้ไม่เปลี่ยนระหว่างการเรียก เพื่อให้ prompt cache ของ server ยังใช้ได้ และตัด page state เก่าออกเฉพาะเมื่อประหยัดได้มากกว่าที่ cache ประหยัด server ที่ไม่มี prompt cache (gateway แบบ hosted หลายตัวและ endpoint แบบ confidential compute ไม่รายงาน cached token) ไม่ได้ประโยชน์จากส่วนนี้ และ page snapshot เก่าจะถูกส่งซ้ำทุกการเรียก ตั้ง `RAKAZO_LOCAL_PROMPT_CACHE=off` เพื่อระบุเรื่องนี้: page state ที่ค้างจะถูกตัดออกเมื่อสะสมถึงประมาณ 3,000 token ถ้าไม่ตั้ง พฤติกรรมจะเหมือนเดิม
+ALLORA คงข้อความก่อนหน้าของ run ไว้ไม่เปลี่ยนระหว่างการเรียก เพื่อให้ prompt cache ของ server ยังใช้ได้ และตัด page state เก่าออกเฉพาะเมื่อประหยัดได้มากกว่าที่ cache ประหยัด server ที่ไม่มี prompt cache (gateway แบบ hosted หลายตัวและ endpoint แบบ confidential compute ไม่รายงาน cached token) ไม่ได้ประโยชน์จากส่วนนี้ และ page snapshot เก่าจะถูกส่งซ้ำทุกการเรียก ตั้ง `RAKAZO_LOCAL_PROMPT_CACHE=off` เพื่อระบุเรื่องนี้: page state ที่ค้างจะถูกตัดออกเมื่อสะสมถึงประมาณ 3,000 token ถ้าไม่ตั้ง พฤติกรรมจะเหมือนเดิม
 
-ค่า loopback เริ่มต้นเหมาะเมื่อรัน Rakazo จาก source checkout ถ้ารันจากคอนเทนเนอร์ ให้ใช้ที่อยู่ LAN แบบ RFC1918 ที่คงที่ (ไม่ใช่แค่ DNS ของ service ใน Compose) บน Docker Desktop ใช้ `host.docker.internal` ได้เช่นกัน
+ค่า loopback เริ่มต้นเหมาะเมื่อรัน ALLORA จาก source checkout ถ้ารันจากคอนเทนเนอร์ ให้ใช้ที่อยู่ LAN แบบ RFC1918 ที่คงที่ (ไม่ใช่แค่ DNS ของ service ใน Compose) บน Docker Desktop ใช้ `host.docker.internal` ได้เช่นกัน
 บน Docker Desktop shell ของ bot computer มักเข้าถึงบริการที่ bind กับ `127.0.0.1` ของเครื่อง host ผ่าน hostname เดียวกันได้ อย่ารันบริการที่ละเอียดอ่อนและไม่มีการยืนยันตัวตนบน loopback ขณะ bot ทำงาน หรือใช้ firewall บล็อกเส้นทางนั้น Linux ไม่มี `host.docker.internal` แบบเดียวกันเป็นค่าเริ่มต้น
-ตั้งค่าเฉพาะ endpoint ที่คุณควบคุม: prompt, ไฟล์แนบ และผลลัพธ์ของเครื่องมือที่ส่งให้โมเดลนั้นจะออกจาก Rakazo ผ่าน URL นี้ ปล่อย `RAKAZO_LOCAL_MODELS` ว่างเพื่อปิดผู้ให้บริการนี้
+ตั้งค่าเฉพาะ endpoint ที่คุณควบคุม: prompt, ไฟล์แนบ และผลลัพธ์ของเครื่องมือที่ส่งให้โมเดลนั้นจะออกจาก ALLORA ผ่าน URL นี้ ปล่อย `RAKAZO_LOCAL_MODELS` ว่างเพื่อปิดผู้ให้บริการนี้
 
 ## Claude Code CLI
 
-ถ้ามี Claude subscription เซิร์ฟเวอร์ที่คุณใช้คนเดียวสามารถรันโมเดลของ deployment ผ่าน Claude Code CLI ทางการ ที่ sign-in ด้วยบัญชีของคุณเองได้ ในแต่ละ turn ของโมเดล Rakazo จะเริ่มคำสั่ง `claude` ที่ติดตั้งบนเซิร์ฟเวอร์และอ่านคำตอบ Rakazo ไม่อ่าน ไม่เก็บ ไม่ส่งต่อ และไม่ refresh การ sign-in Claude ของคุณ และทุกคำขอถึง Anthropic เป็นของ CLI เอง Rakazo ดูแลบทสนทนา เครื่องมือ memory และการอนุมัติ: CLI แค่ตอบในฐานะโมเดล โดยปิดเครื่องมือ การตั้งค่า ไฟล์ project และ session ที่บันทึกไว้ของตัวเอง
+ถ้ามี Claude subscription เซิร์ฟเวอร์ที่คุณใช้คนเดียวสามารถรันโมเดลของ deployment ผ่าน Claude Code CLI ทางการ ที่ sign-in ด้วยบัญชีของคุณเองได้ ในแต่ละ turn ของโมเดล ALLORA จะเริ่มคำสั่ง `claude` ที่ติดตั้งบนเซิร์ฟเวอร์และอ่านคำตอบ ALLORA ไม่อ่าน ไม่เก็บ ไม่ส่งต่อ และไม่ refresh การ sign-in Claude ของคุณ และทุกคำขอถึง Anthropic เป็นของ CLI เอง ALLORA ดูแลบทสนทนา เครื่องมือ memory และการอนุมัติ: CLI แค่ตอบในฐานะโมเดล โดยปิดเครื่องมือ การตั้งค่า ไฟล์ project และ session ที่บันทึกไว้ของตัวเอง
 
 สิ่งที่ต้องมี:
 
 - API และ worker รันจาก source checkout บนเครื่องเดียวกับ CLI ในนามผู้ใช้ OS คนเดียวกัน Docker image ทางการและ local stack ของแอป desktop ไม่มี Claude Code และไม่รองรับการเพิ่มเข้าไป
-- Claude Code 2.1.280 ขึ้นไปใน `PATH` ของผู้ใช้นั้น และ sign-in ครั้งหนึ่งใน terminal ในนามผู้ใช้นั้นด้วย `claude auth login` บนเซิร์ฟเวอร์ที่ไม่มีเบราว์เซอร์ CLI ใช้ token ที่ `claude setup-token` สร้างแทนได้: ตั้งเป็น `CLAUDE_CODE_OAUTH_TOKEN` พร้อม `RAKAZO_CLAUDE_CODE_SETUP_TOKEN=1` ในสภาพแวดล้อมของ API และ worker ไม่ว่าแบบไหนก็ไม่มีการ sign-in Claude ภายใน Rakazo
-- มีบัญชีเดียวบนเซิร์ฟเวอร์ การ sign-in Claude เป็นของคนคนเดียว Rakazo จึงปฏิเสธ run ของ Claude Code เมื่อเซิร์ฟเวอร์มีมากกว่าหนึ่งบัญชี (ไม่นับคนที่แค่ส่งข้อความหา bot จากแอปแชท) หรือเรียกเก็บเงินค่าใช้โมเดล
+- Claude Code 2.1.280 ขึ้นไปใน `PATH` ของผู้ใช้นั้น และ sign-in ครั้งหนึ่งใน terminal ในนามผู้ใช้นั้นด้วย `claude auth login` บนเซิร์ฟเวอร์ที่ไม่มีเบราว์เซอร์ CLI ใช้ token ที่ `claude setup-token` สร้างแทนได้: ตั้งเป็น `CLAUDE_CODE_OAUTH_TOKEN` พร้อม `RAKAZO_CLAUDE_CODE_SETUP_TOKEN=1` ในสภาพแวดล้อมของ API และ worker ไม่ว่าแบบไหนก็ไม่มีการ sign-in Claude ภายใน ALLORA
+- มีบัญชีเดียวบนเซิร์ฟเวอร์ การ sign-in Claude เป็นของคนคนเดียว ALLORA จึงปฏิเสธ run ของ Claude Code เมื่อเซิร์ฟเวอร์มีมากกว่าหนึ่งบัญชี (ไม่นับคนที่แค่ส่งข้อความหา bot จากแอปแชท) หรือเรียกเก็บเงินค่าใช้โมเดล
 
 ```env
 PI_DEFAULT_PROVIDER=claude-code
@@ -94,9 +94,9 @@ PI_DEFAULT_CREDENTIALS=host
 PI_DEFAULT_MODEL=claude-sonnet-5
 ```
 
-ใช้ model id เต็มที่ CLI รับใน `claude --model` เพื่อให้ Rakazo รู้ขีดจำกัด context และ output ของโมเดล การใช้งานนับรวมในแผน Claude ของคุณและขีดจำกัดของแผน ซึ่งออกแบบมาสำหรับการใช้งานส่วนตัวทั่วไป Rakazo ไม่แสดงค่าใช้จ่ายของ run เหล่านี้ และเมื่อถึงขีดจำกัดของแผน run จะล้มเหลวด้วย error เรื่อง rate limit จนกว่าจะรีเซ็ต การใช้ Claude Code อยู่ภายใต้ข้อกำหนดของ Anthropic ดู [Legal and compliance](https://code.claude.com/docs/en/legal-and-compliance)
+ใช้ model id เต็มที่ CLI รับใน `claude --model` เพื่อให้ ALLORA รู้ขีดจำกัด context และ output ของโมเดล การใช้งานนับรวมในแผน Claude ของคุณและขีดจำกัดของแผน ซึ่งออกแบบมาสำหรับการใช้งานส่วนตัวทั่วไป ALLORA ไม่แสดงค่าใช้จ่ายของ run เหล่านี้ และเมื่อถึงขีดจำกัดของแผน run จะล้มเหลวด้วย error เรื่อง rate limit จนกว่าจะรีเซ็ต การใช้ Claude Code อยู่ภายใต้ข้อกำหนดของ Anthropic ดู [Legal and compliance](https://code.claude.com/docs/en/legal-and-compliance)
 
-CLI รันในโฟลเดอร์ชั่วคราวส่วนตัวที่ว่างเปล่า พร้อมสภาพแวดล้อมที่อนุญาตเฉพาะบางค่า API key และ secret อื่นของเซิร์ฟเวอร์ รวมถึง `ANTHROPIC_API_KEY` จะไม่ถูกส่งให้ CLI จึงใช้การ sign-in ของตัวเองเสมอ `RAKAZO_CLAUDE_CODE_SETUP_TOKEN=1` เพิ่มเฉพาะ `CLAUDE_CODE_OAUTH_TOKEN` ซึ่ง CLI อ่าน แต่ Rakazo ไม่อ่าน เฉพาะโมเดลของ deployment ที่รันบน Claude Code ได้ และไม่มีให้เลือกเป็นการเชื่อมต่อใน **ตั้งค่า (Settings) → Models**
+CLI รันในโฟลเดอร์ชั่วคราวส่วนตัวที่ว่างเปล่า พร้อมสภาพแวดล้อมที่อนุญาตเฉพาะบางค่า API key และ secret อื่นของเซิร์ฟเวอร์ รวมถึง `ANTHROPIC_API_KEY` จะไม่ถูกส่งให้ CLI จึงใช้การ sign-in ของตัวเองเสมอ `RAKAZO_CLAUDE_CODE_SETUP_TOKEN=1` เพิ่มเฉพาะ `CLAUDE_CODE_OAUTH_TOKEN` ซึ่ง CLI อ่าน แต่ ALLORA ไม่อ่าน เฉพาะโมเดลของ deployment ที่รันบน Claude Code ได้ และไม่มีให้เลือกเป็นการเชื่อมต่อใน **ตั้งค่า (Settings) → Models**
 
 ## Ollama Cloud
 
@@ -117,14 +117,14 @@ HTTPS ยังตรวจ certificate ของ hostname เหมือน en
 
 ตั้ง `RAKAZO_MODEL_PROVIDER_ALLOWLIST=provider1,provider2` ในสภาพแวดล้อมของ deployment ทั้ง API และ worker แล้วสร้างคอนเทนเนอร์เหล่านั้นใหม่ เพื่อจำกัดผู้ให้บริการโมเดลที่ผู้ใช้เชื่อมได้ แต่ละรายการคือ provider id ใน model registry (เช่น `openrouter`, `anthropic` และ `openai-compatible` สำหรับ endpoint แบบ OpenAI-compatible) รายการนี้ใช้กับ model catalog: ผู้ให้บริการที่ไม่อยู่ในรายการจะไม่ถูกเสนอ key ของผู้ให้บริการนั้นถูกปฏิเสธตอนบันทึกและตอน import เปลี่ยน bot ไปใช้ไม่ได้ และ run จะล้มเหลวพร้อม error ที่ชัดเจน รายการที่ไม่ตั้งหรือว่างหมายถึงทุกผู้ให้บริการ เหมือนไม่มีค่านี้ทุกประการ
 
-preset แบบ OpenAI-compatible ที่เป็น hosted ได้แก่ Ollama Cloud (`ollama-cloud`), Concentrate AI (`concentrate`) และ DeepInfra (`deepinfra`) เลือกใน **ตั้งค่า (Settings) → Models** ใส่ API key แล้วเลือกโมเดล Rakazo โหลดรายการให้อัตโนมัติ HTTPS host ของ preset เหล่านี้ยังใช้ได้เมื่อ `RAKAZO_OPENAI_COMPAT_ALLOW_PUBLIC=0`
+preset แบบ OpenAI-compatible ที่เป็น hosted ได้แก่ Ollama Cloud (`ollama-cloud`), Concentrate AI (`concentrate`) และ DeepInfra (`deepinfra`) เลือกใน **ตั้งค่า (Settings) → Models** ใส่ API key แล้วเลือกโมเดล ALLORA โหลดรายการให้อัตโนมัติ HTTPS host ของ preset เหล่านี้ยังใช้ได้เมื่อ `RAKAZO_OPENAI_COMPAT_ALLOW_PUBLIC=0`
 ถ้าตั้ง allowlist ของผู้ให้บริการ ให้ใส่ `openai-compatible` และ id ของ preset ที่ต้องการเก็บไว้ preset ที่ไม่ได้ใส่ id จะถูกซ่อนและเสียข้อยกเว้นของ host
 
 ## Thinking
 
 สำหรับ server ที่รับ `reasoning_effort` มาตรฐาน ให้เปิด **Supports thinking** ใน **Advanced** ตอนเชื่อมต่อ ค่านี้บันทึกไว้กับการเชื่อมต่อ (ไม่ต้องใช้ env var หรือ restart) การเชื่อมต่อที่มีอยู่แล้วปิดไว้เป็นค่าเริ่มต้น โมเดลในเครื่องของ deployment เลือกใช้ผ่าน `RAKAZO_LOCAL_REASONING_MODELS` เชื่อมใหม่ผ่าน **ตั้งค่า (Settings) → Models** เฉพาะเมื่อต้องการย้ายไปเป็นการเชื่อมต่อส่วนตัว
 
-การเชื่อมต่อที่เปิดไว้ใช้ thinking ระดับ medium เป็นค่าเริ่มต้น เว็บและ desktop แสดง **Thinking** ในการตั้งค่าขั้นสูงของ bot ส่วนมือถือใช้นโยบายเดียวกันจาก backend Rakazo ส่ง `reasoning_effort` มาตรฐาน (`minimal`, `low`, `medium`, `high` หรือ `none` เมื่อปิด) server รับผิดชอบการแปลงเฉพาะโมเดลเอง ปิด **Supports thinking** ไว้ถ้า server ไม่รองรับ effort มาตรฐาน ขีดจำกัด token ที่มีอยู่ยังใช้อยู่ effort ไม่ใช่งบ reasoning token แยกต่างหาก
+การเชื่อมต่อที่เปิดไว้ใช้ thinking ระดับ medium เป็นค่าเริ่มต้น เว็บและ desktop แสดง **Thinking** ในการตั้งค่าขั้นสูงของ bot ส่วนมือถือใช้นโยบายเดียวกันจาก backend ALLORA ส่ง `reasoning_effort` มาตรฐาน (`minimal`, `low`, `medium`, `high` หรือ `none` เมื่อปิด) server รับผิดชอบการแปลงเฉพาะโมเดลเอง ปิด **Supports thinking** ไว้ถ้า server ไม่รองรับ effort มาตรฐาน ขีดจำกัด token ที่มีอยู่ยังใช้อยู่ effort ไม่ใช่งบ reasoning token แยกต่างหาก
 
 ## ความสามารถของ prompt cache
 

@@ -46,7 +46,7 @@ export function resolveDeploymentModel(env: NodeJS.ProcessEnv = process.env) {
       hostCredentials: false,
     };
   }
-  const provider = env.PI_DEFAULT_PROVIDER?.trim() || "openrouter";
+  const provider = env.PI_DEFAULT_PROVIDER?.trim() || "groq";
   // An unknown provider gets no key rather than another vendor's.
   const deployment = modelProviderDefinition(provider)?.deployment;
   const explicitModel = env.PI_DEFAULT_MODEL?.trim();

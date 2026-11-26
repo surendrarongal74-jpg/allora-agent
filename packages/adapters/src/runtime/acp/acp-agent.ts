@@ -20,7 +20,7 @@ export interface AcpAgentDescriptor {
   signIn?: string;
   /**
    * How one turn starts the CLI: with every one of its own tools, settings, instruction files and
-   * plugins off, the tool server's tools allowed, and Rakazo's instructions as its system prompt.
+   * plugins off, the tool server's tools allowed, and ALLORA's instructions as its system prompt.
    * `files` is a private folder for this turn only.
    */
   launch(input: {
@@ -31,7 +31,7 @@ export interface AcpAgentDescriptor {
   }): Promise<{ args: string[]; env: Record<string, string> }>;
   /**
    * The `_meta` every session request carries, for a CLI that takes its settings (its own tools
-   * off, Rakazo's instructions as its system prompt) per session instead of at launch.
+   * off, ALLORA's instructions as its system prompt) per session instead of at launch.
    */
   sessionMeta?(input: { instructions: string; toolServer?: string }): Record<string, unknown>;
   /** The name the CLI reports a call to one of the tool server's tools under. */

@@ -213,7 +213,7 @@ export type SpaceCatalogAuth = {
   modelSettingsBySecretId?: Partial<Record<string, Record<string, ModelSettings>>>;
 };
 
-/** Whether this space would run the model on Rakazo credits rather than a member's own connection. */
+/** Whether this space would run the model on ALLORA credits rather than a member's own connection. */
 export function runsOnHostedCredits(
   auth: SpaceCatalogAuth,
   entry: { provider: string; id: string },

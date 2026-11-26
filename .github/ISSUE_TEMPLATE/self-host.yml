@@ -1,5 +1,5 @@
 name: Self-host setup
-description: Cannot start Rakazo, run compose, migrate, or build the sandbox
+description: Cannot start ALLORA, run compose, migrate, or build the sandbox
 labels:
   - self-host
 body:
@@ -52,7 +52,7 @@ body:
   - type: input
     id: version
     attributes:
-      label: Rakazo version or commit
+      label: ALLORA version or commit
       placeholder: main @ abc1234
     validations:
       required: true

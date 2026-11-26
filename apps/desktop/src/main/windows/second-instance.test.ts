@@ -73,7 +73,7 @@ describe("desktop deep-link events", () => {
       ...handlers,
       isOpening,
       reopen,
-      launch: (...argv: string[]) => app.emit("second-instance", {}, ["Rakazo", ...argv]),
+      launch: (...argv: string[]) => app.emit("second-instance", {}, ["ALLORA", ...argv]),
       openUrl: (url: string) => {
         const preventDefault = vi.fn();
         app.emit("open-url", { preventDefault }, url);
@@ -105,7 +105,7 @@ describe("desktop deep-link events", () => {
   });
 
   it("opens a cold-start argument once startup finishes", () => {
-    const events = listen(["Rakazo", "rakazo://app/cold"]);
+    const events = listen(["ALLORA", "rakazo://app/cold"]);
     const win = fakeWindow();
     desktop.mainWindow = win;
     desktop.currentTargetUrl = "https://rakazo.example";

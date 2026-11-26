@@ -210,7 +210,7 @@ export function ModelRoleSettings({
       billing: "",
     }),
     creditOfferingId: choice.creditOfferingId,
-    providerName: choice.creditOfferingId ? t`Rakazo credits` : choice.connectionName,
+    providerName: choice.creditOfferingId ? t`ALLORA credits` : choice.connectionName,
     ...(choice.credentialId ? { credentialId: choice.credentialId } : {}),
   }));
   // A pinned row runs on its connection; others on the provider's newest.
@@ -223,7 +223,7 @@ export function ModelRoleSettings({
       : [];
   const providerName = (choice: ModelRoleChoice) => {
     const named =
-      (choice.creditOfferingId ? t`Rakazo credits` : undefined) ||
+      (choice.creditOfferingId ? t`ALLORA credits` : undefined) ||
       (choice.credentialId &&
         options.find((option) => option.credentialId === choice.credentialId)?.providerName);
     if (named) return named;

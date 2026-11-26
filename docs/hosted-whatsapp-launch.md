@@ -7,11 +7,11 @@ were inspected or changed. Target launch countries have not been supplied.
 ## Decision
 
 Keep the existing direct Cloud API adapter for a **conditional, user-initiated DM pilot** on one
-operator-owned business number. Users link their existing Rakazo account and reasoning connection;
+operator-owned business number. Users link their existing ALLORA account and reasoning connection;
 they do not register a business or supply messaging credentials. Do not enable hosted WhatsApp
 until the gates below are satisfied. Keep the current marketing restriction.
 
-Treat Rakazo as a general-purpose assistant for launch planning, including when users bring their
+Treat ALLORA as a general-purpose assistant for launch planning, including when users bring their
 own model connection. Calling it a productivity tool or buying transport through a gateway does
 not establish eligibility. A global launch is blocked; a restricted pilot is a candidate, not an
 approved deployment. Self-hosting remains optional and subject to the same upstream rules.
@@ -56,15 +56,15 @@ Technology Provider using Cloud API, connects the business account and number, a
 verification and policy configuration in Meta. Its
 [2.0 announcement](https://photon.codes/blog/introducing-photon-2.0) introduces a unified API, not a
 policy exemption. That may simplify transport operations, but does not demonstrate resolution of
-Rakazo's eligibility or registration blockers. The existing Rakazo Photon integration is for
+ALLORA's eligibility or registration blockers. The existing ALLORA Photon integration is for
 iMessage, not evidence of working WhatsApp support; leave that separate adapter untouched.
 
 [Twilio Self Sign-up](https://www.twilio.com/docs/whatsapp/self-sign-up) lets direct customers register
 through its console. It requires an upgraded account, a Meta business portfolio with administrator
 access, and a compatible number that can receive the ownership OTP. Its guide requires business
 verification before production. Onboarding customer-owned businesses instead requires its Tech
-Provider program/integration. For the proposed Rakazo-owned number, this is operator setup once,
-not signup work for every Rakazo user. Do not register with Twilio and expect its sender credentials
+Provider program/integration. For the proposed ALLORA-owned number, this is operator setup once,
+not signup work for every ALLORA user. Do not register with Twilio and expect its sender credentials
 to work with the direct adapter.
 
 ## Cost approval still required
@@ -75,7 +75,7 @@ credits and the user's reasoning connection are separate from messaging billing.
 [Twilio's current fee explanation](https://help.twilio.com/articles/360037672734-How-Much-Does-it-Cost-to-Send)
 reports an October 1, 2026 change: paid templates and service messages after an initial monthly free
 allowance for ordinary businesses, plus distinct AI Provider service-message charges passed through.
-Do not apply ordinary-business allowances to Rakazo without confirmation. Its
+Do not apply ordinary-business allowances to ALLORA without confirmation. Its
 [pricing page](https://www.twilio.com/en-us/whatsapp/pricing) lists $0.005 inbound or outbound handling,
 but also retains contradictory older statements about free utility messages. Use the current
 account rate card and AI classification for budgeting, not a blanket “24-hour replies are free” claim.
@@ -97,12 +97,12 @@ Perform only after the eligibility and spend decisions; none of these external c
 1. Record the intended recipient markets and the account's AI Provider treatment. Review current
    terms, business verification, account restrictions, support escalation and privacy/consent flow.
    Start with one eligible market. If eligibility cannot be established, leave all four transport
-   settings unset; do not describe the integration as available on hosted Rakazo.
+   settings unset; do not describe the integration as available on hosted ALLORA.
 2. In the operator's Meta business portfolio, create/select the business app and WhatsApp assets.
    [Current account documentation](https://developers.facebook.com/documentation/business-messaging/whatsapp/whatsapp-business-accounts)
    distinguishes the WhatsApp account holding the number and the Messaging account holding templates
    and billing; older dashboards call these WABA assets. Configure the real business profile,
-   approved display name and payment method; finish required verification. Users linking Rakazo
+   approved display name and payment method; finish required verification. Users linking ALLORA
    accounts are not being onboarded as separate businesses in this design.
 3. Use a dedicated operator-owned number, not personal-account automation. Add it, verify ownership
    by SMS/voice, then register it with `POST /<PHONE_NUMBER_ID>/register` using
@@ -136,7 +136,7 @@ Perform only after the eligibility and spend decisions; none of these external c
    [Endpoint reference](https://developers.facebook.com/documentation/business-messaging/whatsapp/webhooks/create-webhook-endpoint),
    [webhook permissions and fields](https://developers.facebook.com/documentation/business-messaging/whatsapp/webhooks/overview),
    [account API reference](https://developers.facebook.com/docs/graph-api/reference/whats-app-business-account/).
-7. Keep `MESSAGING_OPEN_SIGNUP` unset/false. Use an existing Rakazo account with a configured reasoning
+7. Keep `MESSAGING_OPEN_SIGNUP` unset/false. Use an existing ALLORA account with a configured reasoning
    connection, then Settings → Messaging → choose bot → WhatsApp → send the temporary link code to
    the operator's number. No new messaging signup or model-credit behavior is introduced here.
 
@@ -149,7 +149,7 @@ four credentials, supports DMs, rejects groups, renders/splits outbound text, an
 status webhooks. The shared surface verifies through the SDK before forwarding statuses; it drains
 inbound processing before acknowledging. Synchronous error 131047 is permanent, and asynchronous
 `failed` callbacks mark delivery failed. No template auto-send or service-window persistence exists
-in Rakazo. The SDK has `sendTemplate`, but the product delivery contract does not expose it.
+in ALLORA. The SDK has `sendTemplate`, but the product delivery contract does not expose it.
 
 Offline tests cover configuration isolation, formatting/splitting and permanent-error classification;
 the new provider test exercises the real SDK's GET verification, forged/missing POST signatures,

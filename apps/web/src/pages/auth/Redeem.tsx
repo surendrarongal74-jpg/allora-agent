@@ -29,7 +29,7 @@ export function RedeemPage() {
         }}
       >
         <Button type="submit" size="xl" className={submitClass}>
-          <Trans>Open Rakazo</Trans>
+          <Trans>Open ALLORA</Trans>
         </Button>
       </AuthFrame>
     );

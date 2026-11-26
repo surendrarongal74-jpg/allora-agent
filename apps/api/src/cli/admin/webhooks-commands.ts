@@ -25,7 +25,7 @@ export const webhooksUnpublishCommand: AdminCommand = {
           const provider = ingress();
           if (!provider.describe().canUnpublish) {
             throw new AdminCommandError(
-              "Rakazo does not run this tunnel: stop it or its port forward yourself",
+              "ALLORA does not run this tunnel: stop it or its port forward yourself",
             );
           }
           await provider.unpublish(context.signal);

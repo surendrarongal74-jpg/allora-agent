@@ -11,7 +11,7 @@
 คัดลอก prompt นี้แล้วเติมช่องว่าง:
 
 ```text
-Help me troubleshoot Rakazo using this guide:
+Help me troubleshoot ALLORA using this guide:
 https://rakazo.com/docs/troubleshooting/
 
 Error code: <code from the relevant section below>
@@ -42,7 +42,7 @@ settings needed. Do not disable authentication or URL validation to bypass the e
 
 1. คัดลอก origin จากแถบที่อยู่ของเบราว์เซอร์: scheme, hostname และ port โดยไม่มี path
    เช่น `https://app.example.com` หรือ `http://127.0.0.1:5173`
-2. ตรวจ `WEB_ORIGIN` ที่ API ใช้งานจริง ถ้าเป็นที่อยู่สาธารณะที่ตั้งใจไว้ ให้เปิด Rakazo
+2. ตรวจ `WEB_ORIGIN` ที่ API ใช้งานจริง ถ้าเป็นที่อยู่สาธารณะที่ตั้งใจไว้ ให้เปิด ALLORA
    ที่ที่อยู่นั้นแทน `localhost` กับ `127.0.0.1` ถือว่าต่างกันสำหรับการตรวจนี้ เช่นเดียวกับ
    HTTP กับ HTTPS หรือพอร์ตที่ต่างกัน
 3. ถ้าตั้งค่าผิด ให้ตั้ง `WEB_ORIGIN` เป็นที่อยู่ที่คนใช้จริง

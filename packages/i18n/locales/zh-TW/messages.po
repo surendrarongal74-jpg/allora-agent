@@ -1465,8 +1465,8 @@ msgid "Allow once"
 msgstr "允許一次"
 
 #: apps/web/src/lib/calls/dictation.ts
-msgid "Allow Rakazo to use Speech Recognition and the microphone in System Settings."
-msgstr "請在系統設定中允許 Rakazo 使用語音辨識和麥克風。"
+msgid "Allow ALLORA to use Speech Recognition and the microphone in System Settings."
+msgstr "請在系統設定中允許 ALLORA 使用語音辨識和麥克風。"
 
 #: apps/mobile/lib/calls/call-session.ts
 #: apps/mobile/lib/composer/composer-dictation.ts
@@ -2677,8 +2677,8 @@ msgstr "選擇資料夾"
 
 #: apps/web/src/components/billing/CreditChoice.tsx
 #: apps/web/src/components/billing/SubscriptionGate.tsx
-msgid "Choose how to use Rakazo"
-msgstr "選擇 Rakazo 的使用方式"
+msgid "Choose how to use ALLORA"
+msgstr "選擇 ALLORA 的使用方式"
 
 #: apps/web/src/pages/shell/bots/agent-import.tsx
 msgid "Choose your {home} folder, or a backup of it."
@@ -3177,8 +3177,8 @@ msgstr "連接你的 AI"
 
 #. js-lingui-explicit-id
 #: packages/i18n/src/run-error.ts
-msgid "Connect your own API key in Models or choose Rakazo credits in Billing."
-msgstr "請在「模型」中連接你自己的 API 金鑰，或在「帳務」中選擇 Rakazo 點數。"
+msgid "Connect your own API key in Models or choose ALLORA credits in Billing."
+msgstr "請在「模型」中連接你自己的 API 金鑰，或在「帳務」中選擇 ALLORA 點數。"
 
 #. js-lingui-explicit-id
 #: packages/i18n/src/plugin-catalog.ts
@@ -5660,8 +5660,8 @@ msgid "Ends {day}"
 msgstr "於 {day} 結束"
 
 #: apps/web/src/pages/shell/composer/github-star-prompt.tsx
-msgid "Enjoying Rakazo?"
-msgstr "喜歡 Rakazo 嗎？"
+msgid "Enjoying ALLORA?"
+msgstr "喜歡 ALLORA 嗎？"
 
 #: packages/i18n/src/user-error.ts
 msgid "Enter a password"
@@ -6423,8 +6423,8 @@ msgstr "如何檢查"
 
 #: apps/mobile/app/(settings)/signup-survey.tsx
 #: apps/web/src/components/account/SignupSurvey.tsx
-msgid "How will you use Rakazo?"
-msgstr "你會如何使用 Rakazo？"
+msgid "How will you use ALLORA?"
+msgstr "你會如何使用 ALLORA？"
 
 #: apps/mobile/components/models/compatible-endpoint-form.tsx
 msgid "http://127.0.0.1:8000/v1"
@@ -6547,8 +6547,8 @@ msgid "In use"
 msgstr "使用中"
 
 #: apps/mobile/app/(settings)/model-connection.tsx
-msgid "In your browser, sign in and paste this code when asked. Then return to Rakazo."
-msgstr "在瀏覽器中登入，並在出現提示時貼上此代碼。然後返回 Rakazo。"
+msgid "In your browser, sign in and paste this code when asked. Then return to ALLORA."
+msgstr "在瀏覽器中登入，並在出現提示時貼上此代碼。然後返回 ALLORA。"
 
 #: apps/web/src/pages/settings/BillingSettingsPanel.tsx
 msgid "Inactive"
@@ -8259,8 +8259,8 @@ msgid "Not in {organizationName}. They'll only see this Space."
 msgstr "不在 {organizationName} 中，只能看到此空間。"
 
 #: apps/web/src/pages/shell/bots/import-status.ts
-msgid "Not in Rakazo's catalog"
-msgstr "不在 Rakazo 目錄中"
+msgid "Not in ALLORA's catalog"
+msgstr "不在 ALLORA 目錄中"
 
 #: apps/mobile/app/(settings)/integrations.tsx
 #: apps/web/src/pages/plugins/plugin-browse.tsx
@@ -8288,8 +8288,8 @@ msgid "Not on an HTTPS site"
 msgstr "不是 HTTPS 網站"
 
 #: apps/web/src/pages/plugins/source-form.tsx
-msgid "Not reviewed by Rakazo. Only add it if you trust this address."
-msgstr "未經 Rakazo 審核。僅在你信任此網址時新增。"
+msgid "Not reviewed by ALLORA. Only add it if you trust this address."
+msgstr "未經 ALLORA 審核。僅在你信任此網址時新增。"
 
 #. js-lingui-explicit-id
 #: packages/i18n/src/vault.ts
@@ -8314,12 +8314,12 @@ msgstr "未傳送。點一下重試"
 
 #: apps/web/src/pages/shell/bots/agent-import-plan.tsx
 #: apps/web/src/pages/shell/bots/import-status.ts
-msgid "Not supported in Rakazo"
-msgstr "Rakazo 不支援"
+msgid "Not supported in ALLORA"
+msgstr "ALLORA 不支援"
 
 #: apps/web/src/pages/shell/bots/agent-import-plan.tsx
-msgid "Not used by Rakazo"
-msgstr "Rakazo 不使用"
+msgid "Not used by ALLORA"
+msgstr "ALLORA 不使用"
 
 #. js-lingui-explicit-id
 #: packages/i18n/src/plugin-catalog.ts
@@ -8578,8 +8578,8 @@ msgstr "開啟第 {0} 張照片，共 {1} 張"
 #: apps/web/src/pages/auth/JoinOrganization.tsx
 #: apps/web/src/pages/auth/Redeem.tsx
 #: apps/web/src/pages/SharedPage.tsx
-msgid "Open Rakazo"
-msgstr "開啟 Rakazo"
+msgid "Open ALLORA"
+msgstr "開啟 ALLORA"
 
 #: apps/web/src/components/models/SubscriptionSignInSteps.tsx
 msgid "Open settings"
@@ -9255,27 +9255,27 @@ msgstr "引用所選內容"
 #: apps/mobile/app/bot-settings.tsx
 #: apps/web/src/pages/settings/AccountSettingsOverlay.tsx
 #: apps/web/src/pages/shell/bots/avatar-studio-popover.tsx
-msgid "Rakazo"
-msgstr "Rakazo"
+msgid "ALLORA"
+msgstr "ALLORA"
 
 #: apps/mobile/app/(settings)/billing.tsx
 #: apps/mobile/components/models/model-role-settings.tsx
 #: apps/web/src/pages/model-settings/ModelRoleSettings.tsx
 #: apps/web/src/pages/onboarding/use-onboarding-model.ts
-msgid "Rakazo credits"
-msgstr "Rakazo 額度"
+msgid "ALLORA credits"
+msgstr "ALLORA 額度"
 
 #: apps/mobile/lib/billing/self-hosted-support.ts
-msgid "Rakazo is free to self-host. If you'd like to support it, subscribers can email support@rakazo.com for help."
-msgstr "Rakazo 可免費自行託管。如果你想支持 Rakazo，訂閱者可寄信至 support@rakazo.com 取得協助。"
+msgid "ALLORA is free to self-host. If you'd like to support it, subscribers can email support@rakazo.com for help."
+msgstr "ALLORA 可免費自行託管。如果你想支持 ALLORA，訂閱者可寄信至 support@rakazo.com 取得協助。"
 
 #: apps/web/src/components/models/ProviderSettingsForm.tsx
-msgid "rakazo-shared and IDs starting with bot- are reserved for Rakazo."
-msgstr "rakazo-shared 與以 bot- 開頭的 ID 保留給 Rakazo 使用。"
+msgid "rakazo-shared and IDs starting with bot- are reserved for ALLORA."
+msgstr "rakazo-shared 與以 bot- 開頭的 ID 保留給 ALLORA 使用。"
 
 #: apps/mobile/app/(settings)/account.tsx
-msgid "Rate Rakazo"
-msgstr "為 Rakazo 評分"
+msgid "Rate ALLORA"
+msgstr "為 ALLORA 評分"
 
 #: apps/mobile/components/thread/message-row.tsx
 #: apps/web/src/pages/shell/chat/message-hover-actions.tsx
@@ -9338,8 +9338,8 @@ msgid "Recall from banks"
 msgstr "從記憶庫回想"
 
 #: apps/web/src/components/models/ProviderSettingsForm.tsx
-msgid "Recall from this peer; save to Rakazo’s own peers."
-msgstr "從此 peer 讀取；儲存至 Rakazo 自己的 peer。"
+msgid "Recall from this peer; save to ALLORA’s own peers."
+msgstr "從此 peer 讀取；儲存至 ALLORA 自己的 peer。"
 
 #: apps/web/src/components/models/ProviderSettingsForm.tsx
 msgid "Recall only"
@@ -10045,8 +10045,8 @@ msgstr "返回收件匣"
 
 #: apps/web/src/pages/integrations/McpOAuthCallback.tsx
 #: apps/web/src/pages/integrations/SlackInstallCallback.tsx
-msgid "Return to Rakazo"
-msgstr "返回 Rakazo"
+msgid "Return to ALLORA"
+msgstr "返回 ALLORA"
 
 #: apps/mobile/app/page.tsx
 #: apps/web/src/components/pages/PageViewHost.tsx
@@ -10944,8 +10944,8 @@ msgstr "在 {host} 登入，然後將頁面顯示的驗證碼貼到這裡。"
 
 #: apps/mobile/app/sign-in.tsx
 #: apps/web/src/pages/auth/Auth.tsx
-msgid "Sign in to Rakazo"
-msgstr "登入 Rakazo"
+msgid "Sign in to ALLORA"
+msgstr "登入 ALLORA"
 
 #: packages/i18n/src/user-error.ts
 msgid "Sign in to your account, then link this provider in settings"
@@ -10975,8 +10975,8 @@ msgid "Sign up"
 msgstr "註冊"
 
 #: apps/mobile/app/sign-in.tsx
-msgid "Sign up for Rakazo"
-msgstr "註冊 Rakazo"
+msgid "Sign up for ALLORA"
+msgstr "註冊 ALLORA"
 
 #: apps/web/src/pages/plugins/PluginsOverlay.tsx
 msgid "Sign-in cancelled. Retry in Manage MCP servers."
@@ -11328,8 +11328,8 @@ msgid "Start recording"
 msgstr "開始錄製"
 
 #: apps/mobile/app/paywall.tsx
-msgid "Start using Rakazo"
-msgstr "開始使用 Rakazo"
+msgid "Start using ALLORA"
+msgstr "開始使用 ALLORA"
 
 #: apps/mobile/app/(settings)/billing.tsx
 #: apps/web/src/components/billing/ModelCredits.tsx
@@ -11495,8 +11495,8 @@ msgstr "支援，每月 $25"
 
 #: apps/mobile/app/(settings)/account.tsx
 #: apps/mobile/lib/billing/self-hosted-support.ts
-msgid "Support Rakazo"
-msgstr "支持 Rakazo"
+msgid "Support ALLORA"
+msgstr "支持 ALLORA"
 
 #: apps/mobile/app/(settings)/model-settings.tsx
 #: apps/web/src/pages/model-settings/model-settings-panel.tsx
@@ -11651,8 +11651,8 @@ msgid "That isn't a Grok Bot export. Paste the Bot's whole reply."
 msgstr "這不是 Grok Bot 的匯出內容。請貼上該 Bot 的完整回覆。"
 
 #: apps/mobile/lib/api/endpoint.ts
-msgid "That URL did not look like a Rakazo server"
-msgstr "該地址看起來不是 Rakazo 伺服器"
+msgid "That URL did not look like a ALLORA server"
+msgstr "該地址看起來不是 ALLORA 伺服器"
 
 #: apps/mobile/lib/api/endpoint.ts
 msgid "That URL is missing a host"
@@ -11793,8 +11793,8 @@ msgstr "共用連結將失效"
 
 #: apps/mobile/app/meeting-transcript.tsx
 #: apps/web/src/pages/shell/meetings/meeting-transcript.tsx
-msgid "The transcript will be removed from Rakazo."
-msgstr "文字紀錄將從 Rakazo 中移除。"
+msgid "The transcript will be removed from ALLORA."
+msgstr "文字紀錄將從 ALLORA 中移除。"
 
 #: apps/mobile/app/(settings)/billing.tsx
 #: apps/web/src/components/billing/ModelCredits.tsx
@@ -11962,8 +11962,8 @@ msgid "This draft isn't available"
 msgstr "無法使用此草稿"
 
 #: apps/web/src/lib/bots/agent-import-errors.ts
-msgid "This export is newer than Rakazo can read. Update Rakazo and try again."
-msgstr "此匯出內容的版本比 Rakazo 能讀取的更新。請更新 Rakazo 後再試一次。"
+msgid "This export is newer than ALLORA can read. Update ALLORA and try again."
+msgstr "此匯出內容的版本比 ALLORA 能讀取的更新。請更新 ALLORA 後再試一次。"
 
 #: apps/web/src/lib/bots/agent-import-errors.ts
 msgid "This export is too large to import."
@@ -12136,8 +12136,8 @@ msgstr "此空間有自己的保管庫。其中的機器人會在那裡儲存和
 
 #: apps/mobile/app/(settings)/model-connection.tsx
 #: apps/web/src/pages/model-settings/connection-controls.tsx
-msgid "This subscription sign-in is not available in Rakazo yet. Use a deployment credential or choose another provider."
-msgstr "此訂閱登入在 Rakazo 中尚不可用。請使用部署憑證或選擇其他供應商。"
+msgid "This subscription sign-in is not available in ALLORA yet. Use a deployment credential or choose another provider."
+msgstr "此訂閱登入在 ALLORA 中尚不可用。請使用部署憑證或選擇其他供應商。"
 
 #: apps/mobile/app/(settings)/bot-template.tsx
 msgid "This template is no longer available."
@@ -12604,8 +12604,8 @@ msgid "Update progress"
 msgstr "更新進度"
 
 #: apps/web/src/lib/integrations/meeting-calendar-connect.ts
-msgid "Update Rakazo to connect your calendar from the desktop app."
-msgstr "請更新 Rakazo，以便從桌面應用程式連線日曆。"
+msgid "Update ALLORA to connect your calendar from the desktop app."
+msgstr "請更新 ALLORA，以便從桌面應用程式連線日曆。"
 
 #: apps/mobile/lib/api/client-update.ts
 #: apps/web/src/lib/platform/client-update.ts
@@ -12781,8 +12781,8 @@ msgstr "輸入密碼時，請使用受保護的輸入。"
 
 #: apps/mobile/app/(settings)/billing.tsx
 #: apps/web/src/components/billing/ModelCredits.tsx
-msgid "Use Rakazo credits"
-msgstr "使用 Rakazo 額度"
+msgid "Use ALLORA credits"
+msgstr "使用 ALLORA 額度"
 
 #: apps/mobile/components/settings/space-bots-model.tsx
 msgid "Use space default"
@@ -13036,8 +13036,8 @@ msgstr "歡迎回來"
 #: apps/mobile/app/(settings)/_layout.tsx
 #: apps/mobile/app/sign-in.tsx
 #: apps/web/src/components/account/SignupSurvey.tsx
-msgid "Welcome to Rakazo"
-msgstr "歡迎使用 Rakazo"
+msgid "Welcome to ALLORA"
+msgstr "歡迎使用 ALLORA"
 
 #: apps/web/src/pages/shell/create-delete-dialogs.tsx
 msgid "What about its memories?"
@@ -13049,8 +13049,8 @@ msgstr "此空間可以使用什麼？"
 
 #: apps/mobile/app/(settings)/signup-survey.tsx
 #: apps/web/src/components/account/SignupSurvey.tsx
-msgid "What do you most want Rakazo to help with?"
-msgstr "你最希望 Rakazo 幫你做什麼？"
+msgid "What do you most want ALLORA to help with?"
+msgstr "你最希望 ALLORA 幫你做什麼？"
 
 #: apps/web/src/pages/shell/chat/message-cards.tsx
 msgid "What do you want me on first?"

@@ -496,7 +496,7 @@ export const fleetTools: ConnectorTool[] = [
         },
         marketingEmails: {
           type: "boolean",
-          description: "false unsubscribes from Rakazo's product emails; true resubscribes.",
+          description: "false unsubscribes from ALLORA's product emails; true resubscribes.",
         },
         composerModelPicker: {
           type: "boolean",
@@ -513,7 +513,7 @@ export const fleetTools: ConnectorTool[] = [
   {
     name: "feedback",
     description:
-      "Send a bug report or product feedback about Rakazo to the people who run this server. Only when the user asks you to report something. Describe what happened and what was expected in general terms; leave out names, contact details, message text, credentials and other personal details. The report already identifies this chat, bot and run.",
+      "Send a bug report or product feedback about ALLORA to the people who run this server. Only when the user asks you to report something. Describe what happened and what was expected in general terms; leave out names, contact details, message text, credentials and other personal details. The report already identifies this chat, bot and run.",
     inputSchema: {
       type: "object",
       properties: {

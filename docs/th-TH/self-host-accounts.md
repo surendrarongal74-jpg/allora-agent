@@ -59,14 +59,14 @@ unset OWNER_EMAIL OWNER_PASSWORD
 
 ## อีเมลยืนยันและกู้คืนรหัสผ่าน
 
-การเปลี่ยนรหัสผ่านของผู้ใช้ที่ลงชื่อเข้าใช้อยู่ไม่ต้องตั้งค่าอีเมล การกู้คืนรหัสผ่านที่ลืมจะแสดงในหน้าลงชื่อเข้าใช้เฉพาะเมื่อมี provider อีเมล transactional Rakazo ใช้ข้อกำหนดกลางที่ไม่ผูกกับ provider พร้อม adapter สำหรับ Resend API และ SMTP template render บนเครื่องด้วย React Email เป็น HTML และข้อความล้วน โดยไม่ขึ้นกับ provider ที่ใช้ส่ง
+การเปลี่ยนรหัสผ่านของผู้ใช้ที่ลงชื่อเข้าใช้อยู่ไม่ต้องตั้งค่าอีเมล การกู้คืนรหัสผ่านที่ลืมจะแสดงในหน้าลงชื่อเข้าใช้เฉพาะเมื่อมี provider อีเมล transactional ALLORA ใช้ข้อกำหนดกลางที่ไม่ผูกกับ provider พร้อม adapter สำหรับ Resend API และ SMTP template render บนเครื่องด้วย React Email เป็น HTML และข้อความล้วน โดยไม่ขึ้นกับ provider ที่ใช้ส่ง
 
 ถ้าจะใช้ Resend HTTP API ให้ยืนยันโดเมนสำหรับส่ง และสร้าง API key แบบส่งอย่างเดียวที่จำกัดไว้กับโดเมนนั้น แล้วตั้งค่า:
 
 ```env
 EMAIL_PROVIDER=resend
 EMAIL_API_KEY=replace-with-sending-api-key
-EMAIL_FROM=Rakazo <hello@mail.example.com>
+EMAIL_FROM=ALLORA <hello@mail.example.com>
 ```
 
 ปิดการติดตามการคลิกและการเปิดสำหรับอีเมลบัญชีในการตั้งค่าโดเมนของ provider การส่งผ่าน Resend มีกำหนดเวลาสิบวินาทีและลองซ้ำแบบจำกัดจำนวนด้วย idempotency key เดิม รวมถึงเมื่อ response หายไป ข้อผิดพลาดจะไม่รวม body ของ response จาก provider และ credential
@@ -75,14 +75,14 @@ EMAIL_FROM=Rakazo <hello@mail.example.com>
 
 ```env
 SMTP_URL=smtps://smtp-user:replace-with-password@smtp.example.com:465
-EMAIL_FROM=Rakazo <no-reply@example.com>
+EMAIL_FROM=ALLORA <no-reply@example.com>
 ```
 
 ตั้ง `EMAIL_REPLY_TO` เพื่อให้การตอบกลับไปที่อื่นที่ไม่ใช่ `EMAIL_FROM`
 
 `EMAIL_PROVIDER=smtp` ไม่บังคับ: `SMTP_URL` ที่มีอยู่ยังเลือก SMTP เมื่อไม่ระบุ provider `EMAIL_PROVIDER=none` ปิดการส่งออกภายนอก การตั้งค่า provider ที่ระบุชัดเจนมีลำดับเหนือ `SMTP_URL` เก่า การตั้งค่า provider ที่ไม่ครบหรือไม่รู้จักจะล้มเหลวตอนสตาร์ท
 
-Resend รองรับ SMTP ด้วย: ใช้ `smtp.resend.com` ชื่อผู้ใช้ `resend` และ API key เป็นรหัสผ่าน สำหรับ Amazon SES ให้ใช้ SMTP endpoint ของภูมิภาคและ SMTP credential ของ SES ซึ่งต่างจาก access key ปกติของ AWS ยืนยันผู้ส่ง/โดเมนกับ provider ก่อนทดสอบการส่ง เก็บ credential ใน `.env` ห้ามอยู่ในไฟล์ที่ track `smtps://` ใช้ implicit TLS ส่วน `smtp://` ก็รองรับแต่ต้องใช้ STARTTLS Rakazo ปฏิเสธการตั้งค่าที่ปิด TLS หรือการตรวจใบรับรอง
+Resend รองรับ SMTP ด้วย: ใช้ `smtp.resend.com` ชื่อผู้ใช้ `resend` และ API key เป็นรหัสผ่าน สำหรับ Amazon SES ให้ใช้ SMTP endpoint ของภูมิภาคและ SMTP credential ของ SES ซึ่งต่างจาก access key ปกติของ AWS ยืนยันผู้ส่ง/โดเมนกับ provider ก่อนทดสอบการส่ง เก็บ credential ใน `.env` ห้ามอยู่ในไฟล์ที่ track `smtps://` ใช้ implicit TLS ส่วน `smtp://` ก็รองรับแต่ต้องใช้ STARTTLS ALLORA ปฏิเสธการตั้งค่าที่ปิด TLS หรือการตรวจใบรับรอง
 
 การพัฒนาจาก source บนเครื่องใช้ตัวจำลองอีเมลแบบออฟไลน์แทนได้ มันเก็บอีเมลไว้โดยไม่ติดต่อ provider:
 
@@ -92,7 +92,7 @@ EMAIL_EMULATOR=true
 
 ตัวจำลองถูกบังคับปิดเมื่อ `NODE_ENV=production` และต้องให้ API bind กับโฮสต์ loopback ใน `NODE_ENV=development` ข้อความที่เก็บไว้ดูได้จาก `http://127.0.0.1:3100/api/dev/emails` โดยปิด cache ไว้ API บันทึกเฉพาะ metadata ของการส่ง ไม่บันทึก reset token route กล่องเมลนี้ไม่ถูกลงทะเบียนใน test, staging หรือ production
 
-Rakazo ยังส่งอีเมลของผลิตภัณฑ์ได้ แต่ละฉบับมีลิงก์ยกเลิกการรับ: อีเมลต้อนรับหลังบัญชีใหม่ลงชื่อเข้าใช้ครั้งแรก อีเมลแนะนำเพื่อนเมื่อเปิด referral ของ billing และเมื่อตั้ง billing ไว้ จะมีอีเมลเตือนหลังแพ็กเกจเริ่ม (เชื่อมต่อโมเดล นำเข้า agent) repository นี้ไม่มีข้อความของอีเมลเหล่านี้ แต่ละฉบับจะส่งออกเฉพาะเมื่อคุณใส่ข้อความเอง และเฉพาะกับ provider ข้างบนเท่านั้น
+ALLORA ยังส่งอีเมลของผลิตภัณฑ์ได้ แต่ละฉบับมีลิงก์ยกเลิกการรับ: อีเมลต้อนรับหลังบัญชีใหม่ลงชื่อเข้าใช้ครั้งแรก อีเมลแนะนำเพื่อนเมื่อเปิด referral ของ billing และเมื่อตั้ง billing ไว้ จะมีอีเมลเตือนหลังแพ็กเกจเริ่ม (เชื่อมต่อโมเดล นำเข้า agent) repository นี้ไม่มีข้อความของอีเมลเหล่านี้ แต่ละฉบับจะส่งออกเฉพาะเมื่อคุณใส่ข้อความเอง และเฉพาะกับ provider ข้างบนเท่านั้น
 
 ข้อความเป็นโฟลเดอร์ที่มีไฟล์ `<email>.json` หนึ่งไฟล์ต่ออีเมล (`welcome`, `referral`, `model-connection`, `agent-import`) แต่ละไฟล์จับคู่ภาษาของแอป (`en`, `de`, `pt-BR`, ...) กับสตริงของอีเมลนั้นตาม key:
 
@@ -133,7 +133,7 @@ OIDC_EMAIL_VERIFIED_CLAIM=
 OIDC_AUTHORIZATION_PARAMS=
 ```
 
-issuer ต้องเป็น HTTPS และตรงกับ issuer ใน discovery document ทุกตัวอักษร Rakazo โหลด `<issuer>/.well-known/openid-configuration` ตรวจ ID token กับ JWKS จาก discovery พร้อมตรวจ issuer, audience และ nonce และใช้ authorization code กับ PKCE scope เพิ่มเติมคั่นด้วยช่องว่างหรือจุลภาคได้ `openid email profile` จะถูกขอเสมอ `OIDC_NAME` คือข้อความบนปุ่ม ค่าเริ่มต้นคือ “SSO” secret อยู่บน API เท่านั้น Compose ล้าง OIDC credential ของ worker capabilities endpoint เปิดเผยเพียงข้อความปุ่ม สถานะ discovery และวิธียืนยันตัวตนที่เปิดอยู่
+issuer ต้องเป็น HTTPS และตรงกับ issuer ใน discovery document ทุกตัวอักษร ALLORA โหลด `<issuer>/.well-known/openid-configuration` ตรวจ ID token กับ JWKS จาก discovery พร้อมตรวจ issuer, audience และ nonce และใช้ authorization code กับ PKCE scope เพิ่มเติมคั่นด้วยช่องว่างหรือจุลภาคได้ `openid email profile` จะถูกขอเสมอ `OIDC_NAME` คือข้อความบนปุ่ม ค่าเริ่มต้นคือ “SSO” secret อยู่บน API เท่านั้น Compose ล้าง OIDC credential ของ worker capabilities endpoint เปิดเผยเพียงข้อความปุ่ม สถานะ discovery และวิธียืนยันตัวตนที่เปิดอยู่
 
 ลงทะเบียน redirect URI นี้ที่ provider (ใช้ origin สาธารณะของ `BETTER_AUTH_URL`):
 
@@ -200,7 +200,7 @@ https://app.example.com/api/auth/callback/apple
 
 บัญชีที่มีอยู่เชื่อมต่อ Google, Apple หรือ OpenID Connect ทั่วไปผ่านการลิงก์ที่ยืนยันตัวตนแล้วในการตั้งค่าบัญชี อีเมลของ provider กับบัญชีที่ตรงกันไม่เคยลิงก์ให้โดยอัตโนมัติ เพราะการยืนยันของ provider ในอดีตไม่ได้พิสูจน์ว่ายังควบคุมกล่องเมลที่โฮสต์อยู่ที่อื่นในปัจจุบัน
 
-การลิงก์ต้องให้อีเมลที่ยืนยันแล้วของ provider ตรงกับอีเมล Rakazo ที่ยืนยันแล้ว ที่อยู่อื่นของ provider รวมถึงที่อยู่ relay ของ Hide My Email ของ Apple ลิงก์กับบัญชีนั้นไม่ได้
+การลิงก์ต้องให้อีเมลที่ยืนยันแล้วของ provider ตรงกับอีเมล ALLORA ที่ยืนยันแล้ว ที่อยู่อื่นของ provider รวมถึงที่อยู่ relay ของ Hide My Email ของ Apple ลิงก์กับบัญชีนั้นไม่ได้
 
 การสมัครผ่าน Google หรือ Apple ทำตามการปิดรับลงทะเบียนและ allowlist เดียวกับการสมัครด้วยอีเมล อีเมลของ provider ต้องยืนยันแล้วก่อนสร้างบัญชี social ใด ๆ การยืนยันของ Google นับเฉพาะ Gmail หรือโดเมน Workspace ที่ยืนยันแล้วและตรงกัน การยืนยันของ Apple นับเฉพาะกล่องเมลที่ Apple จัดการและที่อยู่ relay กล่องเมลอื่นของ provider สร้างบัญชีผ่านการสมัครแบบ social ไม่ได้ ให้ยืนยันบัญชีผ่านอีเมลแล้วลิงก์ในการตั้งค่า
 
@@ -208,7 +208,7 @@ https://app.example.com/api/auth/callback/apple
 
 ## Directory provisioning (SCIM)
 
-identity provider ของคุณเพิ่มและลบคนใน Rakazo ผ่าน SCIM 2.0 ได้ สร้าง token (`openssl rand -hex 32`) แล้วตั้งบน API:
+identity provider ของคุณเพิ่มและลบคนใน ALLORA ผ่าน SCIM 2.0 ได้ สร้าง token (`openssl rand -hex 32`) แล้วตั้งบน API:
 
 ```env
 SCIM_BEARER_TOKEN=<your generated token>
@@ -216,7 +216,7 @@ SCIM_BEARER_TOKEN=<your generated token>
 
 ใน identity provider ให้ตั้ง SCIM base URL เป็น `https://app.example.com/api/auth/scim/v2` (origin ของ `BETTER_AUTH_URL`) และ bearer token เป็นค่านั้น token จัดการได้เฉพาะผู้ใช้ request ของกลุ่มจะถูกปฏิเสธ การหมุน token คือเปลี่ยนค่าแล้วรีสตาร์ท API
 
-- **การเพิ่มคน** สร้างบัญชีด้วยอีเมลของเขา แบบยังไม่ยืนยันและไม่มีรหัสผ่าน บัญชีเข้า Rakazo ได้แม้ปิดรับสมัครหรือ allowlist จะปฏิเสธ `SIGNUPS_ENABLED=false` ร่วมกับ SCIM จึงรับเฉพาะคนที่ directory กำหนด เขาลงชื่อเข้าใช้ผ่าน [SSO](#sso-ด้วย-openid-connect) (การลงชื่อเข้าใช้ SSO ครั้งแรกด้วยอีเมลเดียวกันที่ยืนยันแล้วจะรับบัญชีไป) หรือด้วยรหัสลงชื่อเข้าใช้ทางอีเมล
+- **การเพิ่มคน** สร้างบัญชีด้วยอีเมลของเขา แบบยังไม่ยืนยันและไม่มีรหัสผ่าน บัญชีเข้า ALLORA ได้แม้ปิดรับสมัครหรือ allowlist จะปฏิเสธ `SIGNUPS_ENABLED=false` ร่วมกับ SCIM จึงรับเฉพาะคนที่ directory กำหนด เขาลงชื่อเข้าใช้ผ่าน [SSO](#sso-ด้วย-openid-connect) (การลงชื่อเข้าใช้ SSO ครั้งแรกด้วยอีเมลเดียวกันที่ยืนยันแล้วจะรับบัญชีไป) หรือด้วยรหัสลงชื่อเข้าใช้ทางอีเมล
 - **คนที่มีบัญชีอยู่แล้ว** ยังเก็บบัญชีไว้: directory เข้าดูแลบัญชีโดยอ้างอิงอีเมล โดยไม่เปลี่ยนชื่อ อีเมล หรือวิธีล็อกอิน และปิดบัญชีได้หลังจากนั้น จะเข้าดูแลเฉพาะบัญชีที่ยืนยันอีเมลแล้ว ใครก็อาจสมัครก่อนด้วยที่อยู่ที่ไม่มีใครพิสูจน์ directory จึงได้ conflict สำหรับบัญชีนั้น เช่นเดียวกับเมื่ออีเมลของสองบัญชีต่างกันแค่ตัวพิมพ์ ผู้ดูแลเป็นผู้ตัดสินว่าจะทำอย่างไรกับบัญชีเหล่านั้น
 - **การปิดคน** (`active: false`) หรือ**การลบ**เขาจะปิดบัญชีทันที ยุติทุก session และ computer ที่จับคู่ไว้ ลบการลงทะเบียนการแจ้งเตือน ยกเลิกการรันที่เขาเริ่ม ข้าม routine ของเขา และปฏิเสธการลงชื่อเข้าใช้ การรัน การส่ง webhook หรือข้อความใหม่จากแอปแชทที่ลิงก์ไว้ bot แชท memory ไฟล์ และการเชื่อมต่อของเขายังอยู่ เขายังออกจากทุก Space ที่แชร์ซึ่งคนอื่นเชิญเข้าไป เหมือนถูกลบออก: สิ่งที่เขาสร้างไว้ที่นั่นตกเป็นของเจ้าของ Space นั้น และ routine ของเขาที่นั่นถูกหยุดพัก Space ที่เขาเป็นเจ้าของยังเป็นของเขา
   การเปิดกลับจะคืนการลงชื่อเข้าใช้และ Space ของเขาเอง และ routine ในนั้นจะทำงานต่อจากเวลาที่กำหนดถัดไป Space ที่แชร์ซึ่งเขาออกไปแล้วต้องเชิญใหม่

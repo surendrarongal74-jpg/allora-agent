@@ -53,9 +53,9 @@ bot บันทึกงานไว้บนคอมพิวเตอร์�
 ## ใช้คอมพิวเตอร์ของคุณเอง
 
 ใน[แอปเดสก์ท็อป](../desktop-app.md) bot ยังรันคำสั่งและใช้แอปบนเครื่องที่ติดตั้งแอปไว้ได้ด้วย เปิด
-**Let bots use this computer** ใน **ตั้งค่า (Settings) → Computers** ใต้ **Your devices** ใช้ได้กับ Rakazo Cloud,
+**Let bots use this computer** ใน **ตั้งค่า (Settings) → Computers** ใต้ **Your devices** ใช้ได้กับ ALLORA Cloud,
 เซิร์ฟเวอร์ HTTPS ที่คุณเชื่อมต่อ และเซิร์ฟเวอร์ loopback
-การใช้แอปบนหน้าจอทำได้บน Mac และ Windows บน Mac ให้อนุญาต Rakazo ใต้ **Accessibility** และ
+การใช้แอปบนหน้าจอทำได้บน Mac และ Windows บน Mac ให้อนุญาต ALLORA ใต้ **Accessibility** และ
 **Screen Recording** ใน System Settings
 
 ใน[โหมดการอนุมัติ](./approvals.md)ทุกโหมด bot จะถามก่อนใช้แต่ละแอปครั้งแรกใน space และบนเซิร์ฟเวอร์ที่เชื่อมต่อ

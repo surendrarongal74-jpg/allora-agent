@@ -22,7 +22,7 @@ set them up using the [messaging setup guide](./self-host-integrations.md#messag
 3. Send the code shown from that app within 10 minutes.
 
 From then on, messages you send there go to that bot's chat, and its replies come back to you there.
-The conversation is the same one you see in the Rakazo app.
+The conversation is the same one you see in the ALLORA app.
 
 In direct messages, a voice note the chat app delivers as an audio file (Telegram, for example)
 is transcribed when a voice provider that supports transcription is connected in **Voice**
@@ -36,16 +36,16 @@ account; its group chats keep working. A bot answers one chat app at a time. To 
 
 ## Microsoft Teams
 
-Install the custom Rakazo Teams app supplied by your server operator in the Microsoft tenant
+Install the custom ALLORA Teams app supplied by your server operator in the Microsoft tenant
 that owns the bot registration, then open its personal chat. Your Microsoft 365 administrator
 may need to upload and allow the app in that tenant's app catalog. A public Teams Store listing
 is not required for this installation. Cross-company distribution is not yet verified.
 
 In **Settings → Messaging**, choose **Connect** next to Microsoft Teams and pick your bot. Send
-the code to the Rakazo app in a Teams direct message within 10 minutes. Until you link it, an
+the code to the ALLORA app in a Teams direct message within 10 minutes. Until you link it, an
 unlinked personal chat does not answer ordinary messages by default.
 
-Each person links their own Rakazo account and bot. Installing the shared Teams app does not
+Each person links their own ALLORA account and bot. Installing the shared Teams app does not
 choose one bot for everyone. Teams channels and group chats are not supported.
 
 If installation says **Permissions needed**, ask your administrator to check that the app is
@@ -55,7 +55,7 @@ your effective Teams app setup policy. Policy changes can take a few hours; see 
 
 ## Slack
 
-Choose **Connect** next to Slack to add Rakazo to your Slack workspace, then **Link DMs** so direct
+Choose **Connect** next to Slack to add ALLORA to your Slack workspace, then **Link DMs** so direct
 messages reach your bot.
 
 The bot uses its memory and notes only for your own messages: the Slack account that connected the
@@ -67,7 +67,7 @@ A [routine](./routines.md) can also start from a **Slack message**.
 ## Telegram
 
 Open the Telegram bot supplied by your server operator, start a chat, and send the link code.
-If your server offers several Telegram bots, each can link to a different Rakazo bot.
+If your server offers several Telegram bots, each can link to a different ALLORA bot.
 For groups, follow the privacy-mode instructions below.
 
 ## iMessage and SMS

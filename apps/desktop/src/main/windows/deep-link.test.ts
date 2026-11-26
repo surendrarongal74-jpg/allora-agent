@@ -84,7 +84,7 @@ describe("extractDeepLinkFromArgv", () => {
 
   it("returns null when no valid deep link is present", () => {
     expect(
-      extractDeepLinkFromArgv(["Rakazo.exe", "--headless", "rakazo://billing", "https://x.test"]),
+      extractDeepLinkFromArgv(["ALLORA.exe", "--headless", "rakazo://billing", "https://x.test"]),
     ).toBeNull();
   });
 });

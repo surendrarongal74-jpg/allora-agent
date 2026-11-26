@@ -65,7 +65,7 @@ share. During one bot run, every call to a server added with a token or no authe
 one session, so servers that keep state in the session (a paused step you confirm mid-run, for
 example) see the same session until the run ends. Two runs never share such a session, and each
 closes when its run ends or after about ten minutes without a call. A paused step can be resumed
-only while the run continues in the same Rakazo instance, within that window and the server's own.
+only while the run continues in the same ALLORA instance, within that window and the server's own.
 After ten idle minutes, or when the run continues on another instance, the next call opens a fresh
 session.
 

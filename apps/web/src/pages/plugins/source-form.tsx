@@ -179,7 +179,7 @@ export function SourceFormView({
             />
             {unreviewed ? (
               <FieldDescription>
-                <Trans>Not reviewed by Rakazo. Only add it if you trust this address.</Trans>
+                <Trans>Not reviewed by ALLORA. Only add it if you trust this address.</Trans>
               </FieldDescription>
             ) : null}
           </Field>

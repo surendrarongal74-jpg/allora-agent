@@ -17,7 +17,7 @@ const ACP_FOLDER = "antigravity-acp";
 const SIGN_IN_FILES = ["acp_token.json", "acp_business_token.json", "settings.json"];
 
 /**
- * The CLI's home for bots: a private folder of Rakazo's in place of `~/.gemini`, so the operator's
+ * The CLI's home for bots: a private folder of ALLORA's in place of `~/.gemini`, so the operator's
  * hooks, MCP servers, skills and shared settings stay out of the bot's turn. It lasts across turns
  * because the CLI keeps its sessions there.
  */
@@ -52,9 +52,9 @@ async function linkSignIn(home: string, operatorHome: string): Promise<void> {
 }
 
 /**
- * The CLI runs `agy acp`, as installed. Rakazo never signs it in or reads its sign-in: the operator
+ * The CLI runs `agy acp`, as installed. ALLORA never signs it in or reads its sign-in: the operator
  * signs in once with `agy acp --login`. Every session turns off all of the CLI's built-in tools,
- * loads Rakazo's tool server up front so its calls carry the server's name, and adds Rakazo's
+ * loads ALLORA's tool server up front so its calls carry the server's name, and adds ALLORA's
  * instructions to the CLI's system prompt, which is as far as the CLI lets a client change it.
  */
 export const antigravityAgent: AcpAgentDescriptor = {
@@ -63,8 +63,8 @@ export const antigravityAgent: AcpAgentDescriptor = {
   command: "agy",
   acceptsImages: true,
   notInstalled:
-    "The Antigravity CLI is not installed on this server. Install it for the user that runs the Rakazo worker.",
-  signIn: "Run `agy acp --login` in a terminal as the user that runs the Rakazo worker.",
+    "The Antigravity CLI is not installed on this server. Install it for the user that runs the ALLORA worker.",
+  signIn: "Run `agy acp --login` in a terminal as the user that runs the ALLORA worker.",
   async launch({ env }) {
     const home = botHome();
     await linkSignIn(home, join(homedir(), ".gemini"));

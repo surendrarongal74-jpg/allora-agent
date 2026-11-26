@@ -15,7 +15,7 @@ afterEach(() => {
 });
 
 describe("openCodeAgent", () => {
-  it("starts OpenCode with only the tool server allowed and Rakazo's instructions as its prompt", async () => {
+  it("starts OpenCode with only the tool server allowed and ALLORA's instructions as its prompt", async () => {
     files = mkdtempSync(join(tmpdir(), "rakazo-opencode-test-"));
 
     const launch = await openCodeAgent.launch({

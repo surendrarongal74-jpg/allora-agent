@@ -172,7 +172,7 @@ function harness(
     localWebUrl: "http://127.0.0.1:5173",
     imageTag: "v1.0.0",
     serverBundle: { version: "1.0.0", file: "/bundle.tar.xz" },
-    nodeBinary: "/Applications/Rakazo.app/Contents/MacOS/Rakazo",
+    nodeBinary: "/Applications/ALLORA.app/Contents/MacOS/ALLORA",
     env: { HOME: "/Users/someone", OPENAI_API_KEY: "from-the-shell" },
     uid: 501,
     run,
@@ -570,7 +570,7 @@ describe("NativeStackController", () => {
     });
     const state = await controller.start();
     expect(state.message).toBe(
-      "Your Rakazo data is in a different computer runtime. Quit the one running, then retry.",
+      "Your ALLORA data is in a different computer runtime. Quit the one running, then retry.",
     );
     expect(other.commands().filter((command) => /create/.test(command))).toEqual([]);
 
@@ -603,7 +603,7 @@ describe("NativeStackController", () => {
     expect(resolved).toEqual([true]);
     expect(state.phase).toBe("failed");
     expect(state.message).toBe(
-      "Your Rakazo data is in a different computer runtime. Quit the one running, then retry.",
+      "Your ALLORA data is in a different computer runtime. Quit the one running, then retry.",
     );
     expect(commands()).not.toContain("create --name");
   });
@@ -656,7 +656,7 @@ describe("NativeStackController", () => {
     const state = await controller.start();
     order.push("start failed");
     expect(state.message).toBe(
-      "Downloading Rakazo failed. Check the internet connection, then retry.",
+      "Downloading ALLORA failed. Check the internet connection, then retry.",
     );
     expect(order).toEqual(["runtime stopped", "start failed"]);
   });
@@ -744,7 +744,7 @@ describe("NativeStackController", () => {
     const state = await controller.start();
     expect(state.phase).toBe("failed");
     expect(state.message).toBe(
-      "Rakazo services did not start. Check the output below, then retry.",
+      "ALLORA services did not start. Check the output below, then retry.",
     );
     expect(controller.hasProcesses()).toBe(false);
   });
@@ -761,7 +761,7 @@ describe("NativeStackController", () => {
     const state = await controller.start();
     expect(state.phase).toBe("failed");
     expect(state.message).toBe(
-      "Rakazo services did not start. Check the output below, then retry.",
+      "ALLORA services did not start. Check the output below, then retry.",
     );
     expect(state.output).toContain("postgres exited");
     expect(controller.hasProcesses()).toBe(false);
@@ -780,7 +780,7 @@ describe("NativeStackController", () => {
     const state = await controller.start();
     expect(state.phase).toBe("failed");
     expect(state.message).toBe(
-      "Downloading Rakazo failed. Check the internet connection, then retry.",
+      "Downloading ALLORA failed. Check the internet connection, then retry.",
     );
     expect(state.output).toContain("Pulling the database image exited with code 1");
     expect(children).toEqual([]);
@@ -816,7 +816,7 @@ describe("NativeStackController", () => {
     const state = await new NativeStackController(deps).start();
     expect(state.phase).toBe("failed");
     expect(state.message).toBe(
-      "Rakazo services did not start. Check the output below, then retry.",
+      "ALLORA services did not start. Check the output below, then retry.",
     );
     expect(state.output).toContain("Postgres did not answer on 127.0.0.1:40000: read ECONNRESET");
     expect(runs.some((call) => call.args[0]?.endsWith("migrate-database.js"))).toBe(false);

@@ -98,7 +98,7 @@ export const PRICING_PLANS: PricingPlan[] = [SELF_HOSTED_PLAN, OWN_MODEL_PLAN];
 
 /** The less common hosted option, shown below the main plans. */
 export const CREDITS_PLAN: PricingPlan = {
-  name: "Rakazo credits",
+  name: "ALLORA credits",
   price: CREDITS_PRICE,
   note: "Model usage with no markup, plus computer hours",
   features: [
@@ -162,13 +162,13 @@ export const PRICING_COMPARISON = {
     })),
     { name: CREDITS_PLAN.name, price: CREDITS_PRICE, action: CREDITS_PLAN.action },
   ],
-  /** Most important first: what sets Rakazo apart, then the limits. */
+  /** Most important first: what sets ALLORA apart, then the limits. */
   rows: [
     {
       feature: "Any model",
       cells: [
         ...included(true).slice(1),
-        { label: "Our catalog", detail: "Credits cover the models Rakazo offers" },
+        { label: "Our catalog", detail: "Credits cover the models ALLORA offers" },
       ],
     },
     {
@@ -250,7 +250,7 @@ ${plan.features.map((feature) => `- ${feature}`).join("\n")}
 [${plan.action.label}](${new URL(plan.action.href, "https://rakazo.com").href})`;
 }
 
-export const PRICING_MARKDOWN = `# Rakazo pricing
+export const PRICING_MARKDOWN = `# ALLORA pricing
 
 ${[...PRICING_PLANS, CREDITS_PLAN].map(planMarkdown).join("\n\n")}
 

@@ -541,14 +541,14 @@ it("puts the bot style back and releases it when the save fails", async () => {
   const { screen } = await renderAccount(General);
   const { saving } = holdPreferenceSave();
   await act(async () => botStyleButton(screen, "Original").click());
-  await act(async () => botStyleButton(screen, "Rakazo").click());
+  await act(async () => botStyleButton(screen, "ALLORA").click());
   expect(
     vi.mocked(rpc).mock.calls.filter(([method]) => method === "preferences/update"),
   ).toHaveLength(1);
   await act(async () => saving.reject(new Error("offline")));
   await act(flush);
   expect(Alert.alert).toHaveBeenCalledWith("Couldn't update bot style");
-  expect(botStyleButton(screen, "Rakazo").getAttribute("aria-pressed")).toBe("true");
+  expect(botStyleButton(screen, "ALLORA").getAttribute("aria-pressed")).toBe("true");
   expect(
     screen.querySelector('[aria-label="Bot style"][data-disabled]')?.getAttribute("data-disabled"),
   ).toBe("false");
@@ -634,12 +634,12 @@ it("offers a store update beside the version only when one is available", async 
 
 it("offers rating the app only on store builds", async () => {
   const view = await renderAccount();
-  expect(view.button("Rate Rakazo")).toBeUndefined();
+  expect(view.button("Rate ALLORA")).toBeUndefined();
   act(() => root?.unmount());
 
   storeReview.url = "https://apps.apple.com/app/rakazo/id6801531099?action=write-review";
   const rateable = await renderAccount();
-  await rateable.press("Rate Rakazo");
+  await rateable.press("Rate ALLORA");
   expect(storeReview.open).toHaveBeenCalled();
 });
 

@@ -1464,8 +1464,8 @@ msgid "Allow once"
 msgstr "한 번 허용"
 
 #: apps/web/src/lib/calls/dictation.ts
-msgid "Allow Rakazo to use Speech Recognition and the microphone in System Settings."
-msgstr "시스템 설정에서 Rakazo가 음성 인식과 마이크를 사용하도록 허용하세요."
+msgid "Allow ALLORA to use Speech Recognition and the microphone in System Settings."
+msgstr "시스템 설정에서 ALLORA가 음성 인식과 마이크를 사용하도록 허용하세요."
 
 #: apps/mobile/lib/calls/call-session.ts
 #: apps/mobile/lib/composer/composer-dictation.ts
@@ -2676,8 +2676,8 @@ msgstr "폴더 선택"
 
 #: apps/web/src/components/billing/CreditChoice.tsx
 #: apps/web/src/components/billing/SubscriptionGate.tsx
-msgid "Choose how to use Rakazo"
-msgstr "Rakazo 사용 방식 선택"
+msgid "Choose how to use ALLORA"
+msgstr "ALLORA 사용 방식 선택"
 
 #: apps/web/src/pages/shell/bots/agent-import.tsx
 msgid "Choose your {home} folder, or a backup of it."
@@ -3176,8 +3176,8 @@ msgstr "AI 연결하기"
 
 #. js-lingui-explicit-id
 #: packages/i18n/src/run-error.ts
-msgid "Connect your own API key in Models or choose Rakazo credits in Billing."
-msgstr "AI 모델에서 자체 API 키를 연결하거나 결제에서 Rakazo 크레딧을 선택하세요."
+msgid "Connect your own API key in Models or choose ALLORA credits in Billing."
+msgstr "AI 모델에서 자체 API 키를 연결하거나 결제에서 ALLORA 크레딧을 선택하세요."
 
 #. js-lingui-explicit-id
 #: packages/i18n/src/plugin-catalog.ts
@@ -5659,8 +5659,8 @@ msgid "Ends {day}"
 msgstr "{day}에 종료"
 
 #: apps/web/src/pages/shell/composer/github-star-prompt.tsx
-msgid "Enjoying Rakazo?"
-msgstr "Rakazo가 마음에 드시나요?"
+msgid "Enjoying ALLORA?"
+msgstr "ALLORA가 마음에 드시나요?"
 
 #: packages/i18n/src/user-error.ts
 msgid "Enter a password"
@@ -6404,7 +6404,7 @@ msgstr "팀 규모는 어떻게 되나요?"
 #: apps/mobile/app/(settings)/signup-survey.tsx
 #: apps/web/src/components/account/SignupSurvey.tsx
 msgid "How did you hear about us?"
-msgstr "Rakazo를 어떻게 알게 되셨나요?"
+msgstr "ALLORA를 어떻게 알게 되셨나요?"
 
 #: apps/mobile/components/routines/routine-schedule-editor.tsx
 #: apps/web/src/pages/routines/RoutineSchedule.tsx
@@ -6422,8 +6422,8 @@ msgstr "완료 확인 방법"
 
 #: apps/mobile/app/(settings)/signup-survey.tsx
 #: apps/web/src/components/account/SignupSurvey.tsx
-msgid "How will you use Rakazo?"
-msgstr "Rakazo를 어떻게 사용하실 건가요?"
+msgid "How will you use ALLORA?"
+msgstr "ALLORA를 어떻게 사용하실 건가요?"
 
 #: apps/mobile/components/models/compatible-endpoint-form.tsx
 msgid "http://127.0.0.1:8000/v1"
@@ -6546,8 +6546,8 @@ msgid "In use"
 msgstr "사용 중"
 
 #: apps/mobile/app/(settings)/model-connection.tsx
-msgid "In your browser, sign in and paste this code when asked. Then return to Rakazo."
-msgstr "브라우저에서 로그인하고 요청이 표시되면 이 코드를 붙여넣으세요. 그런 다음 Rakazo로 돌아오세요."
+msgid "In your browser, sign in and paste this code when asked. Then return to ALLORA."
+msgstr "브라우저에서 로그인하고 요청이 표시되면 이 코드를 붙여넣으세요. 그런 다음 ALLORA로 돌아오세요."
 
 #: apps/web/src/pages/settings/BillingSettingsPanel.tsx
 msgid "Inactive"
@@ -8258,8 +8258,8 @@ msgid "Not in {organizationName}. They'll only see this Space."
 msgstr "{organizationName} 소속이 아닙니다. 이 스페이스만 볼 수 있습니다."
 
 #: apps/web/src/pages/shell/bots/import-status.ts
-msgid "Not in Rakazo's catalog"
-msgstr "Rakazo 카탈로그에 없음"
+msgid "Not in ALLORA's catalog"
+msgstr "ALLORA 카탈로그에 없음"
 
 #: apps/mobile/app/(settings)/integrations.tsx
 #: apps/web/src/pages/plugins/plugin-browse.tsx
@@ -8287,8 +8287,8 @@ msgid "Not on an HTTPS site"
 msgstr "HTTPS 사이트가 아님"
 
 #: apps/web/src/pages/plugins/source-form.tsx
-msgid "Not reviewed by Rakazo. Only add it if you trust this address."
-msgstr "Rakazo에서 검토하지 않았습니다. 이 주소를 신뢰하는 경우에만 추가하세요."
+msgid "Not reviewed by ALLORA. Only add it if you trust this address."
+msgstr "ALLORA에서 검토하지 않았습니다. 이 주소를 신뢰하는 경우에만 추가하세요."
 
 #. js-lingui-explicit-id
 #: packages/i18n/src/vault.ts
@@ -8313,12 +8313,12 @@ msgstr "전송되지 않음. 탭하여 다시 시도"
 
 #: apps/web/src/pages/shell/bots/agent-import-plan.tsx
 #: apps/web/src/pages/shell/bots/import-status.ts
-msgid "Not supported in Rakazo"
-msgstr "Rakazo에서 지원하지 않음"
+msgid "Not supported in ALLORA"
+msgstr "ALLORA에서 지원하지 않음"
 
 #: apps/web/src/pages/shell/bots/agent-import-plan.tsx
-msgid "Not used by Rakazo"
-msgstr "Rakazo에서 사용하지 않음"
+msgid "Not used by ALLORA"
+msgstr "ALLORA에서 사용하지 않음"
 
 #. js-lingui-explicit-id
 #: packages/i18n/src/plugin-catalog.ts
@@ -8577,8 +8577,8 @@ msgstr "사진 {0}/{1} 열기"
 #: apps/web/src/pages/auth/JoinOrganization.tsx
 #: apps/web/src/pages/auth/Redeem.tsx
 #: apps/web/src/pages/SharedPage.tsx
-msgid "Open Rakazo"
-msgstr "Rakazo 열기"
+msgid "Open ALLORA"
+msgstr "ALLORA 열기"
 
 #: apps/web/src/components/models/SubscriptionSignInSteps.tsx
 msgid "Open settings"
@@ -9254,27 +9254,27 @@ msgstr "선택 영역 인용"
 #: apps/mobile/app/bot-settings.tsx
 #: apps/web/src/pages/settings/AccountSettingsOverlay.tsx
 #: apps/web/src/pages/shell/bots/avatar-studio-popover.tsx
-msgid "Rakazo"
-msgstr "Rakazo"
+msgid "ALLORA"
+msgstr "ALLORA"
 
 #: apps/mobile/app/(settings)/billing.tsx
 #: apps/mobile/components/models/model-role-settings.tsx
 #: apps/web/src/pages/model-settings/ModelRoleSettings.tsx
 #: apps/web/src/pages/onboarding/use-onboarding-model.ts
-msgid "Rakazo credits"
-msgstr "Rakazo 크레딧"
+msgid "ALLORA credits"
+msgstr "ALLORA 크레딧"
 
 #: apps/mobile/lib/billing/self-hosted-support.ts
-msgid "Rakazo is free to self-host. If you'd like to support it, subscribers can email support@rakazo.com for help."
-msgstr "Rakazo는 무료로 자체 호스팅할 수 있습니다. 후원하고 싶다면, 구독자는 support@rakazo.com으로 이메일을 보내 도움을 받을 수 있습니다."
+msgid "ALLORA is free to self-host. If you'd like to support it, subscribers can email support@rakazo.com for help."
+msgstr "ALLORA는 무료로 자체 호스팅할 수 있습니다. 후원하고 싶다면, 구독자는 support@rakazo.com으로 이메일을 보내 도움을 받을 수 있습니다."
 
 #: apps/web/src/components/models/ProviderSettingsForm.tsx
-msgid "rakazo-shared and IDs starting with bot- are reserved for Rakazo."
-msgstr "rakazo-shared와 bot-으로 시작하는 ID는 Rakazo용으로 예약되어 있습니다."
+msgid "rakazo-shared and IDs starting with bot- are reserved for ALLORA."
+msgstr "rakazo-shared와 bot-으로 시작하는 ID는 ALLORA용으로 예약되어 있습니다."
 
 #: apps/mobile/app/(settings)/account.tsx
-msgid "Rate Rakazo"
-msgstr "Rakazo 평가하기"
+msgid "Rate ALLORA"
+msgstr "ALLORA 평가하기"
 
 #: apps/mobile/components/thread/message-row.tsx
 #: apps/web/src/pages/shell/chat/message-hover-actions.tsx
@@ -9337,8 +9337,8 @@ msgid "Recall from banks"
 msgstr "불러올 뱅크"
 
 #: apps/web/src/components/models/ProviderSettingsForm.tsx
-msgid "Recall from this peer; save to Rakazo’s own peers."
-msgstr "이 피어에서 불러오고 Rakazo 자체 피어에 저장합니다."
+msgid "Recall from this peer; save to ALLORA’s own peers."
+msgstr "이 피어에서 불러오고 ALLORA 자체 피어에 저장합니다."
 
 #: apps/web/src/components/models/ProviderSettingsForm.tsx
 msgid "Recall only"
@@ -10044,8 +10044,8 @@ msgstr "받은편지함으로 돌아가기"
 
 #: apps/web/src/pages/integrations/McpOAuthCallback.tsx
 #: apps/web/src/pages/integrations/SlackInstallCallback.tsx
-msgid "Return to Rakazo"
-msgstr "Rakazo로 돌아가기"
+msgid "Return to ALLORA"
+msgstr "ALLORA로 돌아가기"
 
 #: apps/mobile/app/page.tsx
 #: apps/web/src/components/pages/PageViewHost.tsx
@@ -10943,8 +10943,8 @@ msgstr "{host}에서 로그인한 다음, 표시된 코드를 여기에 붙여�
 
 #: apps/mobile/app/sign-in.tsx
 #: apps/web/src/pages/auth/Auth.tsx
-msgid "Sign in to Rakazo"
-msgstr "Rakazo 로그인"
+msgid "Sign in to ALLORA"
+msgstr "ALLORA 로그인"
 
 #: packages/i18n/src/user-error.ts
 msgid "Sign in to your account, then link this provider in settings"
@@ -10974,8 +10974,8 @@ msgid "Sign up"
 msgstr "가입하기"
 
 #: apps/mobile/app/sign-in.tsx
-msgid "Sign up for Rakazo"
-msgstr "Rakazo 가입하기"
+msgid "Sign up for ALLORA"
+msgstr "ALLORA 가입하기"
 
 #: apps/web/src/pages/plugins/PluginsOverlay.tsx
 msgid "Sign-in cancelled. Retry in Manage MCP servers."
@@ -11327,8 +11327,8 @@ msgid "Start recording"
 msgstr "작업 녹화 시작"
 
 #: apps/mobile/app/paywall.tsx
-msgid "Start using Rakazo"
-msgstr "Rakazo 시작하기"
+msgid "Start using ALLORA"
+msgstr "ALLORA 시작하기"
 
 #: apps/mobile/app/(settings)/billing.tsx
 #: apps/web/src/components/billing/ModelCredits.tsx
@@ -11494,8 +11494,8 @@ msgstr "지원 월 $25"
 
 #: apps/mobile/app/(settings)/account.tsx
 #: apps/mobile/lib/billing/self-hosted-support.ts
-msgid "Support Rakazo"
-msgstr "Rakazo 후원하기"
+msgid "Support ALLORA"
+msgstr "ALLORA 후원하기"
 
 #: apps/mobile/app/(settings)/model-settings.tsx
 #: apps/web/src/pages/model-settings/model-settings-panel.tsx
@@ -11650,8 +11650,8 @@ msgid "That isn't a Grok Bot export. Paste the Bot's whole reply."
 msgstr "Grok 봇 내보내기가 아닙니다. 봇의 답변 전체를 붙여넣으세요."
 
 #: apps/mobile/lib/api/endpoint.ts
-msgid "That URL did not look like a Rakazo server"
-msgstr "Rakazo 서버 URL이 아닌 것 같습니다"
+msgid "That URL did not look like a ALLORA server"
+msgstr "ALLORA 서버 URL이 아닌 것 같습니다"
 
 #: apps/mobile/lib/api/endpoint.ts
 msgid "That URL is missing a host"
@@ -11792,8 +11792,8 @@ msgstr "공유 링크가 더 이상 작동하지 않음"
 
 #: apps/mobile/app/meeting-transcript.tsx
 #: apps/web/src/pages/shell/meetings/meeting-transcript.tsx
-msgid "The transcript will be removed from Rakazo."
-msgstr "대화 기록이 Rakazo에서 삭제됩니다."
+msgid "The transcript will be removed from ALLORA."
+msgstr "대화 기록이 ALLORA에서 삭제됩니다."
 
 #: apps/mobile/app/(settings)/billing.tsx
 #: apps/web/src/components/billing/ModelCredits.tsx
@@ -11961,8 +11961,8 @@ msgid "This draft isn't available"
 msgstr "이 초안을 사용할 수 없습니다"
 
 #: apps/web/src/lib/bots/agent-import-errors.ts
-msgid "This export is newer than Rakazo can read. Update Rakazo and try again."
-msgstr "이 내보내기는 Rakazo가 읽을 수 있는 버전보다 최신입니다. Rakazo를 업데이트한 후 다시 시도하세요."
+msgid "This export is newer than ALLORA can read. Update ALLORA and try again."
+msgstr "이 내보내기는 ALLORA가 읽을 수 있는 버전보다 최신입니다. ALLORA를 업데이트한 후 다시 시도하세요."
 
 #: apps/web/src/lib/bots/agent-import-errors.ts
 msgid "This export is too large to import."
@@ -12135,8 +12135,8 @@ msgstr "이 스페이스에는 별도의 보관함이 있습니다. 이 스페�
 
 #: apps/mobile/app/(settings)/model-connection.tsx
 #: apps/web/src/pages/model-settings/connection-controls.tsx
-msgid "This subscription sign-in is not available in Rakazo yet. Use a deployment credential or choose another provider."
-msgstr "이 구독 로그인 방식은 아직 Rakazo에서 지원되지 않습니다. 서버에 설정된 인증 정보를 사용하거나 다른 서비스를 선택하세요."
+msgid "This subscription sign-in is not available in ALLORA yet. Use a deployment credential or choose another provider."
+msgstr "이 구독 로그인 방식은 아직 ALLORA에서 지원되지 않습니다. 서버에 설정된 인증 정보를 사용하거나 다른 서비스를 선택하세요."
 
 #: apps/mobile/app/(settings)/bot-template.tsx
 msgid "This template is no longer available."
@@ -12603,8 +12603,8 @@ msgid "Update progress"
 msgstr "업데이트 진행 상황"
 
 #: apps/web/src/lib/integrations/meeting-calendar-connect.ts
-msgid "Update Rakazo to connect your calendar from the desktop app."
-msgstr "데스크톱 앱에서 캘린더를 연결하려면 Rakazo를 업데이트하세요."
+msgid "Update ALLORA to connect your calendar from the desktop app."
+msgstr "데스크톱 앱에서 캘린더를 연결하려면 ALLORA를 업데이트하세요."
 
 #: apps/mobile/lib/api/client-update.ts
 #: apps/web/src/lib/platform/client-update.ts
@@ -12780,8 +12780,8 @@ msgstr "비밀번호는 보호된 입력을 사용하세요."
 
 #: apps/mobile/app/(settings)/billing.tsx
 #: apps/web/src/components/billing/ModelCredits.tsx
-msgid "Use Rakazo credits"
-msgstr "Rakazo 크레딧 사용"
+msgid "Use ALLORA credits"
+msgstr "ALLORA 크레딧 사용"
 
 #: apps/mobile/components/settings/space-bots-model.tsx
 msgid "Use space default"
@@ -13035,8 +13035,8 @@ msgstr "다시 오신 것을 환영합니다"
 #: apps/mobile/app/(settings)/_layout.tsx
 #: apps/mobile/app/sign-in.tsx
 #: apps/web/src/components/account/SignupSurvey.tsx
-msgid "Welcome to Rakazo"
-msgstr "Rakazo에 오신 것을 환영합니다"
+msgid "Welcome to ALLORA"
+msgstr "ALLORA에 오신 것을 환영합니다"
 
 #: apps/web/src/pages/shell/create-delete-dialogs.tsx
 msgid "What about its memories?"
@@ -13048,8 +13048,8 @@ msgstr "이 스페이스에서 무엇을 사용할 수 있나요?"
 
 #: apps/mobile/app/(settings)/signup-survey.tsx
 #: apps/web/src/components/account/SignupSurvey.tsx
-msgid "What do you most want Rakazo to help with?"
-msgstr "Rakazo가 가장 도와주었으면 하는 일은 무엇인가요?"
+msgid "What do you most want ALLORA to help with?"
+msgstr "ALLORA가 가장 도와주었으면 하는 일은 무엇인가요?"
 
 #: apps/web/src/pages/shell/chat/message-cards.tsx
 msgid "What do you want me on first?"

@@ -2,7 +2,7 @@ import { apiKey } from "@better-auth/api-key";
 import { API_KEY_NAME_LIMIT } from "@rakazo/contracts";
 import type { BetterAuthPlugin } from "better-auth";
 
-/** Marks a Rakazo key in logs and secret scanners. */
+/** Marks a ALLORA key in logs and secret scanners. */
 export const API_KEY_PREFIX = "rkz_";
 /** Requests one key may make in a window; a key that runs out waits for the window to pass. */
 export const API_KEY_RATE_LIMIT = { timeWindow: 60_000, maxRequests: 60 } as const;

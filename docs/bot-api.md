@@ -3,13 +3,13 @@
 Hand work to your bots from scripts and other agents. An API key acts as you: it can use the bots
 you can use, in every Space you belong to, and nothing else in your account.
 
-The examples use `https://rakazo.example.com` for the address you open Rakazo at. Replace it with
+The examples use `https://rakazo.example.com` for the address you open ALLORA at. Replace it with
 yours.
 
 ## API keys
 
-In **Settings**, under **API keys**, choose **Create key** and give it a name. Rakazo asks you to
-confirm it's you, then shows the key once. Copy it then: Rakazo keeps only a hash.
+In **Settings**, under **API keys**, choose **Create key** and give it a name. ALLORA asks you to
+confirm it's you, then shows the key once. Copy it then: ALLORA keeps only a hash.
 
 Send the key as `Authorization: Bearer <key>`. Delete a key in the same place to stop everything
 using it at once. Each key may make 60 requests a minute; past that, the answer is `429` with a
@@ -90,7 +90,7 @@ bot asked while it needs input.
 
 ### Callbacks
 
-With an HTTPS `callback_url`, Rakazo posts `{ "type": "task.settled", "id": "…", "task": { … } }`
+With an HTTPS `callback_url`, ALLORA posts `{ "type": "task.settled", "id": "…", "task": { … } }`
 there each time the task completes, fails, is cancelled or needs input. `id`, also sent as the
 `x-rakazo-delivery` header, names that state and stays the same if a delivery is retried, so drop
 one you have already handled. A callback carries at most the newest 65,536 characters of output, with

@@ -1,4 +1,4 @@
-# Run Rakazo and its computers on k3s
+# Run ALLORA and its computers on k3s
 
 English | [한국어](./ko-KR/self-host-kubernetes.md)
 
@@ -9,7 +9,7 @@ time so you can tell them apart—and fix configuration instead of patching the 
 
 ## First, give the app somewhere to run
 
-On one machine, Rakazo needs a database, an API, a worker, and a web server. Moving
+On one machine, ALLORA needs a database, an API, a worker, and a web server. Moving
 those processes into a cluster does not change their jobs. Kubernetes runs each in
 a managed unit called a **Pod**, and a **Service** gives it a stable internal address.
 
@@ -29,7 +29,7 @@ Browser → HTTPS edge / optional login gate → private ingress → web
 
 The [example](./examples/kubernetes/) targets a **fresh, dedicated, single-node
 k3s installation**, with local storage and one replica of each app process. It is
-not an HA chart or an overlay for an existing Rakazo namespace. API and worker
+not an HA chart or an overlay for an existing ALLORA namespace. API and worker
 share one data volume on the same node; spreading replicas across nodes requires a
 new storage design. Do not apply it to namespaces containing existing data.
 
@@ -184,14 +184,14 @@ its requests can arrive **without that outer cookie**. Sending those requests to
 Google produces a login redirect where the app expected a screen or WebSocket.
 Waiting longer cannot fix that redirect.
 
-How can a screen request prove permission without that cookie? Rakazo already
+How can a screen request prove permission without that cookie? ALLORA already
 issues a short-lived, encrypted URL after checking the app session. The URL carries
 permission for a particular screen: a **bearer capability**. Anyone holding it can
 use that permission until it expires or is invalidated. The web proxy and API check
 it, including the current computer/session generation, lifecycle and control lease.
 
 Keep outer login on normal pages and API requests. Route **only**
-`/novnc/session/*` directly to Rakazo's web proxy so Rakazo can validate its own
+`/novnc/session/*` directly to ALLORA's web proxy so ALLORA can validate its own
 capability. Keep `SCREEN_PROXY_SECRET` identical in API and web, and distinct from
 the app auth secret. Do not relax frame sandboxing or `X-Frame-Options`.
 
@@ -208,7 +208,7 @@ Configure:
 Set these in the Caddy process environment. The matcher preserves the full path;
 Caddy's [reverse proxy supports WebSockets](https://caddyserver.com/docs/caddyfile/directives/reverse_proxy).
 Do not broaden the exception to `/novnc/*`, `/api/*`, or a whole hostname. It bypasses
-only the **outer cookie check**, not Rakazo's screen authorization. Keep all screen
+only the **outer cookie check**, not ALLORA's screen authorization. Keep all screen
 URLs out of access logs, analytics, error reports and shared screenshots, at every
 proxy layer. The example sets `no-store` and `no-referrer` and enables no access log;
 adapt any existing global logging/CDN rules too. Stop the computer to invalidate a
@@ -220,7 +220,7 @@ For an optional Google gate, follow the
 1. Create a Google OAuth **Web application** client. Register the exact callback
    `https://app.example.com/oauth2/callback` after substituting your domain. Configure
    the consent screen and, while testing, add your own account as a test user.
-2. Give the client ID and secret to **oauth2-proxy**, not Rakazo's app OIDC settings.
+2. Give the client ID and secret to **oauth2-proxy**, not ALLORA's app OIDC settings.
    Use its Google provider, HTTPS redirect URL, secure cookies, reverse-proxy mode,
    and a separately generated cookie secret. Bind it privately and set its upstream
    to your edge-only ingress.
@@ -228,8 +228,8 @@ For an optional Google gate, follow the
    address. Do not also configure wildcard/domain-wide allowances: they can widen
    admission. A Google test-user list is not a replacement for the proxy allowlist.
 4. Test your allowed account, a different account, and a signed-out browser. The
-   allowed account should reach Rakazo's own login; use `OWNER_EMAIL` and the saved
-   `OWNER_PASSWORD` there. Outer Google login does not create a Rakazo session.
+   allowed account should reach ALLORA's own login; use `OWNER_EMAIL` and the saved
+   `OWNER_PASSWORD` there. Outer Google login does not create a ALLORA session.
 
 ### Connect the mobile app through the same gate
 
@@ -238,7 +238,7 @@ probe to `/rpc/health` and expects JSON. A redirect to Google is not that respon
 even if Safari on the same phone is already signed in.
 
 The app already has **Server → Headers** for an access proxy's credentials. Give
-that device a separate entry key; keep Rakazo's account login behind it. In the
+that device a separate entry key; keep ALLORA's account login behind it. In the
 Caddy example, the optional `@native` route requires **both** a matching
 `X-Access-Key` and an `/api/*` or `/rpc/*` path. Missing/wrong keys still go through
 the Google gate. An unset or malformed configured key leaves this route disabled.
@@ -264,10 +264,10 @@ secret, or a private-origin credential.
 
 On the phone, enter the HTTPS server origin, add **Header name** `X-Access-Key` and
 put the generated value in **Header value**, then save. Sign in with the existing
-Rakazo account. The app stores configured headers securely, scopes them to that
+ALLORA account. The app stores configured headers securely, scopes them to that
 server, and refuses redirects on requests carrying them. The edge strips this key
-before forwarding; Rakazo still checks the separate app session and permissions.
-Do not use an `X-Rakazo-*` name: the client reserves those headers for the app.
+before forwarding; ALLORA still checks the separate app session and permissions.
+Do not use an `X-ALLORA-*` name: the client reserves those headers for the app.
 
 Verify four different results: no key → Google gate; wrong key → Google gate;
 correct key → JSON health response; correct key without an app session → protected
@@ -278,7 +278,7 @@ Treat the entry key like a password. Keep it out of logs and screenshots; delive
 it through a private password manager. This example has one native key; for
 multiple devices use separate revocable credentials in your access proxy. To
 revoke it, remove/rotate the key in Caddy's actual process environment and apply
-the configuration, then revoke the device's Rakazo session too. Browser Google
+the configuration, then revoke the device's ALLORA session too. Browser Google
 logout does not revoke this independent device credential.
 
 External webhooks and other integrations require their own authentication design;
@@ -297,7 +297,7 @@ option in [sign-in and accounts](./self-host-accounts.md).
 | Page loads, screen freezes                               | WebSocket request and edge timeouts                         | Confirm upgrade forwarding and a 101 response for an authorized live session.                           |
 | Files vanish after abrupt Pod loss                       | Saved workspace/checkpoint and backups                      | Restore the last saved home; changes since it may be lost.                                              |
 
-Before calling the deployment ready, use a real browser signed into Rakazo at its
+Before calling the deployment ready, use a real browser signed into ALLORA at its
 public origin: open Computer, view the desktop, take control and type, then reconnect.
 A synthetic iframe on an unrelated origin is not an equivalent test of frame policy.
 Signed-out `/`, `/api/...` and `/novnc/` should still hit the outer gate. A cookie-less
@@ -432,4 +432,4 @@ change. Never use namespace/PVC deletion as a retry procedure. See
 
 When the app opens but the screen does not, you now have three things to check in
 order: whether the computer started, whether web can reach it, and whether the edge
-let its capability reach Rakazo. Each has its own configuration and evidence.
+let its capability reach ALLORA. Each has its own configuration and evidence.

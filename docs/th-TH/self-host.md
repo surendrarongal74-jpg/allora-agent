@@ -1,4 +1,4 @@
-# Self-host Rakazo
+# Self-host ALLORA
 
 [English](../self-host.md) | ไทย
 
@@ -134,4 +134,4 @@ docker compose -f docker-compose.images.yml exec api node dist/cli/diagnostics.j
 
 จาก checkout ให้ใช้ `-f infra/compose/docker-compose.yml` (หรือไฟล์ production) แทน รายงานแสดง revision ฟีเจอร์ที่เปิดอยู่ สถานะ migration MCP server ของแต่ละ bot พร้อมสถานะ และการรันล่าสุด ไม่พิมพ์ secret ค่าการตั้งค่า ชื่อ ที่อยู่ path หรือเนื้อหาข้อความ เซิร์ฟเวอร์ bot และการรันจะแสดงเป็น hash สั้น ๆ เท่านั้น
 
-เมื่อผู้ใช้ขอให้ bot รายงานบั๊กหรือส่งความคิดเห็น รายงานจะถูกบันทึกบนเซิร์ฟเวอร์ของคุณในตาราง `feedback_reports` พร้อมแชท bot และการรันที่มา ไม่มีอะไรถูกส่งไปยังโปรเจกต์ Rakazo
+เมื่อผู้ใช้ขอให้ bot รายงานบั๊กหรือส่งความคิดเห็น รายงานจะถูกบันทึกบนเซิร์ฟเวอร์ของคุณในตาราง `feedback_reports` พร้อมแชท bot และการรันที่มา ไม่มีอะไรถูกส่งไปยังโปรเจกต์ ALLORA

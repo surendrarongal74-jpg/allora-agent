@@ -16,7 +16,7 @@ Under **Advanced**:
 - **Show tool activity**: list the tools a bot used under its reply. Off by default.
 - **Load web images automatically**: show images from outside sites in chat.
 
-When you open an outside link from a chat, Rakazo asks first. Choose **Always open** for a site you
+When you open an outside link from a chat, ALLORA asks first. Choose **Always open** for a site you
 trust; those sites are listed under **Trusted sites**, where you can remove them.
 
 ## Sign-in and security
@@ -65,7 +65,7 @@ plan:
 
 - **Use my subscription or API key**: connect a supported [model subscription](./model-subscriptions.md)
   or [model provider](./models.md) key. Your provider's allowance and billing apply.
-- **Use Rakazo credits**: model usage is paid from **Monthly credits** included in the plan. Choose
+- **Use ALLORA credits**: model usage is paid from **Monthly credits** included in the plan. Choose
   **Add credits** for more. Monthly credits expire at renewal; credits you add don't.
 
 Both plans come in monthly or yearly, and include monthly hours on your bots' computers.

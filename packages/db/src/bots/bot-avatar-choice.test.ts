@@ -41,7 +41,7 @@ describe("pickLeastUsed", () => {
 });
 
 describe("chooseBotAvatar", () => {
-  it("derives a Rakazo colour from the chosen persistent id, independently of roster order", () => {
+  it("derives a ALLORA colour from the chosen persistent id, independently of roster order", () => {
     for (let seed = 1; seed <= 30; seed++) {
       const chosen = chooseBotAvatar([], undefined, {
         avatarSet: "rakazo",
@@ -75,7 +75,7 @@ describe("chooseBotAvatar", () => {
     });
   });
 
-  it("keeps an explicit Rakazo appearance", () => {
+  it("keeps an explicit ALLORA appearance", () => {
     const color = "#8B5CF6::shape_3";
     expect(
       chooseBotAvatar([], color, { avatarSet: "rakazo", random: seeded(1), now: 0 }).color,

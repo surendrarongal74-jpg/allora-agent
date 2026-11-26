@@ -45,14 +45,14 @@ unset OWNER_EMAIL OWNER_PASSWORD
 
 ## 验证与找回密码邮件
 
-已登录用户修改密码不需要邮件配置。只有存在事务邮件提供商时，登录页才会显示找回密码。Rakazo 使用提供商中立契约，支持 Resend API 和 SMTP 适配器。模板本地用 React Email 渲染为 HTML 和纯文本，与发送提供商无关。
+已登录用户修改密码不需要邮件配置。只有存在事务邮件提供商时，登录页才会显示找回密码。ALLORA 使用提供商中立契约，支持 Resend API 和 SMTP 适配器。模板本地用 React Email 渲染为 HTML 和纯文本，与发送提供商无关。
 
 使用 Resend HTTP API 时，先验证发送域名，创建仅限该域名的发送 API 密钥，然后配置：
 
 ```env
 EMAIL_PROVIDER=resend
 EMAIL_API_KEY=replace-with-sending-api-key
-EMAIL_FROM=Rakazo <hello@mail.example.com>
+EMAIL_FROM=ALLORA <hello@mail.example.com>
 ```
 
 在提供商域名设置中关闭账号邮件的打开和点击追踪。Resend 投递有 10 秒截止时间，并使用同一幂等键进行有限重试，响应丢失时也一样。错误信息不会包含提供商响应体或凭据。
@@ -61,14 +61,14 @@ Amazon SES 或其他 SMTP 服务器使用：
 
 ```env
 SMTP_URL=smtps://smtp-user:replace-with-password@smtp.example.com:465
-EMAIL_FROM=Rakazo <no-reply@example.com>
+EMAIL_FROM=ALLORA <no-reply@example.com>
 ```
 
 设置 `EMAIL_REPLY_TO` 可以让回复发到 `EMAIL_FROM` 之外的地址。
 
 `EMAIL_PROVIDER=smtp` 可省略：未指定提供商时，已有 `SMTP_URL` 会继续选择 SMTP。`EMAIL_PROVIDER=none` 禁用外部发送。显式提供商设置优先于旧的 `SMTP_URL`；不完整或未知的提供商配置会在启动时失败。
 
-Resend 也支持 SMTP：使用 `smtp.resend.com`，用户名为 `resend`，密码为 API 密钥。Amazon SES 请使用区域 SMTP 端点和 SES SMTP 凭据；它们不同于普通 AWS 访问密钥。测试投递前，先在提供商处验证发件人或域名。凭据保存在 `.env`，绝不放在跟踪文件中。`smtps://` 使用隐式 TLS；也支持 `smtp://`，但要求 STARTTLS。Rakazo 会拒绝关闭 TLS 或证书校验的配置。
+Resend 也支持 SMTP：使用 `smtp.resend.com`，用户名为 `resend`，密码为 API 密钥。Amazon SES 请使用区域 SMTP 端点和 SES SMTP 凭据；它们不同于普通 AWS 访问密钥。测试投递前，先在提供商处验证发件人或域名。凭据保存在 `.env`，绝不放在跟踪文件中。`smtps://` 使用隐式 TLS；也支持 `smtp://`，但要求 STARTTLS。ALLORA 会拒绝关闭 TLS 或证书校验的配置。
 
 本地源码开发可以使用离线邮件模拟器，它捕获邮件而不联系提供商：
 
@@ -78,7 +78,7 @@ EMAIL_EMULATOR=true
 
 `NODE_ENV=production` 时模拟器被强制禁用，且要求 API 绑定回环地址。在 `NODE_ENV=development` 中，禁用缓存后可从 `http://127.0.0.1:3100/api/dev/emails` 查看捕获邮件；API 只记录投递元数据，不记录重置令牌。测试、预发布和生产环境不会注册收件箱路由。
 
-Rakazo 还可以发送带退订链接的产品邮件：新账号首次登录后的欢迎邮件、开启计费推荐时的推荐邮件，以及配置计费后在套餐开始后发送的提醒。本仓库不包含这些邮件的文案，因此只有在你提供对应文案（并配置上述任一提供商）时，每封邮件才会发送。
+ALLORA 还可以发送带退订链接的产品邮件：新账号首次登录后的欢迎邮件、开启计费推荐时的推荐邮件，以及配置计费后在套餐开始后发送的提醒。本仓库不包含这些邮件的文案，因此只有在你提供对应文案（并配置上述任一提供商）时，每封邮件才会发送。
 
 文案是一个文件夹，每封邮件一个 `<email>.json` 文件（`welcome`、`referral`、`model-connection`、`agent-import`），把每种应用语言映射到该邮件各个键的字符串。每个字符串必须恰好使用 `packages/auth/src/email-copy/email-keys.ts` 为该键列出的 `{placeholders}`。只有当文件的英文（`en`）为每个键都提供了有效字符串时，该邮件才会发送；其他语言缺失或无效的字符串会回退到该英文。启动时，API 和 worker 会记录每封被关闭的邮件及原因。
 
@@ -110,7 +110,7 @@ OIDC_EMAIL_VERIFIED_CLAIM=
 OIDC_AUTHORIZATION_PARAMS=
 ```
 
-Issuer 必须是 HTTPS，并与发现文档中的 issuer 完全一致。Rakazo 加载 `<issuer>/.well-known/openid-configuration`，用发现 JWKS 校验 ID token 的 issuer、audience 和 nonce，并使用带 PKCE 的授权码流程。额外 scope 可以用空格或逗号分隔；`openid email profile` 总是会请求。`OIDC_NAME` 是按钮标签，默认为 “SSO”。密钥只在 API 上保留；Compose 会清除 worker 的 OIDC 凭据。能力端点只暴露标签、发现可用性和已启用的登录方式。
+Issuer 必须是 HTTPS，并与发现文档中的 issuer 完全一致。ALLORA 加载 `<issuer>/.well-known/openid-configuration`，用发现 JWKS 校验 ID token 的 issuer、audience 和 nonce，并使用带 PKCE 的授权码流程。额外 scope 可以用空格或逗号分隔；`openid email profile` 总是会请求。`OIDC_NAME` 是按钮标签，默认为 “SSO”。密钥只在 API 上保留；Compose 会清除 worker 的 OIDC 凭据。能力端点只暴露标签、发现可用性和已启用的登录方式。
 
 在提供商处注册这个回调 URI（使用公开的 `BETTER_AUTH_URL` origin）：
 
@@ -175,7 +175,7 @@ Google 请创建 web OAuth client 并添加回调 URI。Apple 请创建 Services
 
 已有账号通过账号设置中的已认证绑定连接 Google、Apple 或通用 OpenID Connect。提供商邮箱与账号邮箱相同也不会隐式绑定：历史提供商验证不能证明当前控制另一个服务上的邮箱。
 
-绑定要求提供商已验证邮箱与已验证的 Rakazo 邮箱一致。不同的提供商地址（包括 Apple 的 Hide My Email 中继地址）不能绑定到该账号。
+绑定要求提供商已验证邮箱与已验证的 ALLORA 邮箱一致。不同的提供商地址（包括 Apple 的 Hide My Email 中继地址）不能绑定到该账号。
 
 通过 Google 或 Apple 注册遵守与邮箱注册相同的关闭注册和允许名单规则。创建社交账号前，提供商邮箱必须已验证。Google 验证只对 Gmail 或匹配的已验证 Workspace 域名有效。Apple 验证只对 Apple 管理的邮箱和中继地址有效。其他提供商邮箱不能通过社交注册创建账号；请先用邮箱验证账号，再在设置中绑定。
 
@@ -183,7 +183,7 @@ Google 和 Apple 登录及绑定不能确认敏感操作。它们的浏览器会
 
 ## 目录供应（SCIM）
 
-身份提供商可以通过 SCIM 2.0 把人员加入 Rakazo 或从中移除。生成令牌（`openssl rand -hex 32`）并设置在 API 上：
+身份提供商可以通过 SCIM 2.0 把人员加入 ALLORA 或从中移除。生成令牌（`openssl rand -hex 32`）并设置在 API 上：
 
 ```env
 SCIM_BEARER_TOKEN=<your generated token>
@@ -191,7 +191,7 @@ SCIM_BEARER_TOKEN=<your generated token>
 
 在身份提供商中，把 SCIM base URL 设为 `https://app.example.com/api/auth/scim/v2`（你的 `BETTER_AUTH_URL` origin），bearer token 设为该值。该令牌只管理人员；组请求会被拒绝。轮换令牌只需更改值并重启 API。
 
-- **添加人员**会创建带其邮箱的账号，未验证且无密码。即使注册关闭或允许名单会拒绝，它也能加入 Rakazo；因此 `SIGNUPS_ENABLED=false` 加 SCIM 只允许目录分配的人。他们通过 [SSO](#openid-connect-sso) 登录（首次使用相同已验证邮箱的 SSO 登录会认领账号），或使用邮箱登录验证码。
+- **添加人员**会创建带其邮箱的账号，未验证且无密码。即使注册关闭或允许名单会拒绝，它也能加入 ALLORA；因此 `SIGNUPS_ENABLED=false` 加 SCIM 只允许目录分配的人。他们通过 [SSO](#openid-connect-sso) 登录（首次使用相同已验证邮箱的 SSO 登录会认领账号），或使用邮箱登录验证码。
 - **已有账号的人**会保留原账号：目录按邮箱接管，不更改其姓名、邮箱或登录方式，随后可以停用它。只有邮箱已验证的账号会被接管。任何人都可能先用无人证明的邮箱注册，因此目录会收到冲突；两个账号邮箱仅大小写不同时也一样。操作者决定如何处理这些账号。
 - **停用人员**（`active: false`）或**删除**会立即停用账号。它会结束所有登录和配对计算机，移除通知注册，取消其启动的运行，跳过其例程，并拒绝来自其登录、运行、webhook 投递或已绑定聊天应用的新消息。其机器人、聊天、记忆、文件和连接保留。他们也会像被移除一样离开其他人邀请他们的共享 Space：他们在那里创建的内容转交给 Space 拥有者，那里的例程暂停。他们拥有的 Space 仍归他们所有。重新启用会恢复登录和自己的 Space，其中的例程从下一个计划时间恢复。离开的共享 Space 需要重新邀请。
 - 使用相同 external id **再次添加已删除人员**会找到其现有账号。

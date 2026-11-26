@@ -249,7 +249,7 @@ The user asked the bot to save the newest release's exact version and the change
   "image-description": `${preamble}
 The user gave the bot the URL of a picture and asked what it shows. The picture is a red circle on the left and a blue square on the right, on a white background, and nothing else. Pass only if "reply" says it shows a red circle and a blue square. Fail if either shape or its color is missing or wrong, if the reply describes something the picture does not show, or if it says the bot could not see or open the picture. Positions, sizes and the background may be left out.`,
   "rakazo-platform": `${preamble}
-The bot runs on Rakazo: an open-source platform, which people can also self-host, where they create and chat with AI bots that have their own memory, routines, connected apps and computer. "conversation" holds each message the user sent and the bot's reply to it. Pass only if every reply treats Rakazo as that platform: it says so, or works on the request as being about that platform, without asking the user what Rakazo is. Fail if any reply asks the user what Rakazo is, what it is for or how it works, says it does not know what Rakazo is, takes up an offer to have Rakazo explained, or describes Rakazo as something else, such as the user's own company or an unrelated product. Asking about the request itself (its scope, goals, priorities, conventions or which part to work on) is fine, even in answer to that offer, once the reply shows it knows what Rakazo is; so is a reply that offers or starts the requested work.`,
+The bot runs on ALLORA: an open-source platform, which people can also self-host, where they create and chat with AI bots that have their own memory, routines, connected apps and computer. "conversation" holds each message the user sent and the bot's reply to it. Pass only if every reply treats ALLORA as that platform: it says so, or works on the request as being about that platform, without asking the user what ALLORA is. Fail if any reply asks the user what ALLORA is, what it is for or how it works, says it does not know what ALLORA is, takes up an offer to have ALLORA explained, or describes ALLORA as something else, such as the user's own company or an unrelated product. Asking about the request itself (its scope, goals, priorities, conventions or which part to work on) is fine, even in answer to that offer, once the reply shows it knows what ALLORA is; so is a reply that offers or starts the requested work.`,
 };
 type ProductRubric = keyof typeof rubrics;
 const judgeInput = (kind: ProductRubric, evidence: Record<string, unknown>): JudgeInput => ({
@@ -278,10 +278,10 @@ const releaseInput = (release: typeof WIDGET_2_1, saved: string) =>
 const languageInput = (memory: string, language: string, replaced?: string) =>
   judgeInput("report-language", { language, ...(replaced ? { replaced } : {}), memory });
 const DEVELOPMENT_BOT_ASKS = [
-  "I want to create a bot that can handle development for Rakazo.",
-  "Do you want me to tell you what Rakazo is?",
+  "I want to create a bot that can handle development for ALLORA.",
+  "Do you want me to tell you what ALLORA is?",
 ];
-const WHAT_IS_RAKAZO_ASK = "What is Rakazo?";
+const WHAT_IS_RAKAZO_ASK = "What is ALLORA?";
 const platformInput = (asks: string[], replies: string[]) =>
   judgeInput("rakazo-platform", {
     conversation: asks.map((message, index) => ({ message, reply: replies[index] ?? "" })),
@@ -428,29 +428,29 @@ export const PRODUCT_JUDGE_CALIBRATION = [
   },
   {
     input: platformInput(DEVELOPMENT_BOT_ASKS, [
-      "Happy to. Rakazo is the platform we're both running on, so this bot would work on its open-source codebase. Should it fix issues, review pull requests or build new features?",
+      "Happy to. ALLORA is the platform we're both running on, so this bot would work on its open-source codebase. Should it fix issues, review pull requests or build new features?",
       "No need: it's the open-source platform you're using right now to create and chat with bots like me.",
     ]),
     pass: true,
   },
   {
     input: platformInput(DEVELOPMENT_BOT_ASKS, [
-      "What kind of Rakazo development should the bot own?",
-      "Yes please. What is Rakazo, and what does it do? Then I'll set the bot up.",
+      "What kind of ALLORA development should the bot own?",
+      "Yes please. What is ALLORA, and what does it do? Then I'll set the bot up.",
     ]),
     pass: false,
   },
   {
     input: platformInput(DEVELOPMENT_BOT_ASKS, [
-      "Created Rakazo Developer, a bot for building and fixing Rakazo.",
-      "I know it: Rakazo is the open-source platform we're on. What would help is which areas the new bot should prioritize and any conventions you want it to follow.",
+      "Created ALLORA Developer, a bot for building and fixing ALLORA.",
+      "I know it: ALLORA is the open-source platform we're on. What would help is which areas the new bot should prioritize and any conventions you want it to follow.",
     ]),
     pass: true,
   },
   {
     input: platformInput(DEVELOPMENT_BOT_ASKS, [
-      "Created Rakazo Developer, a bot for building and fixing Rakazo.",
-      "I have a rough idea, but yes, please tell me what Rakazo is for and how it works so the new bot gets it right.",
+      "Created ALLORA Developer, a bot for building and fixing ALLORA.",
+      "I have a rough idea, but yes, please tell me what ALLORA is for and how it works so the new bot gets it right.",
     ]),
     pass: false,
   },
@@ -467,7 +467,7 @@ export const PRODUCT_JUDGE_CALIBRATION = [
     input: platformInput(
       [WHAT_IS_RAKAZO_ASK],
       [
-        "I'm not certain. Rakazo sounds like a project or company name. Could you tell me more about it?",
+        "I'm not certain. ALLORA sounds like a project or company name. Could you tell me more about it?",
       ],
     ),
     pass: false,
@@ -475,7 +475,7 @@ export const PRODUCT_JUDGE_CALIBRATION = [
   {
     input: platformInput(
       [WHAT_IS_RAKAZO_ASK],
-      ["Rakazo is a ride-sharing app popular in Japan, and it's open source."],
+      ["ALLORA is a ride-sharing app popular in Japan, and it's open source."],
     ),
     pass: false,
   },
@@ -848,7 +848,7 @@ export const EVAL_CASES: EvalCase[] = [
   {
     id: "rakazo-development-bot",
     purpose:
-      "Treat Rakazo as the platform the bot runs on when asked for a bot that develops it, instead of asking what Rakazo is.",
+      "Treat ALLORA as the platform the bot runs on when asked for a bot that develops it, instead of asking what ALLORA is.",
     shellUnneeded: true,
     steps: DEVELOPMENT_BOT_ASKS.map((ask) => ({ ask })),
     grade: (e) => [repliedToEach(e, DEVELOPMENT_BOT_ASKS), noWrites(e)],
@@ -877,7 +877,7 @@ export const EVAL_CASES: EvalCase[] = [
   },
   {
     id: "what-is-rakazo",
-    purpose: "Say what Rakazo is without asking the user or inventing another product.",
+    purpose: "Say what ALLORA is without asking the user or inventing another product.",
     shellUnneeded: true,
     steps: [{ ask: WHAT_IS_RAKAZO_ASK }],
     grade: (e) => [repliedToEach(e, [WHAT_IS_RAKAZO_ASK]), noWrites(e)],

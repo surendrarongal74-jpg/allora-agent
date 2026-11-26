@@ -438,7 +438,7 @@ export default function Account() {
               <SettingsRow
                 accessibilityRole="button"
                 leading={icon({ ios: "heart", android: "heart-outline" })}
-                title={t`Support Rakazo`}
+                title={t`Support ALLORA`}
                 onPress={showSelfHostedSupport}
               />
             ) : null}
@@ -446,7 +446,7 @@ export default function Account() {
               <SettingsRow
                 accessibilityRole="button"
                 leading={icon({ ios: "star", android: "star-outline" })}
-                title={t`Rate Rakazo`}
+                title={t`Rate ALLORA`}
                 onPress={openWriteReview}
               />
             ) : null}

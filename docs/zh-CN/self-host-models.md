@@ -115,7 +115,7 @@ Ollama Cloud 可直接在“设置 → 模型”中填写其 API 密钥，再从
 未设置或为空的列表表示允许所有提供商，行为与不设置完全相同。
 
 托管的 OpenAI 兼容预设包括 Ollama Cloud（`ollama-cloud`）、Concentrate AI（`concentrate`）和 DeepInfra（`deepinfra`）。
-在“设置 → 模型”中选择其一，填写 API 密钥并选择模型，Rakazo 会自动加载模型列表。
+在“设置 → 模型”中选择其一，填写 API 密钥并选择模型，ALLORA 会自动加载模型列表。
 即使 `RAKAZO_OPENAI_COMPAT_ALLOW_PUBLIC=0`，它们的 HTTPS 主机仍可用。
 设置提供商允许列表时，请包含 `openai-compatible` 以及要保留的预设 ID。省略某个预设 ID 会隐藏它并移除其主机豁免。
 

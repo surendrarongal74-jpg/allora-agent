@@ -1,6 +1,6 @@
 # Meetings
 
-Send a Rakazo bot to Zoom, Google Meet, or a Microsoft Teams work meeting. After the call, you can ask the bot what was discussed and download a speaker-labeled transcript.
+Send a ALLORA bot to Zoom, Google Meet, or a Microsoft Teams work meeting. After the call, you can ask the bot what was discussed and download a speaker-labeled transcript.
 
 ## Send a bot to a meeting
 
@@ -9,7 +9,7 @@ Send a Rakazo bot to Zoom, Google Meet, or a Microsoft Teams work meeting. After
 2. Get permission to record and share the transcript with the Space. Paste the attendee link into **Meeting link** and select **Join meeting**.
 3. Admit the bot from the waiting room and grant capture permission if the meeting platform prompts you.
 
-On Rakazo's hosted service, participants see the Rakazo logo and the bot's name on its camera tile. The bot leaves automatically after everyone else leaves. Select **Leave meeting** in Rakazo to remove it sooner.
+On ALLORA's hosted service, participants see the ALLORA logo and the bot's name on its camera tile. The bot leaves automatically after everyone else leaves. Select **Leave meeting** in ALLORA to remove it sooner.
 
 ## Ask about the call and find the transcript
 

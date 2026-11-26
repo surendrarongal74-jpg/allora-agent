@@ -227,7 +227,7 @@ async function probeServer(
         ok: false,
         status: response.status,
         url,
-        error: t("That address redirects elsewhere. Enter the final Rakazo server address."),
+        error: t("That address redirects elsewhere. Enter the final ALLORA server address."),
       };
     }
     if (!response.ok) {
@@ -244,7 +244,7 @@ async function probeServer(
         ok: false,
         status: response.status,
         url,
-        error: t("That address did not respond like a Rakazo server."),
+        error: t("That address did not respond like a ALLORA server."),
       };
     }
     return {
@@ -273,7 +273,7 @@ async function offerDockerMove(userStackDir: string): Promise<StackChoice> {
     return "docker";
   const options: Electron.MessageBoxOptions = {
     type: "question",
-    message: t("Run Rakazo without Docker?"),
+    message: t("Run ALLORA without Docker?"),
     detail: t("Your bots and data move over. Docker is stopped, not removed."),
     buttons: [t("Move"), t("Keep Docker")],
     defaultId: 0,
@@ -607,16 +607,16 @@ app.whenReady().then(async () => {
         type: "info",
         title: t("Mac app control"),
         message: readyForRestart
-          ? t("Restart Rakazo to finish setup")
+          ? t("Restart ALLORA to finish setup")
           : t("Set up Mac app control"),
         detail: readyForRestart
           ? undefined
           : t(
-              "Commands already work. To use apps, allow Accessibility and Screen Recording for Rakazo in System Settings, then restart Rakazo.",
+              "Commands already work. To use apps, allow Accessibility and Screen Recording for ALLORA in System Settings, then restart ALLORA.",
             ),
         buttons: readyForRestart
-          ? [t("Restart Rakazo"), t("Not Now")]
-          : [t("Open System Settings"), t("Restart Rakazo"), t("Not Now")],
+          ? [t("Restart ALLORA"), t("Not Now")]
+          : [t("Open System Settings"), t("Restart ALLORA"), t("Not Now")],
         defaultId: 0,
         cancelId: readyForRestart ? 1 : 2,
         noLink: true,

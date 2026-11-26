@@ -22,7 +22,7 @@ export const ChatCompletionRequestSchema = z.looseObject({
 export type ChatCompletionRequest = z.infer<typeof ChatCompletionRequestSchema>;
 
 /**
- * The new message for the bot. Rakazo keeps each bot's conversation itself, so only the last user
+ * The new message for the bot. ALLORA keeps each bot's conversation itself, so only the last user
  * message is sent; the history and system messages a client repeats are already in the chat.
  */
 export function latestUserText(messages: ChatCompletionRequest["messages"]): string {

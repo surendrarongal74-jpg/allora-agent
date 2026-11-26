@@ -1,10 +1,10 @@
 # Webhooks on a private network
 
 Many installs run on a private network (a tailnet, a LAN or a VPN), so `API_URL` is not reachable
-from the internet. Outside services then cannot deliver to Rakazo: bot webhooks, Git events,
+from the internet. Outside services then cannot deliver to ALLORA: bot webhooks, Git events,
 messaging apps, phone calls, meeting and calendar events, inbound email relays and billing.
 
-Rakazo can publish only those inbound routes at a separate public address, while sign-in, the web
+ALLORA can publish only those inbound routes at a separate public address, while sign-in, the web
 app and the API stay private. It is off unless you turn it on.
 
 ## Keep the main hostname private
@@ -22,7 +22,7 @@ is added to that list outside the section. An ingress provider then forwards a p
 to the app port.
 
 Once a public address is published, the routine editor, a webhook routine's chat row and
-`admin.js bot webhook-key` show it, and services Rakazo registers callbacks with use it. Without
+`admin.js bot webhook-key` show it, and services ALLORA registers callbacks with use it. Without
 one, they keep using the app's own address.
 
 Each inbound route still checks its own caller (a bearer key, a signature or a shared secret), as it
@@ -70,7 +70,7 @@ good, unset `INGRESS_PROVIDER` and remove the profile.
 
 A Cloudflare Tunnel, another tunnel or a port forward on your router works the same way: forward
 a public HTTPS address to the API's inbound port (`http://api:3101` from a container on the Compose
-network), never to the web or app port. Then tell Rakazo the address:
+network), never to the web or app port. Then tell ALLORA the address:
 
 ```bash
 INGRESS_PROVIDER=manual
@@ -89,7 +89,7 @@ services:
 
 Forward the router to that port alone, never to `3100` or the web port, which serve the whole
 app. Use a hostname of its own for the public address, not the app's. `admin.js webhooks
-unpublish` cannot stop a tunnel Rakazo does not run: stop the tunnel or forward itself.
+unpublish` cannot stop a tunnel ALLORA does not run: stop the tunnel or forward itself.
 
 ## Check it
 

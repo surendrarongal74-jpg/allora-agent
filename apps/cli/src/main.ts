@@ -92,7 +92,7 @@ export async function main(argv: string[]): Promise<number> {
   }
 
   if (command === "login") {
-    const url = values.url ?? (await ask("Rakazo URL: "));
+    const url = values.url ?? (await ask("ALLORA URL: "));
     const key = values.key ?? (await ask("API key: ", true));
     if (!url || !key) throw new Error("Both a URL and an API key are needed");
     const config = { url: url.replace(/\/+$/, ""), key };

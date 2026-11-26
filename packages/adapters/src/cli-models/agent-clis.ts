@@ -11,7 +11,7 @@ export function agentCli(provider: string): AcpAgentDescriptor | undefined {
 }
 
 /**
- * What the rest of Rakazo knows about a model an agent CLI runs: only whether it sees images,
+ * What the rest of ALLORA knows about a model an agent CLI runs: only whether it sees images,
  * which the CLI's descriptor says. The CLI keeps its own limits, and its plan pays, so no cost.
  */
 export function agentCliModel(descriptor: AcpAgentDescriptor, id: string): Model<Api> {

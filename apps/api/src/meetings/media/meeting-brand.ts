@@ -1,4 +1,4 @@
-// Embedded from the public Rakazo brand mark so the camera tile needs only the API host.
+// Embedded from the public ALLORA brand mark so the camera tile needs only the API host.
 export const meetingBrand = Uint8Array.from(
   Buffer.from(
     "UklGRjIGAABXRUJQVlA4WAoAAAAQAAAARwAARwAAQUxQSLYAAAABcFtbW9t8Dhx2YQmpRFvgbdBa/BMwBedQqyM5yPH/e0fEBOCp" +

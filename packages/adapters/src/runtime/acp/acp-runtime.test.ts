@@ -123,7 +123,7 @@ afterEach(() => {
 });
 
 describe("acpAgentRuntime", () => {
-  it("runs a Rakazo tool the agent calls and streams its reply", async () => {
+  it("runs a ALLORA tool the agent calls and streams its reply", async () => {
     const runtime = acpAgentRuntime(fallback, descriptor(), { accessCheck: allowed });
     const input = request({ prompt: "What is the weather?" });
 
@@ -161,7 +161,7 @@ describe("acpAgentRuntime", () => {
     expect(recorded().find((event) => event.type === "unauthenticated")?.status).toBe(401);
   });
 
-  it("gives the agent Rakazo's instructions and only the allowlisted environment", async () => {
+  it("gives the agent ALLORA's instructions and only the allowlisted environment", async () => {
     vi.stubEnv("OPENROUTER_API_KEY", "sk-fake-openrouter-key");
     vi.stubEnv("DATABASE_URL", "postgres://user:fake-password@db.example.invalid/rakazo");
     const runtime = acpAgentRuntime(fallback, descriptor(), { accessCheck: allowed });
@@ -321,7 +321,7 @@ describe("acpAgentRuntime", () => {
       request({ threadId, prompt: "Send a note", executeTool }),
     );
     const pausedArgs = executeTool.mock.calls[0]?.[1];
-    // The prompt Rakazo builds for a run resumed after the person approved the request.
+    // The prompt ALLORA builds for a run resumed after the person approved the request.
     const continuation = buildApprovalContinuation(
       [{ kind: "send_note", request: pausedArgs }],
       (args) => JSON.stringify(args),

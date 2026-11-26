@@ -87,7 +87,7 @@ export function useSubscriptionSignIn({
     clearFeedback();
     let error = t`Could not copy the code. Try again.`;
     try {
-      // Finish copying while Rakazo is still in the foreground, before switching apps.
+      // Finish copying while ALLORA is still in the foreground, before switching apps.
       if (login.mode === "device-code") {
         const copied = await Clipboard.setStringAsync(login.userCode);
         if (oauthLoginIdRef.current !== loginId) return;

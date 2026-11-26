@@ -560,14 +560,14 @@ test("model funding connections", async ({ page }, testInfo) => {
   await openUserSettings(page, "models");
   const main = page.getByTestId("model-role-main");
   await main.getByRole("button", { name: "Change Reasoning model", exact: true }).click();
-  await expect(page.locator("[cmdk-group]").filter({ hasText: "Rakazo credits" })).toBeVisible();
+  await expect(page.locator("[cmdk-group]").filter({ hasText: "ALLORA credits" })).toBeVisible();
   await captureScreenshot(page, testInfo, "model-funding-connections-picker");
   await page
     .locator("[cmdk-group]")
-    .filter({ hasText: "Rakazo credits" })
+    .filter({ hasText: "ALLORA credits" })
     .getByRole("option", { name: "Reasoning model", exact: true })
     .click();
-  await expect(main.getByTestId("model-role-row-1")).toContainText("Rakazo credits");
+  await expect(main.getByTestId("model-role-row-1")).toContainText("ALLORA credits");
   expect(settings.primary).toEqual({
     provider: model.provider,
     modelId: model.id,

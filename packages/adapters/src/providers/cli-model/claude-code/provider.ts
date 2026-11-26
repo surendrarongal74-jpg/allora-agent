@@ -34,7 +34,7 @@ export function claudeCodeModel(id: string, models: Models): Model<Api> {
     reasoning: card?.reasoning ?? true,
     ...(card?.thinkingLevelMap ? { thinkingLevelMap: card.thinkingLevelMap } : {}),
     input: card?.input ?? ["text", "image"],
-    // Usage counts against the operator's own Claude plan, so Rakazo prices nothing: with no
+    // Usage counts against the operator's own Claude plan, so ALLORA prices nothing: with no
     // positive rate, normalizePiUsage records the cost as unknown (null) rather than free.
     cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },
     contextWindow: card?.contextWindow ?? DEFAULT_CONTEXT_WINDOW,
@@ -46,7 +46,7 @@ export function claudeCodeProvider(models: Models, options: ClaudeCodeProviderOp
   const assertAllowed = async () => {
     const refusal = options.accessCheck
       ? await options.accessCheck()
-      : "Claude Code runs only inside the Rakazo API and worker.";
+      : "Claude Code runs only inside the ALLORA API and worker.";
     if (refusal) throw new Error(refusal);
   };
   const stream = (
@@ -64,7 +64,7 @@ export function claudeCodeProvider(models: Models, options: ClaudeCodeProviderOp
     auth: {
       apiKey: {
         name: "Claude Code sign-in on this server",
-        // The CLI signs its own requests; Rakazo has no credential to resolve.
+        // The CLI signs its own requests; ALLORA has no credential to resolve.
         resolve: async () => ({ auth: {}, source: "claude auth login" }),
       },
     },

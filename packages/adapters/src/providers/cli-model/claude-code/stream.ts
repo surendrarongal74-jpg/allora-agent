@@ -55,9 +55,9 @@ const TOOL_SERVER = "rakazo";
 const TOOL_PREFIX = `mcp__${TOOL_SERVER}__`;
 
 /**
- * A stdio MCP server that only lists Rakazo's tools to the CLI. It never runs one: the CLI runs
+ * A stdio MCP server that only lists ALLORA's tools to the CLI. It never runs one: the CLI runs
  * in `dontAsk` mode with nothing allowed and stops after one turn, so a tool call comes back to
- * Rakazo, which runs it with its own approvals.
+ * ALLORA, which runs it with its own approvals.
  */
 const INVENTORY_SERVER = `import { readFileSync } from "node:fs";
 import { createInterface } from "node:readline";
@@ -77,7 +77,7 @@ for await (const line of createInterface({ input: process.stdin })) {
   } else if (method === "tools/list") {
     send({ id, result: { tools } });
   } else if (method === "tools/call") {
-    send({ id, result: { isError: true, content: [{ type: "text", text: "Rakazo runs its tools itself." }] } });
+    send({ id, result: { isError: true, content: [{ type: "text", text: "ALLORA runs its tools itself." }] } });
   } else if (method === "ping") {
     send({ id, result: {} });
   } else {
@@ -321,11 +321,11 @@ async function exitError(child: ClaudeCodeProcess, during: string): Promise<Erro
   );
 }
 
-/** Read-only helpers the CLI adds for any MCP server; Rakazo's server offers no resources. */
+/** Read-only helpers the CLI adds for any MCP server; ALLORA's server offers no resources. */
 const MCP_RESOURCE_TOOLS = new Set(["ListMcpResourcesTool", "ReadMcpResourceTool"]);
 
 /**
- * The CLI must offer Rakazo's tools only: its own tools stay off, and when the request has tools
+ * The CLI must offer ALLORA's tools only: its own tools stay off, and when the request has tools
  * the tool server must be connected, so the model never answers without them.
  */
 function checkInit(event: Record<string, unknown>, expectTools: boolean): void {
@@ -342,7 +342,7 @@ function checkInit(event: Record<string, unknown>, expectTools: boolean): void {
     (entry) => entry && typeof entry === "object" && entry.name === TOOL_SERVER,
   ) as { status?: unknown } | undefined;
   if (expectTools && server?.status !== "connected") {
-    throw new Error("Claude Code could not load Rakazo's tools.");
+    throw new Error("Claude Code could not load ALLORA's tools.");
   }
 }
 
@@ -353,7 +353,7 @@ interface OpenBlock {
 
 /**
  * Streams one model turn through the operator's signed-in Claude Code CLI. The CLI is only the
- * model: Rakazo keeps the conversation, runs every tool, and replays the history each turn.
+ * model: ALLORA keeps the conversation, runs every tool, and replays the history each turn.
  */
 export function streamClaudeCode(
   model: Model<Api>,
@@ -798,7 +798,7 @@ export function streamClaudeCode(
       stream.end();
     } finally {
       options.signal?.removeEventListener("abort", stop);
-      // One turn is all Rakazo asks for: the CLI is done once the reply is complete.
+      // One turn is all ALLORA asks for: the CLI is done once the reply is complete.
       child?.stop();
       if (place) {
         for (const id of launched) if (id !== saved) forgetSessionFiles({ id, ...place });

@@ -28,7 +28,7 @@ export const COPILOT_OAUTH_PROVIDER = "github-copilot";
 export const XAI_OAUTH_PROVIDER = "xai";
 export const ANTHROPIC_OAUTH_PROVIDER = "anthropic";
 
-/** Providers Rakazo offers a subscription sign-in for, by id. */
+/** Providers ALLORA offers a subscription sign-in for, by id. */
 export const SUBSCRIPTION_SIGN_IN_PROVIDERS = Object.fromEntries(
   Object.entries(modelProviders as Record<string, ModelProviderDefinition>).flatMap(
     ([id, { signIn }]) => (signIn ? [[id, signIn]] : []),

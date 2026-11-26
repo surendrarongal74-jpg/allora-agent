@@ -4,7 +4,7 @@
   "private": true,
   "license": "Apache-2.0",
   "type": "module",
-  "description": "Hand work to your Rakazo bots from a terminal or script.",
+  "description": "Hand work to your ALLORA bots from a terminal or script.",
   "bin": {
     "rakazo": "./dist/rakazo.js"
   },

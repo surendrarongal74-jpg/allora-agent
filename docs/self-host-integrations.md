@@ -32,7 +32,7 @@ the default work as described for Parallel.
 Supermemory, Honcho and Hindsight can run on your own network. In **Settings → Memory**, open **Advanced**, choose **Self-hosted**
 and enter the instance's base URL. The operator must set `MCP_ALLOW_PRIVATE_ENDPOINT=true`; workspace owners can then save a local endpoint. It must
 be loopback or resolve to private addresses (a Compose service name, an RFC1918 or unique-local
-address, or a `.internal` name such as Railway's private network); Rakazo pins the resolved
+address, or a `.internal` name such as Railway's private network); ALLORA pins the resolved
 address for every request. Space members use the saved connection without seeing its key.
 
 A self-hosted Supermemory server must be v0.0.9 or later; run `supermemory-server upgrade` on
@@ -42,15 +42,15 @@ For [Honcho](https://github.com/plastic-labs/honcho), enable `AUTH_USE_AUTH` on 
 server and use an admin JWT from its `scripts/generate_jwt.py --admin` as the key, so each Space
 gets its own workspace. A workspace-scoped JWT works when you enter that workspace. Honcho needs
 its own PostgreSQL with pgvector, an LLM provider, and an embedding provider; set
-`EMBEDDING_VECTOR_DIMENSIONS` before its first start. Rakazo stores only explicitly saved facts
-in Honcho; conversation summaries stay in Rakazo. Bots can forget a saved fact on Honcho v3.2 or
+`EMBEDDING_VECTOR_DIMENSIONS` before its first start. ALLORA stores only explicitly saved facts
+in Honcho; conversation summaries stay in ALLORA. Bots can forget a saved fact on Honcho v3.2 or
 later.
 
 For [Hindsight](https://github.com/vectorize-io/hindsight) 1.0 or later, the key is optional when
-the server has no authentication. Hindsight needs its own LLM provider to extract facts. Rakazo
+the server has no authentication. Hindsight needs its own LLM provider to extract facts. ALLORA
 creates a bank per bot and, for the Shared scope, one per Space. Bank names use the reserved
 `rakazo-` prefix and fixed-length hashes of the identifiers so legacy identifiers cannot collide.
-It does not configure banks, so set extraction missions in Hindsight if you want them. Rakazo sends each finished turn (unless **Learn from conversations** is off) and the
+It does not configure banks, so set extraction missions in Hindsight if you want them. ALLORA sends each finished turn (unless **Learn from conversations** is off) and the
 facts bots save; banks under **Recall from banks** are only read. A bank under **Recall from banks**
 must be on the same Hindsight server or Cloud account; an app that runs Hindsight embedded on its
 own machine keeps its banks there. All names starting with `rakazo-` are reserved and cannot be
@@ -63,13 +63,13 @@ owner can attach one on localhost, the same LAN, or a Docker network. Set
 `MCP_ALLOW_PRIVATE_ENDPOINT=true` on the API and worker to allow these for every user. Cloud
 metadata addresses stay blocked. Leave the flag unset on public installs.
 
-Remote MCP servers that use OAuth normally register Rakazo with their provider on the first
+Remote MCP servers that use OAuth normally register ALLORA with their provider on the first
 **Connect OAuth**. Some providers only accept a client you create in their console. For those,
 enter the client ID (and secret, for a confidential client) under **Advanced** when adding the
 server, and add the **Redirect URI** shown there (`<your web origin>/mcp/oauth/callback`) to the
 client's allowed redirect URIs. The client is stored encrypted with the server's other
 credentials and survives **Disconnect**; switching to a different client drops the current grant.
-On first use the client is bound to the authorization server the MCP server pointed to, and Rakazo
+On first use the client is bound to the authorization server the MCP server pointed to, and ALLORA
 refuses to send it anywhere else afterwards. Replacing the client clears the binding.
 
 Other providers register clients themselves but only for redirect addresses they know, plus the
@@ -79,7 +79,7 @@ instead and reads the result from its own sign-in window. A browser and the mobi
 and show the provider's refusal.
 
 Stdio MCP servers can use OAuth too. They do not authorize themselves (the MCP spec has them
-read credentials from the environment), so Rakazo runs the flow for them. They are off unless
+read credentials from the environment), so ALLORA runs the flow for them. They are off unless
 the API and worker have `MCP_STDIO_ENABLED=true` and the command is listed in
 `MCP_STDIO_ALLOWED_COMMANDS`. A stdio server runs inside the API and worker with their access,
 so only admins (verified accounts listed in `RAKAZO_ADMIN_EMAILS`) can add or edit one, in
@@ -99,12 +99,12 @@ through its environment variables:
   written to a private temporary directory when the process starts, and the variable receives
   the file's path. Use this for packages that read a credentials or token file path.
 
-Rakazo refreshes the grant and restarts the process shortly before an access token it passed
+ALLORA refreshes the grant and restarts the process shortly before an access token it passed
 expires, so a long-running process never keeps a dead token. A process that only receives the
 refresh token refreshes on its own. Temporary files are removed when the process stops.
 
 A server launched as `npx [-y] <package>[@version]` (or `npx -p <package> <bin>`) is not
-downloaded on every start. Rakazo installs the package once, without running its install
+downloaded on every start. ALLORA installs the package once, without running its install
 scripts, with `npm install` into
 `MCP_PACKAGES_DIR` (default `DATA_DIR/mcp-packages`, shared by the API and worker), then runs
 its bin directly; `npx` must still be in `MCP_STDIO_ALLOWED_COMMANDS`. The install has its own
@@ -174,7 +174,7 @@ before the change must disconnect and reconnect Outlook.
 
 `INTEGRATIONS_CATALOG_URL` points API connector search at an
 [integrations.sh](https://integrations.sh/)-compatible catalog, such as a mirror you host. Give the
-base URL. Rakazo appends `api/search`. With the setting unset, **Search public MCP directory** can still
+base URL. ALLORA appends `api/search`. With the setting unset, **Search public MCP directory** can still
 search the public directory on demand. Each service handles its own authorization.
 
 ## Messaging apps
@@ -219,7 +219,7 @@ Telegram groups use personal group linking, like iMessage: each linked member ap
 bot, and the per-room listening settings belong to Slack team conversations only. In BotFather
 run `/setprivacy` on the bot and choose **Disable** (or make it a group admin), or the bot only
 receives group messages that mention it. Broadcast channel posts never start runs. Multiple bots
-can run side by side, allowing one person to link a different Rakazo bot through each.
+can run side by side, allowing one person to link a different ALLORA bot through each.
 
 ### iMessage through Photon
 
@@ -265,11 +265,11 @@ Cross-company distribution has not been verified for this configuration.
 5. Have a Microsoft 365 administrator upload the package to the organization's Teams app catalog
    and allow the app for its intended users. Install that catalog app in Teams and open its
    personal chat.
-6. In Rakazo, pick a bot under **Settings → Messaging**, choose `teams`, and send the code in a
+6. In ALLORA, pick a bot under **Settings → Messaging**, choose `teams`, and send the code in a
    direct message to the Teams app within 10 minutes.
 
 One server registration serves individually linked users; it does not bind the deployment to one
-Rakazo account, space, or bot. Replies use each user's linked conversation, including after a
+ALLORA account, space, or bot. Replies use each user's linked conversation, including after a
 server restart. Teams channels, group chats, and starting a new DM by user address are not
 supported. No Microsoft Graph history permissions are needed.
 
@@ -283,7 +283,7 @@ already published it there; a Developer Portal preview is a separate upload path
 See Microsoft's [custom app installation guide](https://learn.microsoft.com/en-us/microsoftteams/platform/concepts/deploy-and-publish/apps-upload)
 and [app setup policies](https://learn.microsoft.com/en-us/microsoftteams/teams-app-setup-policies).
 Before considering setup complete, link a user in the registration's tenant and verify a
-message/reply roundtrip. Repeat with a second user linked to a different Rakazo bot to check
+message/reply roundtrip. Repeat with a second user linked to a different ALLORA bot to check
 individual routing. A validated package or successful installation alone does not verify message
 delivery.
 
@@ -302,7 +302,7 @@ reinstall the Slack app after changing scopes. Socket Mode is not used.
 
 In Messaging settings, select **Connect** on the Slack row. The workspace answers as
 the first bot in your default space, whichever space is open. Each Slack workspace
-belongs to one Rakazo space and one installation owner; installing it from another
+belongs to one ALLORA space and one installation owner; installing it from another
 space is rejected. To DM that bot, use **Link DMs** and send the code in a DM to the
 Slack app. Teammates in the same space can link their own bots the same way.
 Invite the Slack app to channels and mention it to receive replies there. The
@@ -314,7 +314,7 @@ finishes. Channel listening settings currently live in the web/desktop interface
 Tokens are encrypted with the configured secret store. Workers resolve the
 installation for every outbound operation, including queued replies; disconnecting
 an installation stops further delivery and unlinks its personal DMs. Slack's signed
-`app_uninstalled` event also removes the installation. Disconnect removes Rakazo's
+`app_uninstalled` event also removes the installation. Disconnect removes ALLORA's
 local credentials; remove the app in Slack to revoke Slack's installation itself.
 The installation owner must retain space membership and an active bot. Workspace
 installations require a workspace-level bot token without Slack token rotation;
@@ -347,13 +347,13 @@ The key and explicit Space ID are both required. Use a credential whose connecte
 
 ### Connect T3 Code
 
-T3 Code runs agents on a machine you control. Each user connects their own T3 Code environment; it needs no deployment setting, whatever `CLOUD_AGENT_PROVIDER` says, and follows the MCP server's usual access: the Rakazo agents it is assigned to, in the Spaces where it is available. Cloud agents those Rakazo agents launch then run on T3 Code instead of the deployment's provider; ones already running on the deployment's provider stay reachable.
+T3 Code runs agents on a machine you control. Each user connects their own T3 Code environment; it needs no deployment setting, whatever `CLOUD_AGENT_PROVIDER` says, and follows the MCP server's usual access: the ALLORA agents it is assigned to, in the Spaces where it is available. Cloud agents those ALLORA agents launch then run on T3 Code instead of the deployment's provider; ones already running on the deployment's provider stay reachable.
 
 1. In T3 Code, copy the address from **Use T3 Code in another app (MCP)**. It ends in `/mcp`.
-2. In Rakazo, add it under **MCP servers** as a remote server and click **Connect OAuth**.
+2. In ALLORA, add it under **MCP servers** as a remote server and click **Connect OAuth**.
 3. On the T3 Code page that opens, set the access level to **Auto** (without a sign-in code it starts at **Read only**) and approve.
 
-Rakazo identifies a compatible connection by its orchestrator tools and input schemas, an explicit operate grant, and matching OAuth resource and authorization origins, rather than a display name.
+ALLORA identifies a compatible connection by its orchestrator tools and input schemas, an explicit operate grant, and matching OAuth resource and authorization origins, rather than a display name.
 
 With **Read only**, the server is not used for new agents. With **Supervised**, every run that edits files waits for approval in T3 Code, and its card shows it running until then. To change the level, disconnect the server and connect it again; disconnecting ends its running agents as expired. T3 Code also refuses follow-ups and cancellation on threads running above the chosen level, such as full-access threads started in its own UI.
 
@@ -361,7 +361,7 @@ T3 Code's approval lasts 30 days and cannot be renewed. Once it lapses or is rev
 
 The address from step 1 goes through T3 Connect and is public HTTPS. A direct private address, such as a Tailscale one, needs `MCP_ALLOW_PRIVATE_ENDPOINT=true` on the API and worker. That setting is deployment-wide: it lets every user's MCP servers reach private addresses.
 
-A launch with a repository runs in a new worktree of the unarchived T3 Code project whose Git remote matches it, branched from that project's current checkout; a repository with no matching project is rejected. A launch without one uses a scratch folder. Agents use T3 Code's default model or, with none set, the first model of a provider that can run. Images are not supported. Rakazo sends a follow-up only after the agent's run ends; it waits behind a turn started in T3 Code itself. Cancel stops only the agent's current run, or removes a follow-up that has not started. When another run starts on the thread right after the agent's run finishes, as when T3 Code continues on its own, the card follows that run. A follow-up T3 Code holds instead of starting, as after a stopped or failed worktree setup, a provider failure or **Stop** in T3 Code, ends the card as failed after about a minute and is removed from T3 Code's queue where the connection's access allows it. A T3 Code version without the tools Rakazo uses fails the card.
+A launch with a repository runs in a new worktree of the unarchived T3 Code project whose Git remote matches it, branched from that project's current checkout; a repository with no matching project is rejected. A launch without one uses a scratch folder. Agents use T3 Code's default model or, with none set, the first model of a provider that can run. Images are not supported. ALLORA sends a follow-up only after the agent's run ends; it waits behind a turn started in T3 Code itself. Cancel stops only the agent's current run, or removes a follow-up that has not started. When another run starts on the thread right after the agent's run finishes, as when T3 Code continues on its own, the card follows that run. A follow-up T3 Code holds instead of starting, as after a stopped or failed worktree setup, a provider failure or **Stop** in T3 Code, ends the card as failed after about a minute and is removed from T3 Code's queue where the connection's access allows it. A T3 Code version without the tools ALLORA uses fails the card.
 
 The tools are `cloud_agent_launch`, `cloud_agent_status`, `cloud_agent_reply`, and `cloud_agent_cancel`. All three mutations participate in the existing action-approval rules and auto-review policy. As with other consequential tools, an empty rule set and disabled auto-review permit execution by default.
 

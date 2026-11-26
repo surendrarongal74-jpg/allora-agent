@@ -7,7 +7,7 @@ export const AGENT_DISCOVERY_LINKS =
 
 const home = getHomeCopy("en");
 
-export const HOME_MARKDOWN = `# Rakazo
+export const HOME_MARKDOWN = `# ALLORA
 
 ${home.hero.eyebrow}
 
@@ -76,7 +76,7 @@ ${home.cta.copy}
 - [Voice providers for AI agents](https://rakazo.com/voice-providers/)
 - [Blog](https://rakazo.com/blog/)
 - [Grok Bot alternatives](https://rakazo.com/grok-bot-alternative/)
-- [Pricing](https://rakazo.com/pricing/): free to self-host, or hosted with your own model or Rakazo credits.
+- [Pricing](https://rakazo.com/pricing/): free to self-host, or hosted with your own model or ALLORA credits.
 - [Enterprise](https://rakazo.com/enterprise/): SSO, SCIM, audit log, encryption at rest, and approval rules on your own infrastructure.
 - [Download](https://rakazo.com/download/): desktop, mobile, and web apps.
 - [About](https://rakazo.com/about/)
@@ -89,7 +89,7 @@ ${home.cta.copy}
 
 export const NOT_FOUND_MARKDOWN = `# Page not found
 
-The requested Rakazo page does not exist.
+The requested ALLORA page does not exist.
 
 - [Agent instructions](https://rakazo.com/llms.txt)
 - [Site map](https://rakazo.com/sitemap-index.xml)

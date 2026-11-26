@@ -278,7 +278,7 @@ describe("Pi model catalog", () => {
         providerName: "OpenAI",
         auth: "api-key",
         subscription: false,
-        billing: "Uses your OpenAI API key. Rakazo does not pay for model usage.",
+        billing: "Uses your OpenAI API key. ALLORA does not pay for model usage.",
       });
       expect(entry.oauthLabel).toBeUndefined();
       expect(entry.signIn).toBeUndefined();
@@ -291,7 +291,7 @@ describe("Pi model catalog", () => {
         providerName: "Azure OpenAI",
         auth: "api-key",
         subscription: false,
-        billing: "Uses your Azure OpenAI API key. Rakazo does not pay for model usage.",
+        billing: "Uses your Azure OpenAI API key. ALLORA does not pay for model usage.",
       });
     }
   });
@@ -610,7 +610,7 @@ describe("models agents can run", () => {
     expect(offeredCatalog(entries, new Set(["google:gemini-2.5-flash"]))).toEqual([entries[0]]);
   });
 
-  describe("models Rakazo credits cannot price", () => {
+  describe("models ALLORA credits cannot price", () => {
     const credits: SpaceCatalogAuth = {
       managedProvider: "openrouter",
       byProvider: { openrouter: "api_key" },

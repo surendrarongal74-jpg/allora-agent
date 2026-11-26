@@ -8,18 +8,18 @@ acceptance checks below have actually passed. Model credits and live calls are s
 ## Recommendation
 
 For a small hosted iMessage/SMS pilot, use one operator-owned dedicated inbound-first Sendblue
-line and the existing adapter. Users text first, link their own Rakazo accounts, and supply a
+line and the existing adapter. Users text first, link their own ALLORA accounts, and supply a
 reasoning model connection in their Space. No messaging vendor credentials belong in user setup.
 This is an implementation-based recommendation, conditional on operator approval and live checks.
 
 Photon helps: it supplies managed Apple messaging infrastructure, so users need no Mac. Stable
 shared lines suit a low-cost iMessage text pilot; dedicated lines suit a consistent public number.
-It does not unlock all Photon 2.0 channels in Rakazo. Do not replace the working adapter just to
+It does not unlock all Photon 2.0 channels in ALLORA. Do not replace the working adapter just to
 obtain the newer product's advertised channel list.
 
 ## API generation and current support
 
-Rakazo pins `@photon-ai/chat-adapter-imessage@3.2.0`, backed by `@spectrum-ts/core` and
+ALLORA pins `@photon-ai/chat-adapter-imessage@3.2.0`, backed by `@spectrum-ts/core` and
 `@spectrum-ts/imessage@10.0.0`. It dynamically loads Stable Spectrum using project ID/secret,
 legacy `imessage:<chatGuid>~<line>` threads and `X-Spectrum-*` signed events. Supply credentials
 for this Stable API; the newer API contract is not implemented by this adapter.
@@ -43,14 +43,14 @@ event/credential translation and a plan for existing stored thread IDs, not a pa
 
 Photon [Stable webhook payloads](https://photon.codes/docs/webhooks/events) contain attachment IDs
 and metadata, not download URLs or bytes; out-of-band `getAttachment(id, space.phone)` retrieval is
-required. Rakazo's wrapper does not expose that retrieval. Do not advertise media ingestion or
+required. ALLORA's wrapper does not expose that retrieval. Do not advertise media ingestion or
 voice-note understanding on this connection. Fixing it safely needs explicit SDK byte access and
 tests for line routing, size bounds and deleted attachments.
 
 Sendblue [sending documentation](https://docs.sendblue.com/getting-started/sending-messages) permits
 ordinary fallback, lists 100 MB maximum iMessage files (20 MB recommended) and 5 MB SMS files, and
 documents `.caf` voice memos. Inline replies and App Cards have different fallback restrictions;
-Rakazo does not gain those features from ordinary text posting.
+ALLORA does not gain those features from ordinary text posting.
 
 ## Plans, capacity and spend evidence
 
@@ -74,7 +74,7 @@ inbound-first AI Agent plan; outbound plans require a quote. Its
 [limits](https://docs.sendblue.com/limits/) list 1,000 inbound contacts/line/day, replies within
 24 hours, 200 follow-up contacts/day after that window, and a 10-message/second line acceptance
 limit. AI Agent numbers may reply to groups they join but cannot create new groups. The page also
-states a 150-consecutive-outbound safeguard. Rakazo already holds direct sends below that cap.
+states a 150-consecutive-outbound safeguard. ALLORA already holds direct sends below that cap.
 Confirm current plan entitlements and total charges, fallback destinations, taxes, media charges,
 carrier registration and overages before enabling service; public evidence here does not establish
 a complete per-message tariff. No purchase or vendor contact was made.
@@ -99,7 +99,7 @@ An authorized operator must provision an inbound-first line, confirm SMS/MMS rel
 required carrier registration, then register the **receive** webhook at
 `https://api.example.test/api/v1/messaging/webhook/sendblue`. Configure its secret to match
 `SENDBLUE_SIGNING_SECRET`. The adapter expects `sb-signing-secret` over HTTPS; this is a static
-secret header, not a body HMAC. Ensure status callbacks carry the same secret too. Rakazo sets
+secret header, not a body HMAC. Ensure status callbacks carry the same secret too. ALLORA sets
 `status_callback` from HTTPS `API_URL`. [Webhook management](https://docs.sendblue.com/getting-started/webhooks)
 supports per-webhook and global secrets; use the dashboard to avoid replacing unrelated hooks.
 Never log webhook bodies or authentication headers.
@@ -128,7 +128,7 @@ When using Compose, forward all three suffixed variables to both `api` and `work
 override file, following [settings with names you choose](self-host-configuration.md#settings-with-names-you-choose).
 The base Compose files forward only the unsuffixed names.
 Duplicate project mounts are skipped. A dedicated line suffix is retained in reply threads.
-Shared assignments need an operator-supplied way for the user to discover their number; Rakazo
+Shared assignments need an operator-supplied way for the user to discover their number; ALLORA
 does not provision or display a per-user shared assignment automatically. Do not hardcode one
 shared number for everyone. A dedicated Sendblue line already publishes its address in settings.
 
@@ -145,7 +145,7 @@ address plus mounted provider to that code's user, Space and bot; an address own
 account cannot be taken over with a new code. Ordinary unlinked messages stay silent. Web,
 Electron and mobile use this same backend route; no native device changes are needed.
 
-A provider project/line is transport infrastructure, not a Rakazo tenant. Each linked identity
+A provider project/line is transport infrastructure, not a ALLORA tenant. Each linked identity
 resolves its own Space's model credentials and context. Separate provider projects and signing
 secrets isolate mounts; they do not prove isolation between users sharing one mount. Treat phone
 number recycling, lost phones and pasted linking codes as account-support risks. No automatic
@@ -153,7 +153,7 @@ number ownership re-verification was added here.
 
 Use signed webhooks for hosted Photon. [Delivery policy](https://photon.codes/docs/webhooks/delivery)
 provides six attempts by default, 30-second attempt timeouts and bounded backoff, with no dead-letter
-queue. `2xx` stops retries; `5xx`, `408`, `429` retry; most other `4xx` are terminal. Rakazo drains
+queue. `2xx` stops retries; `5xx`, `408`, `429` retry; most other `4xx` are terminal. ALLORA drains
 inbound processing before acknowledgement, returns `500` on sink failure, and clears failed Chat
 dedupe markers. Durable downstream message nonces handle replay across processes. The stream
 alternative rearms every minute and retries handler failures three times in memory; a crash or
@@ -174,7 +174,7 @@ no automatic reconciliation or replay tool was introduced.
    fallback and delivery status. Confirm actual sender identity after restart. Do not infer SMS
    readiness from iMessage success or API acceptance.
 5. Exercise selected-plan media and an incoming audio memo, and a permitted existing iMessage
-   group on Sendblue. SMS remains direct-only in Rakazo; Photon groups remain disabled. Do not
+   group on Sendblue. SMS remains direct-only in ALLORA; Photon groups remain disabled. Do not
    promise Photon media or native voice-note output with the current wrapper.
 6. Fail an inbound request before storage, redeliver, restart the API, and check exactly one stored
    inbound/run. Simulate an outage longer than the provider retry budget and document recovery.

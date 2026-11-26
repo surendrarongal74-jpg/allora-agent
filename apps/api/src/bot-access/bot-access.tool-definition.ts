@@ -15,18 +15,18 @@ const waitSeconds = z
     "Seconds to wait for the task to finish or ask something before returning. Default 60; 0 returns at once.",
   );
 
-/** The tools Rakazo's MCP server offers agents that hold one of the person's keys. */
+/** The tools ALLORA's MCP server offers agents that hold one of the person's keys. */
 export const BOT_ACCESS_TOOLS = {
   list_bots: {
     title: "List bots",
     description:
-      "List the Rakazo bots you can hand work to, with their ids, names and the Space each is in.",
+      "List the ALLORA bots you can hand work to, with their ids, names and the Space each is in.",
     inputSchema: {},
   },
   create_task: {
     title: "Give a bot a task",
     description:
-      "Send a bot a message that starts a task in its chat. Bots keep their own conversation and memory, so send only what is new. Long work keeps running after this returns; check it with get_task. A task with status needs_input is waiting: answer its question with send_task_message; an approval is answered by the person in the Rakazo app.",
+      "Send a bot a message that starts a task in its chat. Bots keep their own conversation and memory, so send only what is new. Long work keeps running after this returns; check it with get_task. A task with status needs_input is waiting: answer its question with send_task_message; an approval is answered by the person in the ALLORA app.",
     inputSchema: {
       bot: z.string().trim().min(1).max(200).describe("The bot's id, or its exact name."),
       message: message.describe("What you want the bot to do."),

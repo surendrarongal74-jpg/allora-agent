@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: rakazo-web\n"
 "Report-Msgid-Bugs-To: \n"
 "PO-Revision-Date: \n"
-"Last-Translator: Rakazo\n"
+"Last-Translator: ALLORA\n"
 "Language-Team: Dutch\n"
 "Plural-Forms: \n"
 
@@ -1464,8 +1464,8 @@ msgid "Allow once"
 msgstr "Een keer toestaan"
 
 #: apps/web/src/lib/calls/dictation.ts
-msgid "Allow Rakazo to use Speech Recognition and the microphone in System Settings."
-msgstr "Sta Rakazo toe om Spraakherkenning en de microfoon te gebruiken in Systeeminstellingen."
+msgid "Allow ALLORA to use Speech Recognition and the microphone in System Settings."
+msgstr "Sta ALLORA toe om Spraakherkenning en de microfoon te gebruiken in Systeeminstellingen."
 
 #: apps/mobile/lib/calls/call-session.ts
 #: apps/mobile/lib/composer/composer-dictation.ts
@@ -2676,8 +2676,8 @@ msgstr "Map kiezen"
 
 #: apps/web/src/components/billing/CreditChoice.tsx
 #: apps/web/src/components/billing/SubscriptionGate.tsx
-msgid "Choose how to use Rakazo"
-msgstr "Kies hoe je Rakazo gebruikt"
+msgid "Choose how to use ALLORA"
+msgstr "Kies hoe je ALLORA gebruikt"
 
 #: apps/web/src/pages/shell/bots/agent-import.tsx
 msgid "Choose your {home} folder, or a backup of it."
@@ -3176,8 +3176,8 @@ msgstr "Verbind je AI"
 
 #. js-lingui-explicit-id
 #: packages/i18n/src/run-error.ts
-msgid "Connect your own API key in Models or choose Rakazo credits in Billing."
-msgstr "Verbind je eigen API-sleutel bij Modellen of kies Rakazo-tegoed bij Facturatie."
+msgid "Connect your own API key in Models or choose ALLORA credits in Billing."
+msgstr "Verbind je eigen API-sleutel bij Modellen of kies ALLORA-tegoed bij Facturatie."
 
 #. js-lingui-explicit-id
 #: packages/i18n/src/plugin-catalog.ts
@@ -5659,8 +5659,8 @@ msgid "Ends {day}"
 msgstr "Eindigt op {day}"
 
 #: apps/web/src/pages/shell/composer/github-star-prompt.tsx
-msgid "Enjoying Rakazo?"
-msgstr "Bevalt Rakazo?"
+msgid "Enjoying ALLORA?"
+msgstr "Bevalt ALLORA?"
 
 #: packages/i18n/src/user-error.ts
 msgid "Enter a password"
@@ -6422,8 +6422,8 @@ msgstr "Hoe te controleren"
 
 #: apps/mobile/app/(settings)/signup-survey.tsx
 #: apps/web/src/components/account/SignupSurvey.tsx
-msgid "How will you use Rakazo?"
-msgstr "Hoe ga je Rakazo gebruiken?"
+msgid "How will you use ALLORA?"
+msgstr "Hoe ga je ALLORA gebruiken?"
 
 #: apps/mobile/components/models/compatible-endpoint-form.tsx
 msgid "http://127.0.0.1:8000/v1"
@@ -6546,8 +6546,8 @@ msgid "In use"
 msgstr "In gebruik"
 
 #: apps/mobile/app/(settings)/model-connection.tsx
-msgid "In your browser, sign in and paste this code when asked. Then return to Rakazo."
-msgstr "Meld je aan in je browser en plak deze code als daarom wordt gevraagd. Ga daarna terug naar Rakazo."
+msgid "In your browser, sign in and paste this code when asked. Then return to ALLORA."
+msgstr "Meld je aan in je browser en plak deze code als daarom wordt gevraagd. Ga daarna terug naar ALLORA."
 
 #: apps/web/src/pages/settings/BillingSettingsPanel.tsx
 msgid "Inactive"
@@ -8258,8 +8258,8 @@ msgid "Not in {organizationName}. They'll only see this Space."
 msgstr "Niet in {organizationName}. Ziet alleen deze space."
 
 #: apps/web/src/pages/shell/bots/import-status.ts
-msgid "Not in Rakazo's catalog"
-msgstr "Niet in de catalogus van Rakazo"
+msgid "Not in ALLORA's catalog"
+msgstr "Niet in de catalogus van ALLORA"
 
 #: apps/mobile/app/(settings)/integrations.tsx
 #: apps/web/src/pages/plugins/plugin-browse.tsx
@@ -8287,8 +8287,8 @@ msgid "Not on an HTTPS site"
 msgstr "Geen HTTPS-site"
 
 #: apps/web/src/pages/plugins/source-form.tsx
-msgid "Not reviewed by Rakazo. Only add it if you trust this address."
-msgstr "Niet gecontroleerd door Rakazo. Voeg het alleen toe als je dit adres vertrouwt."
+msgid "Not reviewed by ALLORA. Only add it if you trust this address."
+msgstr "Niet gecontroleerd door ALLORA. Voeg het alleen toe als je dit adres vertrouwt."
 
 #. js-lingui-explicit-id
 #: packages/i18n/src/vault.ts
@@ -8313,12 +8313,12 @@ msgstr "Niet verzonden. Tik om opnieuw te proberen"
 
 #: apps/web/src/pages/shell/bots/agent-import-plan.tsx
 #: apps/web/src/pages/shell/bots/import-status.ts
-msgid "Not supported in Rakazo"
-msgstr "Niet ondersteund in Rakazo"
+msgid "Not supported in ALLORA"
+msgstr "Niet ondersteund in ALLORA"
 
 #: apps/web/src/pages/shell/bots/agent-import-plan.tsx
-msgid "Not used by Rakazo"
-msgstr "Niet gebruikt door Rakazo"
+msgid "Not used by ALLORA"
+msgstr "Niet gebruikt door ALLORA"
 
 #. js-lingui-explicit-id
 #: packages/i18n/src/plugin-catalog.ts
@@ -8577,8 +8577,8 @@ msgstr "Foto {0} van {1} openen"
 #: apps/web/src/pages/auth/JoinOrganization.tsx
 #: apps/web/src/pages/auth/Redeem.tsx
 #: apps/web/src/pages/SharedPage.tsx
-msgid "Open Rakazo"
-msgstr "Rakazo openen"
+msgid "Open ALLORA"
+msgstr "ALLORA openen"
 
 #: apps/web/src/components/models/SubscriptionSignInSteps.tsx
 msgid "Open settings"
@@ -9254,27 +9254,27 @@ msgstr "Selectie citeren"
 #: apps/mobile/app/bot-settings.tsx
 #: apps/web/src/pages/settings/AccountSettingsOverlay.tsx
 #: apps/web/src/pages/shell/bots/avatar-studio-popover.tsx
-msgid "Rakazo"
-msgstr "Rakazo"
+msgid "ALLORA"
+msgstr "ALLORA"
 
 #: apps/mobile/app/(settings)/billing.tsx
 #: apps/mobile/components/models/model-role-settings.tsx
 #: apps/web/src/pages/model-settings/ModelRoleSettings.tsx
 #: apps/web/src/pages/onboarding/use-onboarding-model.ts
-msgid "Rakazo credits"
-msgstr "Rakazo-tegoed"
+msgid "ALLORA credits"
+msgstr "ALLORA-tegoed"
 
 #: apps/mobile/lib/billing/self-hosted-support.ts
-msgid "Rakazo is free to self-host. If you'd like to support it, subscribers can email support@rakazo.com for help."
-msgstr "Rakazo is gratis te self-hosten. Wil je het steunen? Abonnees kunnen voor hulp mailen naar support@rakazo.com."
+msgid "ALLORA is free to self-host. If you'd like to support it, subscribers can email support@rakazo.com for help."
+msgstr "ALLORA is gratis te self-hosten. Wil je het steunen? Abonnees kunnen voor hulp mailen naar support@rakazo.com."
 
 #: apps/web/src/components/models/ProviderSettingsForm.tsx
-msgid "rakazo-shared and IDs starting with bot- are reserved for Rakazo."
-msgstr "rakazo-shared en ID's die beginnen met bot- zijn gereserveerd voor Rakazo."
+msgid "rakazo-shared and IDs starting with bot- are reserved for ALLORA."
+msgstr "rakazo-shared en ID's die beginnen met bot- zijn gereserveerd voor ALLORA."
 
 #: apps/mobile/app/(settings)/account.tsx
-msgid "Rate Rakazo"
-msgstr "Rakazo beoordelen"
+msgid "Rate ALLORA"
+msgstr "ALLORA beoordelen"
 
 #: apps/mobile/components/thread/message-row.tsx
 #: apps/web/src/pages/shell/chat/message-hover-actions.tsx
@@ -9337,8 +9337,8 @@ msgid "Recall from banks"
 msgstr "Ophalen uit banken"
 
 #: apps/web/src/components/models/ProviderSettingsForm.tsx
-msgid "Recall from this peer; save to Rakazo’s own peers."
-msgstr "Ophalen uit deze peer; opslaan in Rakazo’s eigen peers."
+msgid "Recall from this peer; save to ALLORA’s own peers."
+msgstr "Ophalen uit deze peer; opslaan in ALLORA’s eigen peers."
 
 #: apps/web/src/components/models/ProviderSettingsForm.tsx
 msgid "Recall only"
@@ -10044,8 +10044,8 @@ msgstr "Terug naar postvak IN"
 
 #: apps/web/src/pages/integrations/McpOAuthCallback.tsx
 #: apps/web/src/pages/integrations/SlackInstallCallback.tsx
-msgid "Return to Rakazo"
-msgstr "Terug naar Rakazo"
+msgid "Return to ALLORA"
+msgstr "Terug naar ALLORA"
 
 #: apps/mobile/app/page.tsx
 #: apps/web/src/components/pages/PageViewHost.tsx
@@ -10943,8 +10943,8 @@ msgstr "Meld je aan bij {host} en plak hier de code die je te zien krijgt."
 
 #: apps/mobile/app/sign-in.tsx
 #: apps/web/src/pages/auth/Auth.tsx
-msgid "Sign in to Rakazo"
-msgstr "Aanmelden bij Rakazo"
+msgid "Sign in to ALLORA"
+msgstr "Aanmelden bij ALLORA"
 
 #: packages/i18n/src/user-error.ts
 msgid "Sign in to your account, then link this provider in settings"
@@ -10974,8 +10974,8 @@ msgid "Sign up"
 msgstr "Registreren"
 
 #: apps/mobile/app/sign-in.tsx
-msgid "Sign up for Rakazo"
-msgstr "Registreer je voor Rakazo"
+msgid "Sign up for ALLORA"
+msgstr "Registreer je voor ALLORA"
 
 #: apps/web/src/pages/plugins/PluginsOverlay.tsx
 msgid "Sign-in cancelled. Retry in Manage MCP servers."
@@ -11327,8 +11327,8 @@ msgid "Start recording"
 msgstr "Opname starten"
 
 #: apps/mobile/app/paywall.tsx
-msgid "Start using Rakazo"
-msgstr "Aan de slag met Rakazo"
+msgid "Start using ALLORA"
+msgstr "Aan de slag met ALLORA"
 
 #: apps/mobile/app/(settings)/billing.tsx
 #: apps/web/src/components/billing/ModelCredits.tsx
@@ -11494,8 +11494,8 @@ msgstr "Support voor $25 / maand"
 
 #: apps/mobile/app/(settings)/account.tsx
 #: apps/mobile/lib/billing/self-hosted-support.ts
-msgid "Support Rakazo"
-msgstr "Rakazo steunen"
+msgid "Support ALLORA"
+msgstr "ALLORA steunen"
 
 #: apps/mobile/app/(settings)/model-settings.tsx
 #: apps/web/src/pages/model-settings/model-settings-panel.tsx
@@ -11650,8 +11650,8 @@ msgid "That isn't a Grok Bot export. Paste the Bot's whole reply."
 msgstr "Dat is geen Grok Bot-export. Plak het volledige antwoord van de Bot."
 
 #: apps/mobile/lib/api/endpoint.ts
-msgid "That URL did not look like a Rakazo server"
-msgstr "Die URL leek geen Rakazo-server"
+msgid "That URL did not look like a ALLORA server"
+msgstr "Die URL leek geen ALLORA-server"
 
 #: apps/mobile/lib/api/endpoint.ts
 msgid "That URL is missing a host"
@@ -11792,8 +11792,8 @@ msgstr "De gedeelde link werkt dan niet meer"
 
 #: apps/mobile/app/meeting-transcript.tsx
 #: apps/web/src/pages/shell/meetings/meeting-transcript.tsx
-msgid "The transcript will be removed from Rakazo."
-msgstr "Het transcript wordt uit Rakazo verwijderd."
+msgid "The transcript will be removed from ALLORA."
+msgstr "Het transcript wordt uit ALLORA verwijderd."
 
 #: apps/mobile/app/(settings)/billing.tsx
 #: apps/web/src/components/billing/ModelCredits.tsx
@@ -11961,8 +11961,8 @@ msgid "This draft isn't available"
 msgstr "Dit concept is niet beschikbaar"
 
 #: apps/web/src/lib/bots/agent-import-errors.ts
-msgid "This export is newer than Rakazo can read. Update Rakazo and try again."
-msgstr "Deze export is nieuwer dan Rakazo kan lezen. Werk Rakazo bij en probeer het opnieuw."
+msgid "This export is newer than ALLORA can read. Update ALLORA and try again."
+msgstr "Deze export is nieuwer dan ALLORA kan lezen. Werk ALLORA bij en probeer het opnieuw."
 
 #: apps/web/src/lib/bots/agent-import-errors.ts
 msgid "This export is too large to import."
@@ -12135,8 +12135,8 @@ msgstr "Deze space heeft een eigen kluis. De bots ervan bewaren en gebruiken ite
 
 #: apps/mobile/app/(settings)/model-connection.tsx
 #: apps/web/src/pages/model-settings/connection-controls.tsx
-msgid "This subscription sign-in is not available in Rakazo yet. Use a deployment credential or choose another provider."
-msgstr "Deze abonnementsaanmelding is nog niet beschikbaar in Rakazo. Gebruik een implementatiegegeven of kies een andere aanbieder."
+msgid "This subscription sign-in is not available in ALLORA yet. Use a deployment credential or choose another provider."
+msgstr "Deze abonnementsaanmelding is nog niet beschikbaar in ALLORA. Gebruik een implementatiegegeven of kies een andere aanbieder."
 
 #: apps/mobile/app/(settings)/bot-template.tsx
 msgid "This template is no longer available."
@@ -12603,8 +12603,8 @@ msgid "Update progress"
 msgstr "Updatevoortgang"
 
 #: apps/web/src/lib/integrations/meeting-calendar-connect.ts
-msgid "Update Rakazo to connect your calendar from the desktop app."
-msgstr "Werk Rakazo bij om je agenda te koppelen vanuit de desktop-app."
+msgid "Update ALLORA to connect your calendar from the desktop app."
+msgstr "Werk ALLORA bij om je agenda te koppelen vanuit de desktop-app."
 
 #: apps/mobile/lib/api/client-update.ts
 #: apps/web/src/lib/platform/client-update.ts
@@ -12780,8 +12780,8 @@ msgstr "Gebruik Beveiligde invoer voor wachtwoorden."
 
 #: apps/mobile/app/(settings)/billing.tsx
 #: apps/web/src/components/billing/ModelCredits.tsx
-msgid "Use Rakazo credits"
-msgstr "Rakazo-tegoed gebruiken"
+msgid "Use ALLORA credits"
+msgstr "ALLORA-tegoed gebruiken"
 
 #: apps/mobile/components/settings/space-bots-model.tsx
 msgid "Use space default"
@@ -13035,8 +13035,8 @@ msgstr "Welkom terug"
 #: apps/mobile/app/(settings)/_layout.tsx
 #: apps/mobile/app/sign-in.tsx
 #: apps/web/src/components/account/SignupSurvey.tsx
-msgid "Welcome to Rakazo"
-msgstr "Welkom bij Rakazo"
+msgid "Welcome to ALLORA"
+msgstr "Welkom bij ALLORA"
 
 #: apps/web/src/pages/shell/create-delete-dialogs.tsx
 msgid "What about its memories?"
@@ -13048,8 +13048,8 @@ msgstr "Wat kan deze space gebruiken?"
 
 #: apps/mobile/app/(settings)/signup-survey.tsx
 #: apps/web/src/components/account/SignupSurvey.tsx
-msgid "What do you most want Rakazo to help with?"
-msgstr "Waarmee wil je het liefst hulp van Rakazo?"
+msgid "What do you most want ALLORA to help with?"
+msgstr "Waarmee wil je het liefst hulp van ALLORA?"
 
 #: apps/web/src/pages/shell/chat/message-cards.tsx
 msgid "What do you want me on first?"

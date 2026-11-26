@@ -12,7 +12,8 @@ picks the provider and `PI_DEFAULT_MODEL` the model:
 
 | `PI_DEFAULT_PROVIDER`  | Key                  | Default model                |
 | ---------------------- | -------------------- | ---------------------------- |
-| `openrouter` (default) | `OPENROUTER_API_KEY` | `anthropic/claude-haiku-5.5` |
+| `groq` (default)       | `GROQ_API_KEY`       | `openai/gpt-oss-120b`        |
+| `openrouter`           | `OPENROUTER_API_KEY` | `anthropic/claude-haiku-5.5` |
 | `anthropic`            | `ANTHROPIC_API_KEY`  | `claude-sonnet-5`            |
 | `deepseek`             | `DEEPSEEK_API_KEY`   | `deepseek-flash`             |
 
@@ -65,7 +66,7 @@ unattended runs that cannot request approval refuse them.
 
 In **Settings → Models → Approval model**, each user can select a model
 from an existing connection and add ordered backups, independently of their main model. Personal
-connections use their own credentials; hosted calls follow the same Rakazo credit rules as chat.
+connections use their own credentials; hosted calls follow the same ALLORA credit rules as chat.
 Backups are tried only when a checker fails. An explicit ask, including an uncertain decision,
 still requires a person.
 
@@ -120,14 +121,14 @@ prompt, so long chats are compacted sooner.
 
 A server behind a rate-limited key (a free tier, an organisation token quota) often answers `429`
 with a fixed `Retry-After` of a minute, so each rejected call costs a minute. Set
-`RAKAZO_LOCAL_TOKENS_PER_MINUTE` to the server's prompt-token limit and Rakazo paces calls to the
+`RAKAZO_LOCAL_TOKENS_PER_MINUTE` to the server's prompt-token limit and ALLORA paces calls to the
 local provider under it with a sliding one-minute window, waiting only as long as the window needs.
 The estimate is calibrated against the prompt tokens the server reports. Leave some headroom if
 other clients share the key; a `429` that still happens keeps the usual `Retry-After` handling.
 Unset, calls are sent as soon as they are ready. Like the other token limits, a value that is not
 a positive integer is rejected when the local provider is configured.
 
-Rakazo keeps a run's earlier messages unchanged between calls so a server's prompt cache keeps
+ALLORA keeps a run's earlier messages unchanged between calls so a server's prompt cache keeps
 hitting, and trims old page state only when that saves more than the cache would. A new message in
 the same chat starts with the previous turn exactly as it was sent, so the cache carries over
 between turns too. A server without
@@ -136,7 +137,7 @@ tokens) gets nothing from that, and old page snapshots are only sent again on ev
 `RAKAZO_LOCAL_PROMPT_CACHE=off` to declare this: stale page state is then trimmed once about 3,000
 tokens of it have built up. Unset, behaviour is unchanged.
 
-The loopback default is suitable when running Rakazo from a source checkout. From containers,
+The loopback default is suitable when running ALLORA from a source checkout. From containers,
 prefer a stable LAN RFC1918 address (not Compose service DNS alone). On Docker Desktop,
 `host.docker.internal` also works.
 On Docker Desktop, a bot computer shell can often reach services bound to host `127.0.0.1`
@@ -144,19 +145,19 @@ through that same hostname. Do not run sensitive unauthenticated services on loo
 bots run, or firewall / block that path. Linux does not get `host.docker.internal` the same
 way by default.
 Only configure an endpoint you control: prompts, attachments, and tool results sent to that model
-leave Rakazo through this URL. Leave `RAKAZO_LOCAL_MODELS` blank to disable the provider.
+leave ALLORA through this URL. Leave `RAKAZO_LOCAL_MODELS` blank to disable the provider.
 
 ## Claude Code CLI
 
 Claude Pro and Max plans already work on any install through **Sign in with Claude** in
 **Settings → Models** ([model subscriptions](./model-subscriptions.md)). As an alternative, a server
-that only you use can run its deployment model through the official Claude Code CLI, signed in with your own account. For each model turn Rakazo starts the
-`claude` command installed on the server and reads its reply. Rakazo never reads, stores, forwards
-or refreshes your Claude sign-in, and every request to Anthropic is the CLI's own. Rakazo keeps the
+that only you use can run its deployment model through the official Claude Code CLI, signed in with your own account. For each model turn ALLORA starts the
+`claude` command installed on the server and reads its reply. ALLORA never reads, stores, forwards
+or refreshes your Claude sign-in, and every request to Anthropic is the CLI's own. ALLORA keeps the
 conversation, tools, memory and approvals: the CLI only answers as the model, with its own tools,
 settings and project files turned off. Each model turn continues the CLI's saved session from the
 turn before, including the first turn of a new message in the same chat, so its prompt cache
-carries over, and Rakazo removes each session once it moves on.
+carries over, and ALLORA removes each session once it moves on.
 
 What it needs:
 
@@ -167,10 +168,10 @@ What it needs:
   with `claude auth login`. On a server without a browser, the CLI can use the token
   `claude setup-token` creates instead: set it as `CLAUDE_CODE_OAUTH_TOKEN` together with
   `RAKAZO_CLAUDE_CODE_SETUP_TOKEN=1` in the API's and worker's environment. Either way there is
-  no Claude sign-in inside Rakazo. Prefer the token: with `claude auth login`, the CLI tells the
+  no Claude sign-in inside ALLORA. Prefer the token: with `claude auth login`, the CLI tells the
   model the signed-in account's email, so bots may repeat it. With the token, the CLI runs with an
   empty config directory of its own and the email stays out.
-- One account on the server. A Claude sign-in belongs to one person, so Rakazo refuses Claude Code
+- One account on the server. A Claude sign-in belongs to one person, so ALLORA refuses Claude Code
   runs while the server has more than one account (people who only message bots from chat apps do
   not count) or bills for model usage.
 
@@ -180,28 +181,28 @@ PI_DEFAULT_CREDENTIALS=host
 PI_DEFAULT_MODEL=claude-sonnet-5
 ```
 
-Use a full model id the CLI accepts with `claude --model`, so Rakazo knows the model's context
+Use a full model id the CLI accepts with `claude --model`, so ALLORA knows the model's context
 and output limits. Usage counts against your own Claude plan and its limits, which assume
-ordinary individual use; Rakazo shows no cost for these runs, and once the plan's limit is reached
+ordinary individual use; ALLORA shows no cost for these runs, and once the plan's limit is reached
 runs fail with a rate-limit error until it resets. Your use of Claude Code is covered by
 Anthropic's terms; see [Legal and compliance](https://code.claude.com/docs/en/legal-and-compliance).
 
 The CLI runs in an empty private temporary directory with an allowlisted environment. API keys and
 other server secrets, including `ANTHROPIC_API_KEY`, are never passed to it, so it always uses its
 own sign-in. `RAKAZO_CLAUDE_CODE_SETUP_TOKEN=1` adds only `CLAUDE_CODE_OAUTH_TOKEN`, which the CLI
-reads and Rakazo does not. Only the deployment model runs on Claude Code; it is not offered as a
+reads and ALLORA does not. Only the deployment model runs on Claude Code; it is not offered as a
 connection in **Settings → Models**.
 
 ## OpenCode CLI
 
 A server that only you use can run its bots through the official OpenCode CLI, so models and plans
 that OpenCode offers only in its own app, such as its free models, work for your bots. For each
-turn Rakazo starts `opencode acp` on the server and talks to it over the Agent Client Protocol, the
-same way an editor does. OpenCode runs the bot's turn itself, and Rakazo keeps the chat, memory and
-approvals: OpenCode gets the bot's instructions as its system prompt and Rakazo's tools through a
-private connection on this machine, and every tool call goes through Rakazo's approvals as usual.
+turn ALLORA starts `opencode acp` on the server and talks to it over the Agent Client Protocol, the
+same way an editor does. OpenCode runs the bot's turn itself, and ALLORA keeps the chat, memory and
+approvals: OpenCode gets the bot's instructions as its system prompt and ALLORA's tools through a
+private connection on this machine, and every tool call goes through ALLORA's approvals as usual.
 OpenCode's own tools, plugins, MCP servers, skills and instruction files are turned off, and a turn
-in which OpenCode tries to use one of its own tools is stopped. Rakazo never reads, stores or
+in which OpenCode tries to use one of its own tools is stopped. ALLORA never reads, stores or
 refreshes your OpenCode sign-in.
 
 What it needs:
@@ -212,7 +213,7 @@ What it needs:
 - OpenCode on that user's `PATH`. Its free models need no sign-in; for a plan or provider, sign in
   once in a terminal as that user with `opencode auth login`.
 - One account on the server. The CLI's sign-in and plan are one person's, and the CLI runs with
-  that person's access to the computer, so Rakazo refuses OpenCode runs while the server has more
+  that person's access to the computer, so ALLORA refuses OpenCode runs while the server has more
   than one account (people who only message bots from chat apps do not count) or bills for model
   usage.
 
@@ -230,8 +231,8 @@ Use a model id from `opencode models`. Each chat continues OpenCode's session fr
 turn, so OpenCode keeps its context and prompt cache; after a restart, the next turn starts a new
 session with the recent chat. Bots on OpenCode can use their computer's screen and see the images
 people send, through the same tools and approvals as any bot, when the model OpenCode runs takes
-images. Rakazo goes by its own model list where it knows the model, so a text-only model gets
-neither. Usage counts against your OpenCode plan or provider, and Rakazo shows no cost
+images. ALLORA goes by its own model list where it knows the model, so a text-only model gets
+neither. Usage counts against your OpenCode plan or provider, and ALLORA shows no cost
 for these runs. Your use of OpenCode and of the models it reaches is covered by their own terms.
 
 The CLI runs in a private working folder with an allowlisted environment: API keys and other server
@@ -241,19 +242,19 @@ connection in **Settings → Models**.
 ## Antigravity CLI
 
 A server that only you use can run its bots through Google's official Antigravity CLI (`agy`), so
-a Google plan that covers Antigravity works for your bots. For each turn Rakazo starts `agy acp`
+a Google plan that covers Antigravity works for your bots. For each turn ALLORA starts `agy acp`
 on the server and talks to it over the Agent Client Protocol, as described for
-[OpenCode](#opencode-cli): the CLI runs the bot's turn with Rakazo's tools and approvals, and
-Rakazo keeps the chat and memory. Every session turns off all of the CLI's built-in tools, and a
+[OpenCode](#opencode-cli): the CLI runs the bot's turn with ALLORA's tools and approvals, and
+ALLORA keeps the chat and memory. Every session turns off all of the CLI's built-in tools, and a
 turn in which it tries to use one is stopped. The CLI adds the bot's instructions to its own
-system prompt rather than replacing it. Rakazo never reads or refreshes your Google sign-in.
+system prompt rather than replacing it. ALLORA never reads or refreshes your Google sign-in.
 
 What it needs:
 
 - The API and worker running from a source checkout on your own computer, as the same OS user as
   the CLI. As with OpenCode, this is only for your own machine.
 - `agy` on that user's `PATH`, signed in once in a terminal as that user with `agy acp --login`.
-  Rakazo finds that sign-in in the default `~/.gemini`, so leave `GEMINI_HOME` unset when you sign
+  ALLORA finds that sign-in in the default `~/.gemini`, so leave `GEMINI_HOME` unset when you sign
   in.
 - One account on the server, as with the other CLI routes.
 
@@ -263,14 +264,14 @@ PI_DEFAULT_CREDENTIALS=host
 PI_DEFAULT_MODEL=<a model the CLI offers>
 ```
 
-The CLI runs with a home folder of Rakazo's own in place of `~/.gemini`, linked only to the files
+The CLI runs with a home folder of ALLORA's own in place of `~/.gemini`, linked only to the files
 it keeps its sign-in in, so your Antigravity hooks, MCP servers, skills and other settings stay out
 of the bot's turns. A sign-in the CLI saves there when it refreshes is replaced by the link again
 before the next turn, so signing out or switching accounts with `agy` reaches your bots.
 
 If the model id is not one the CLI offers, the run's error lists the ones it does. Bots on
 Antigravity can use their computer's screen and see the images people send, as on OpenCode. Usage
-counts against your Google plan, and Rakazo shows no cost for these runs. Your use is covered by
+counts against your Google plan, and ALLORA shows no cost for these runs. Your use is covered by
 [Google's Antigravity terms](https://antigravity.google/terms).
 
 ## Ollama Cloud
@@ -322,7 +323,7 @@ exactly the behavior without it.
 
 Hosted OpenAI-compatible presets include Ollama Cloud (`ollama-cloud`), Concentrate AI
 (`concentrate`) and DeepInfra (`deepinfra`). Choose one in **Settings → Models**, enter its API key, and select
-a model. Rakazo loads the list automatically. Their HTTPS hosts remain available with `RAKAZO_OPENAI_COMPAT_ALLOW_PUBLIC=0`.
+a model. ALLORA loads the list automatically. Their HTTPS hosts remain available with `RAKAZO_OPENAI_COMPAT_ALLOW_PUBLIC=0`.
 If you set a provider allowlist, include `openai-compatible` and the ids of the presets you
 want to keep. Leaving out a preset id hides it and removes its host exemption.
 
@@ -335,7 +336,7 @@ Existing connections default to disabled. Deployment-local models opt in through
 connection.
 
 Enabled connections default to medium thinking. Web and desktop expose **Thinking** in a bot's
-advanced settings; mobile inherits the same backend policy. Rakazo sends standard
+advanced settings; mobile inherits the same backend policy. ALLORA sends standard
 `reasoning_effort` (`minimal`, `low`, `medium`, `high`, or `none` when off); the server owns
 model-specific translation. Leave **Supports thinking** off when the server lacks standard effort
 support. Existing token limits still apply; effort is not a separate reasoning-token budget.

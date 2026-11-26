@@ -163,12 +163,12 @@ export function CreditChoice({
       )}
       <div className="flex flex-col gap-2">
         <h1 className="text-heading1 font-medium">
-          <Trans>Choose how to use Rakazo</Trans>
+          <Trans>Choose how to use ALLORA</Trans>
         </h1>
         {status.freePeriodEnded ? (
           <p className="text-body text-muted-foreground">
             <Trans>
-              Thanks for being an early user. Running Rakazo in the cloud has real costs, so it's
+              Thanks for being an early user. Running ALLORA in the cloud has real costs, so it's
               now paid. It's still free if you{" "}
               <a
                 className="whitespace-nowrap underline underline-offset-4 hover:text-foreground"

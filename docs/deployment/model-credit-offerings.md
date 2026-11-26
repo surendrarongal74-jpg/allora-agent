@@ -91,7 +91,7 @@ summary callers without a metered resolver fail closed with this configuration.
 Speech and deployment approval checks do not acquire customer tariffs here.
 
 In model settings on web, desktop, and mobile, each approved offering appears under
-“Rakazo credits”. Personal connections remain separate entries, including when they
+“ALLORA credits”. Personal connections remain separate entries, including when they
 serve exactly the same provider/model. The choice persists for the account or the
 Space override being edited. The main model and each auxiliary role can choose
 funding independently. A fallback to a different funding source happens only when

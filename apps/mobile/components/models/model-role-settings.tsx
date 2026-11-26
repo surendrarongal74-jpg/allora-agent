@@ -173,7 +173,7 @@ export function ModelRoleSettings({
   // The deployment pays for its default, so it reads as included rather than as a provider bill.
   const included = state.settings?.deploymentIncluded ? t`Included` : undefined;
   const connectionName = (choice: ModelRoleChoice) =>
-    choice.creditOfferingId ? t`Rakazo credits` : namesFor(choice).connectionName;
+    choice.creditOfferingId ? t`ALLORA credits` : namesFor(choice).connectionName;
   const isPrimarySlot = (slot: Slot) => slot === "empty" || (slot === 0 && primary !== null);
 
   const thinkingLevels =
@@ -297,10 +297,10 @@ export function ModelRoleSettings({
             key: modelRoleChoiceKey(option),
             label: withConnectionName(
               option.label,
-              option.creditOfferingId ? t`Rakazo credits` : option.connectionName,
+              option.creditOfferingId ? t`ALLORA credits` : option.connectionName,
             ),
             modelLabel: option.label,
-            providerLabel: option.creditOfferingId ? t`Rakazo credits` : option.connectionName,
+            providerLabel: option.creditOfferingId ? t`ALLORA credits` : option.connectionName,
             provider: option.provider,
             modelId: option.modelId,
           })),

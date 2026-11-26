@@ -40,7 +40,7 @@ function isRecall(message: Tagged): boolean {
   );
 }
 
-/** What the provider sees of a message: no Rakazo tags, and no tool details it is never sent. */
+/** What the provider sees of a message: no ALLORA tags, and no tool details it is never sent. */
 function sentForm(message: Message): Message {
   const { rakazoHistory, rakazoMessageId, rakazoCreatedAt, ...rest } = message as Tagged & {
     rakazoCreatedAt?: string;

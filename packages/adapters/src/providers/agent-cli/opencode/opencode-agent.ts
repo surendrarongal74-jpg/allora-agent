@@ -16,7 +16,7 @@ function permissions(toolServer: string) {
 }
 
 /**
- * The whole OpenCode config for one turn. Rakazo's instructions replace OpenCode's own system
+ * The whole OpenCode config for one turn. ALLORA's instructions replace OpenCode's own system
  * prompt, and nothing is shared or saved for undo. The legacy keys are read by every OpenCode
  * release that has ACP.
  */
@@ -41,7 +41,7 @@ export function openCodeConfig(instructions: string, toolServer: string) {
 }
 
 /**
- * OpenCode runs `opencode acp`, as installed. Rakazo never signs it in or reads its sign-in: the
+ * OpenCode runs `opencode acp`, as installed. ALLORA never signs it in or reads its sign-in: the
  * operator signs in once with `opencode auth login` (its free models need none), and OpenCode
  * keeps that in its own data folder, which stays where it is.
  */
@@ -52,7 +52,7 @@ export const openCodeAgent: AcpAgentDescriptor = {
   // OpenCode passes images on to models that take them.
   acceptsImages: true,
   notInstalled:
-    "OpenCode is not installed on this server. Install it for the user that runs the Rakazo worker.",
+    "OpenCode is not installed on this server. Install it for the user that runs the ALLORA worker.",
   async launch({ files, instructions, toolServer, env }) {
     const config = join(files, "opencode.json");
     await writeFile(config, JSON.stringify(openCodeConfig(instructions, toolServer)), {
