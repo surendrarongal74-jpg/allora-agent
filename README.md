@@ -390,6 +390,10 @@ Chinese guides cover [self-hosting](./docs/zh-CN/self-host.md), [models](./docs/
 - [Incredibuild](https://www.incredibuild.com/?utm_source=github&utm_medium=referral&utm_campaign=rakazo_readme)
 - [OpenSourceAlternatives.to](https://www.opensourcealternatives.to/?utm_source=github&utm_medium=referral&utm_campaign=rakazo_readme)
 
+## Third-party software
+
+- The bot's page browser is [Obscura](https://github.com/h4ckf0r0day/obscura), a headless browser used unmodified under the Apache License 2.0. See [NOTICE](./NOTICE).
+
 ## Stack
 
 - TypeScript

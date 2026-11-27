@@ -27,3 +27,10 @@ Nous Research, used under the MIT License:
   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   SOFTWARE.
+
+The computer image's default page browser is Obscura,
+https://github.com/h4ckf0r0day/obscura, a headless browser downloaded at image
+build time by infra/sandboxes/computer/install-headless-browser.sh and driven
+over the Chrome DevTools Protocol by infra/sandboxes/computer/rakazo-cdp-broker.
+Obscura is Copyright its authors and is used, unmodified, under the Apache
+License, Version 2.0.
