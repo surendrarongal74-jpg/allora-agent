@@ -1,0 +1,12 @@
+{
+  "name": "ALLORA server",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu-24.04",
+  "hostRequirements": { "cpus": 2, "memory": "8gb" },
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {},
+    "ghcr.io/devcontainers/features/github-cli:1": {}
+  },
+  "forwardPorts": [5173],
+  "portsAttributes": { "5173": { "label": "ALLORA", "onAutoForward": "silent" } },
+  "postStartCommand": "bash scripts/codespace-start.sh > /tmp/allora-start.log 2>&1 &"
+}
