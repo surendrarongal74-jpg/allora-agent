@@ -86,6 +86,7 @@ import { loadHapticsPreference } from "../lib/native/haptics";
 import { native, useMobileTokens, useResolvedAppearance } from "../lib/native/native";
 import { useNavigatorMounted } from "../lib/navigation/navigator-mounted";
 import { clearAppBadge } from "../lib/notifications/app-badge";
+import { useBotWidgets } from "../lib/notifications/bot-widgets";
 import {
   configureForegroundNotifications,
   resumeLiveNotifications,
@@ -391,6 +392,7 @@ function LayoutContent() {
     if (!ready) return;
     return startWorkActivities();
   }, [ready]);
+  useBotWidgets(ready);
 
   useEffect(() => watchForegroundUpdates(), []);
 

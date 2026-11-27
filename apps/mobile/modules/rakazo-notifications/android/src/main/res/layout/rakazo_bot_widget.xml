@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- One bot in full: avatar and state on top, then its name and latest task. -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:id="@+id/rakazo_widget_root"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:background="@drawable/rakazo_widget_background"
+  android:padding="16dp">
+
+  <TextView
+    android:id="@+id/rakazo_widget_empty"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:text="@string/rakazo_widget_empty"
+    android:textColor="@color/rakazo_widget_muted"
+    android:textSize="14sp"
+    android:visibility="gone" />
+
+  <LinearLayout
+    android:id="@+id/rakazo_widget_bot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:gravity="center_vertical"
+      android:orientation="horizontal">
+      <FrameLayout
+        android:layout_width="44dp"
+        android:layout_height="44dp">
+        <ImageView
+          android:id="@+id/rakazo_widget_avatar"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:importantForAccessibility="no"
+          android:src="@drawable/rakazo_widget_avatar" />
+        <TextView
+          android:id="@+id/rakazo_widget_initial"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:gravity="center"
+          android:importantForAccessibility="no"
+          android:textColor="@color/rakazo_widget_on_avatar"
+          android:textSize="20sp"
+          android:textStyle="bold" />
+      </FrameLayout>
+      <TextView
+        android:id="@+id/rakazo_widget_state"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="end"
+        android:maxLines="1"
+        android:textSize="13sp"
+        android:textStyle="bold" />
+    </LinearLayout>
+
+    <TextView
+      android:id="@+id/rakazo_widget_name"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="10dp"
+      android:ellipsize="end"
+      android:maxLines="1"
+      android:textColor="@color/rakazo_widget_foreground"
+      android:textSize="17sp"
+      android:textStyle="bold" />
+    <TextView
+      android:id="@+id/rakazo_widget_task"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="2dp"
+      android:ellipsize="end"
+      android:maxLines="3"
+      android:textColor="@color/rakazo_widget_muted"
+      android:textSize="14sp" />
+  </LinearLayout>
+</FrameLayout>

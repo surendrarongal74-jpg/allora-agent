@@ -31,6 +31,7 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.ByteArrayOutputStream
@@ -145,6 +146,7 @@ class RakazoNotificationService : Service() {
             if (visibleWorking.isEmpty()) clearLive() else {
               showLive(visibleWorking, avatarStyle, copyContext)
             }
+            if (BotWidgets.placed(this)) BotWidgets.publish(this, botWidgetBots(active, recent))
             replyLookups = completions.prepare(recent, seeded, settings, ::isOpenThread) { run ->
               immediate += run to attentionCopy(copyContext, run)
             }
@@ -366,11 +368,7 @@ class RakazoNotificationService : Service() {
     val intent = if (run == null) {
       packageManager.getLaunchIntentForPackage(packageName) ?: Intent(Intent.ACTION_VIEW, Uri.parse("rakazo://"))
     } else {
-      val destination = if (run.groupId != null) {
-        "rakazo://group-thread?groupId=${Uri.encode(run.groupId)}&name=${Uri.encode(run.groupName.orEmpty())}&spaceId=${Uri.encode(run.spaceId)}&threadId=${Uri.encode(run.threadId)}"
-      } else {
-        "rakazo://thread?botId=${Uri.encode(run.botId)}&name=${Uri.encode(run.botName)}&spaceId=${Uri.encode(run.spaceId)}&threadId=${Uri.encode(run.threadId)}"
-      }
+      val destination = chatLink(run.spaceId, run.botId, run.botName, run.groupId, run.groupName, run.threadId)
       Intent(
         Intent.ACTION_VIEW,
         Uri.parse(destination),
@@ -497,6 +495,11 @@ private fun runs(
 ): List<RunRecord> {
   val root = rpc(endpoint, token, spaceId, headers, "runs/list", JSONObject().put("filter", filter))
   val rows = root.optJSONArray("runs") ?: throw IOException("Invalid activity response")
+  return parseRunRows(rows, spaceId)
+}
+
+/** Rows of a `runs/list` answer, as the poll and the app's widget updates both read them. */
+internal fun parseRunRows(rows: JSONArray, spaceId: String): List<RunRecord> {
   return List(rows.length()) { index ->
     val row = rows.optJSONObject(index) ?: throw IOException("Invalid activity response")
     RunRecord(
@@ -514,6 +517,21 @@ private fun runs(
     )
   }
 }
+
+/** The app's link to a bot's chat, or to the group chat a bot works in. */
+internal fun chatLink(
+  spaceId: String,
+  botId: String,
+  botName: String,
+  groupId: String?,
+  groupName: String?,
+  threadId: String,
+): String =
+  if (groupId != null) {
+    "rakazo://group-thread?groupId=${Uri.encode(groupId)}&name=${Uri.encode(groupName.orEmpty())}&spaceId=${Uri.encode(spaceId)}&threadId=${Uri.encode(threadId)}"
+  } else {
+    "rakazo://thread?botId=${Uri.encode(botId)}&name=${Uri.encode(botName)}&spaceId=${Uri.encode(spaceId)}&threadId=${Uri.encode(threadId)}"
+  }
 
 private fun isWorking(run: RunRecord): Boolean =
   run.status == "queued" || run.status == "leased" || run.status == "running"

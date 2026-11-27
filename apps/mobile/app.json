@@ -105,6 +105,7 @@
       "./plugins/with-worklets-headers",
       "./plugins/with-lan-cleartext",
       "./plugins/with-android-no-gwp-asan",
+      "./plugins/with-android-widgets",
       "./plugins/with-agent-notifications",
       "./plugins/with-app-intents",
       "./plugins/with-apple-watch",
