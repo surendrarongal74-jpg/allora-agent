@@ -43,6 +43,25 @@ For example, a bot comparing three options can delegate their research, answer a
 Subagents inherit the originating conversation's context, tool permissions and privacy boundaries in app, group and connected messaging chats.
 Approvals and results return to that conversation; delegation never grants access to private context that the parent could not use there.
 
+## Chief
+
+Status: a bot template with built-in instructions; the bot-creation limit is enforced on the server, and the per-job team size is a default the user can change in chat. The bot a new account starts with is also named Chief but begins as a general bot; it gains this behavior only if the user gives it these instructions.
+
+Chief is the bot for big jobs, such as building an app or a website, running a campaign or a long research project, which need more than one kind of work and a result someone has checked.
+It is created from the bot templates in every app like any other template, and it uses the same bot tools any bot has, so a team it builds is made of ordinary bots the user can open, talk to and keep.
+For a big job Chief plans the deliverable and its acceptance checks, asks only what changes the plan, splits the work into roles, reuses fitting bots before creating new ones, and puts the team in one group chat with the plan.
+Every team has a Reviewer and a Tester, and neither checks work it made, because inspection is only worth something when it is independent.
+Builders work on the shared Team Computer in one project folder, so the Reviewer reads their changes and the Tester runs what they built in place.
+Each deliverable goes through review and then testing; failures go back to their owner with the findings and are checked again, until review is clean and every check passes, and a failure that keeps returning makes Chief change course or ask the user.
+Chief hands over only a result that passed, with a short report of what was built, what was checked and fixed, and what is known not to work, then asks whether to keep the team and archives the bots it created for the job unless the user keeps them.
+Small requests stay with Chief alone, because a team for a quick answer only adds waiting.
+Chief adds at most six bots per job unless the user sets another number, and any bot can have at most twenty unarchived bots it created, so a planning loop cannot fill the roster.
+Delegation never adds authority: every teammate follows the owner's approval mode, and spending, publishing, deploying, sending and deleting still ask as they would for Chief.
+
+For example, asked to "build me a website" for a bakery, Chief confirms the pages and whether it should go live, then creates an Architect, a Designer, a Frontend developer, a Reviewer and a Tester. The Architect sets up the project and plan, the Designer and Frontend developer build the pages, the Reviewer reads each change, and the Tester builds the site, runs its tests and walks every page in the browser at desktop and phone sizes. Chief hands over the site with the checks that passed and the issues review found and fixed; publishing it waits for the user's approval.
+
+Asked to "build me an app" for tracking habits, Chief settles the platform and whether accounts are needed, then adds a Backend developer for data and sign-in alongside the Architect, Designer, Frontend developer, Reviewer and Tester. Frontend and backend work run in parallel against the Architect's interfaces, the Tester installs and runs the app and its test suite and walks sign-up, adding a habit and the daily check-in, and Chief hands over the repository and a run guide once every check passes.
+
 ## Routines
 
 A routine runs either in its chat, as a turn with the whole conversation that waits for work already under way there, or alongside it, as its own run that starts on time even while the bot is busy and posts its result in the chat.

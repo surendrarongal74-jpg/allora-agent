@@ -14,6 +14,7 @@ import {
   ComputerUpdateSchema,
 } from "./computer.js";
 import { ComputerCommandSchema } from "./computer-command.js";
+import { PageInputSchema, PageViewSchema } from "./page-view.js";
 
 export const computersRpc = {
   /** Admin choice of where new computers run, with that provider's connection settings. */
@@ -114,5 +115,11 @@ export const computersRpc = {
       )
       .output(z.object({ image: z.string().nullable() })),
     heartbeat: oc.input(botId).output(z.object({ ok: z.literal(true) })),
+    /** What the bot's page tools show now: a still of the tab, its address and title. */
+    pageView: oc
+      .input(z.object({ botId: Id, large: z.boolean().optional() }))
+      .output(PageViewSchema),
+    /** One tap, swipe, key or navigation from the person holding control, then the page again. */
+    pageInput: oc.input(z.object({ botId: Id, input: PageInputSchema })).output(PageViewSchema),
   },
 };

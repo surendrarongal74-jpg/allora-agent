@@ -12,6 +12,7 @@ import {
   humanizeToolName,
   isRunTerminalEvent,
   liveActivityLine,
+  liveBrowsing,
   normalizeResponseStreamingPreference,
   noteLastToolStep,
   projectMessages,
@@ -1217,6 +1218,17 @@ describe("liveActivityLine", () => {
     expect(
       liveActivityLine([{ id: "m1", blocks: [{ kind: "text", text: "Done" }] }]),
     ).toBeUndefined();
+  });
+});
+
+describe("liveBrowsing", () => {
+  it("is true only while the live message runs a page tool", () => {
+    const live = (pendingToolNames: string[]) => [
+      { id: "progress:run-1", blocks: [{ kind: "progress" as const, text: "", pendingToolNames }] },
+    ];
+    expect(liveBrowsing(live(["browser_act"]))).toBe(true);
+    expect(liveBrowsing(live(["web_search"]))).toBe(false);
+    expect(liveBrowsing([{ id: "m1", blocks: [{ kind: "text", text: "Done" }] }])).toBe(false);
   });
 });
 

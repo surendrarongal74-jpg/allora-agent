@@ -29,6 +29,7 @@ from urllib.parse import unquote, urljoin, urlsplit
 
 sys.path[:0] = [os.path.dirname(os.path.realpath(__file__)), "/usr/local/lib/rakazo"]
 import page_secrets  # noqa: E402
+import page_view  # noqa: E402
 from page_secrets import CardFieldUncertain, Refused, payment_frame_origin  # noqa: E402
 
 discover_ws_url = page_secrets.discover_ws_url
@@ -126,12 +127,44 @@ def display_num() -> int:
         return 1
 
 
-def cdp_port() -> int:
+def desktop_cdp_port() -> int:
     override = os.environ.get("RAKAZO_CDP_PORT")
     if override:
         return int(override)
     # rakazo-browser uses 9221 + display number (:1 -> 9222).
     return 9221 + display_num()
+
+
+# The page tools browse in the computer's headless browser unless it is missing or turned off; then they
+# use the desktop's Chromium, as before. Its broker and engine take ports beside the desktop's.
+HEADLESS_BROKER = os.environ.get("RAKAZO_CDP_BROKER") or "/usr/local/bin/rakazo-cdp-broker"
+HEADLESS_ENGINE = os.environ.get("RAKAZO_HEADLESS_BROWSER") or "/usr/local/bin/obscura"
+HEADLESS_OFFSET, ENGINE_OFFSET = 1000, 2000
+HEADLESS_START_SECONDS = 15.0
+
+
+def headless_engine() -> bool:
+    engine = (os.environ.get("RAKAZO_PAGE_BROWSER_ENGINE") or "headless").strip().lower()
+    return engine != "desktop" and os.access(HEADLESS_BROKER, os.X_OK) and os.access(HEADLESS_ENGINE, os.X_OK)
+
+
+def start_headless(port: int) -> None:
+    """Start this display's headless browser and its broker unless they already answer."""
+    if not browser_closed(port):
+        return
+    profile = os.path.join(os.environ.get("HOME") or "/tmp", ".browser-profiles", "headless")
+    with open(os.devnull, "rb") as devnull_in, open(os.devnull, "wb") as devnull_out:
+        subprocess.Popen(
+            [sys.executable, "-I", HEADLESS_BROKER, "--port", str(port),
+             "--engine-port", str(port - HEADLESS_OFFSET + ENGINE_OFFSET), "--profile", profile],
+            stdin=devnull_in, stdout=devnull_out, stderr=devnull_out, start_new_session=True,
+            env={key: value for key, value in os.environ.items() if key not in ("RAKAZO_BROWSER_ARGS_STDIN",)})
+    wait_for_cdp(port, HEADLESS_START_SECONDS)
+
+
+def cdp_port() -> int:
+    port = desktop_cdp_port()
+    return port + HEADLESS_OFFSET if headless_engine() else port
 
 
 def http_get_json(url: str, timeout: float = 5.0) -> Any:
@@ -178,6 +211,7 @@ def page_tabs(port: int) -> list[dict[str, Any]]:
 
 
 NO_TAB = "No browser tab is open. Use desktop tools to open one."
+NO_PAGE_OPEN = "No page is open."
 
 
 def front_tab(port: int) -> tuple[str, str]:
@@ -2664,7 +2698,7 @@ def run(argv: list[str]) -> int:
                           "fallback": "computer_act"}))
         return 2
     command = argv[1]
-    if command not in ("navigate", "snapshot", "act", "finish", "purchase_check"):
+    if command not in ("navigate", "snapshot", "act", "finish", "purchase_check", "view", "drive"):
         print(json.dumps({"ok": False, "error": f"unknown command: {command}", "fallback": "computer_act"}))
         return 2
     raw_args = stdin_args if stdin_args is not None else (argv[2] if len(argv) >= 3 else "")
@@ -2677,6 +2711,26 @@ def run(argv: list[str]) -> int:
             return 1
         return 0
     port = cdp_port()
+    if command in ("view", "drive"):
+        # Watching never starts a browser: with none open there is nothing to see or drive.
+        if browser_closed(port):
+            print(json.dumps({"ok": False, "error": NO_PAGE_OPEN}))
+            return 0
+        try:
+            wait_for_cdp(port)
+            target = front_tab(port)[0]
+            print(json.dumps(page_view.run(discover_ws_url(port), target, command, args, check_url)))
+        except page_view.ViewError as error:
+            print(json.dumps({"ok": False, "error": str(error)}))
+        except Exception as error:  # noqa: BLE001
+            print(json.dumps({"ok": False, "error": str(error)[:300]}))
+        return 0
+    if port != desktop_cdp_port():
+        try:
+            start_headless(port)
+        except RuntimeError as error:
+            print(json.dumps({"ok": False, "error": str(error), "fallback": "computer_act"}))
+            return 0
     downloads: Downloads | None = None
     client: CdpClient | None = None
     saved: list[dict[str, Any]] = []

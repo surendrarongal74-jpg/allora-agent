@@ -15,6 +15,7 @@ import {
   groupVoiceChats,
   isPeerReceiptBlocks,
   liveActivityLine,
+  liveBrowsing,
   liveMessageComposing,
   peerExchangeLines,
   projectBotMentions,
@@ -41,6 +42,7 @@ import {
 } from "react";
 import { ActiveBotGlyph } from "../../../components/ai/CollaborationMarker";
 import { VoiceChatCard } from "../../../components/call/VoiceChatCard";
+import { BrowserLiveCard } from "../../../components/computers/BrowserLiveCard";
 import {
   isDetachedRange,
   lastSelectedText,
@@ -314,6 +316,12 @@ export const Transcript = memo(function Transcript({
   const continuedSenderIds = continuedSenderMessageIds(shownItems, separatorIds, unreadDividerId);
   const workingLabel =
     liveActivityLine(messages) ?? (workingRoutine ? t`Running ${workingRoutine}…` : t`Thinking…`);
+  // Once the bot opens a page this run, its live view stays until the run ends.
+  const [watchingPage, setWatchingPage] = useState(false);
+  if (running && !watchingPage && liveBrowsing(messages)) setWatchingPage(true);
+  if (!running && watchingPage) setWatchingPage(false);
+  const browsingBotId =
+    watchingPage && workingBots.length === 1 ? workingBots[0]?.botId : undefined;
   const [quoteDraft, setQuoteDraft] = useState<{
     message: ThreadMessage;
     text: string;
@@ -849,6 +857,13 @@ export const Transcript = memo(function Transcript({
             (message) => message.id.startsWith("progress:") && liveMessageComposing(message.blocks),
           ) ? (
             <ActiveBotGlyph bots={workingBots} label={workingLabel} />
+          ) : null}
+          {browsingBotId ? (
+            <BrowserLiveCard
+              key={browsingBotId}
+              botId={browsingBotId}
+              step={liveActivityLine(messages)}
+            />
           ) : null}
         </div>
       </ImageGalleryProvider>

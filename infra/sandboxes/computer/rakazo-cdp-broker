@@ -1,0 +1,505 @@
+#!/usr/bin/python3 -I
+"""One DevTools endpoint for the computer's headless browser, shared by every client.
+
+The headless engine keeps its tabs per DevTools connection, while the page tools open several
+connections at once: agent-browser's session, saved-login and card fills, purchase checks and the
+live view. This broker starts the engine, holds the one connection to it, and lets each client list,
+attach to and drive the same tabs, as they would on Chromium.
+
+    rakazo-cdp-broker --port 10222 --engine-port 11222 --profile ~/.browser-profiles/headless
+"""
+
+from __future__ import annotations
+
+import argparse
+import asyncio
+import base64
+import contextlib
+import hashlib
+import json
+import os
+import secrets
+import signal
+import struct
+import subprocess
+import sys
+from typing import Any
+from urllib.parse import parse_qs, unquote, urlsplit
+
+GUID = "258EAFA5-E914-47DA-95CA-C5AB0DC85B11"
+MAX_MESSAGE = 64 * 1024 * 1024
+ENGINE = os.environ.get("RAKAZO_HEADLESS_BROWSER") or "/usr/local/bin/obscura"
+FONT_DIRS = [d for d in (os.environ.get("RAKAZO_HEADLESS_FONT_DIRS") or "/usr/share/fonts").split(":") if d]
+ENGINE_START_SECONDS = 15.0
+
+
+# --- WebSocket framing (RFC 6455), enough for DevTools text messages ---------------------------------
+
+async def read_message(reader: asyncio.StreamReader) -> tuple[int, bytes]:
+    """One whole message: its opcode and payload. Fragments are joined; control frames come alone."""
+    parts: list[bytes] = []
+    first_opcode = 0
+    while True:
+        head = await reader.readexactly(2)
+        fin, opcode = head[0] & 0x80, head[0] & 0x0F
+        masked, length = head[1] & 0x80, head[1] & 0x7F
+        if length == 126:
+            (length,) = struct.unpack("!H", await reader.readexactly(2))
+        elif length == 127:
+            (length,) = struct.unpack("!Q", await reader.readexactly(8))
+        if length > MAX_MESSAGE:
+            raise ConnectionError("message too large")
+        mask = await reader.readexactly(4) if masked else b""
+        payload = await reader.readexactly(length)
+        if mask:
+            payload = bytes(b ^ mask[i % 4] for i, b in enumerate(payload))
+        if opcode >= 0x8:
+            return opcode, payload
+        if opcode:
+            first_opcode = opcode
+        parts.append(payload)
+        if sum(len(part) for part in parts) > MAX_MESSAGE:
+            raise ConnectionError("message too large")
+        if fin:
+            return first_opcode, b"".join(parts)
+
+
+def frame(opcode: int, payload: bytes, *, mask: bool) -> bytes:
+    head = bytearray([0x80 | opcode])
+    size = len(payload)
+    bit = 0x80 if mask else 0
+    if size < 126:
+        head.append(bit | size)
+    elif size < 1 << 16:
+        head.append(bit | 126)
+        head += struct.pack("!H", size)
+    else:
+        head.append(bit | 127)
+        head += struct.pack("!Q", size)
+    if not mask:
+        return bytes(head) + payload
+    key = os.urandom(4)
+    return bytes(head) + key + bytes(b ^ key[i % 4] for i, b in enumerate(payload))
+
+
+def accept_key(key: str) -> str:
+    return base64.b64encode(hashlib.sha1((key + GUID).encode("ascii")).digest()).decode("ascii")
+
+
+def chromium_shaped(method: str, message: dict[str, Any]) -> dict[str, Any]:
+    """A reply in the types Chromium gives, where a client reads them strictly."""
+    result = message.get("result")
+    if method == "DOM.getBoxModel" and isinstance(result, dict) and isinstance(result.get("model"), dict):
+        model = dict(result["model"])
+        for key in ("width", "height"):
+            if isinstance(model.get(key), float):
+                model[key] = round(model[key])
+        return {**message, "result": {**result, "model": model}}
+    return message
+
+
+# Emulation a person's takeover sets on a tab, which must last after the call that set it ends.
+PINNED_METHODS = frozenset({
+    "Emulation.setDeviceMetricsOverride",
+    "Emulation.clearDeviceMetricsOverride",
+    "Emulation.setTouchEmulationEnabled",
+})
+
+
+# --- Routing -----------------------------------------------------------------------------------------
+
+class Client:
+    """One downstream DevTools connection, at the browser or bound to one tab."""
+
+    def __init__(self, writer: asyncio.StreamWriter, page_session: str | None = None) -> None:
+        self.writer = writer
+        # A connection to /devtools/page/<id> talks to that tab without naming a session.
+        self.page_session = page_session
+        self.sessions: set[str] = set()
+        self.lock = asyncio.Lock()
+
+    async def send(self, message: dict[str, Any]) -> None:
+        if self.page_session is not None:
+            if message.get("sessionId") not in (None, self.page_session):
+                return
+            message = {key: value for key, value in message.items() if key != "sessionId"}
+        data = json.dumps(message, separators=(",", ":")).encode("utf-8")
+        async with self.lock:
+            with contextlib.suppress(ConnectionError, RuntimeError):
+                self.writer.write(frame(0x1, data, mask=False))
+                await self.writer.drain()
+
+
+class Router:
+    """Pure bookkeeping for one upstream connection: ids, sessions, and which tab is in front."""
+
+    def __init__(self) -> None:
+        self.next_id = 1
+        self.pending: dict[int, tuple[Client | None, Any, str, dict[str, Any]]] = {}
+        self.owners: dict[str, set[Client]] = {}
+        self.targets: dict[str, dict[str, Any]] = {}
+        # Most recently brought to the front first, as Chromium lists its tabs.
+        self.order: list[str] = []
+        self.auto_attacher: Client | None = None
+        self.connected: set[Client] = set()
+        self.session_targets: dict[str, str] = {}
+
+    def outbound(self, client: Client | None, message: dict[str, Any]) -> dict[str, Any]:
+        upstream_id = self.next_id
+        self.next_id += 1
+        method = str(message.get("method") or "")
+        params = message.get("params") if isinstance(message.get("params"), dict) else {}
+        self.pending[upstream_id] = (client, message.get("id"), method, params)
+        if method == "Target.setAutoAttach" and client is not None:
+            self.auto_attacher = client
+        if method == "Target.activateTarget":
+            self.front(str(params.get("targetId") or ""))
+        return {**message, "id": upstream_id}
+
+    def front(self, target_id: str) -> None:
+        if target_id in self.order:
+            self.order.remove(target_id)
+            self.order.insert(0, target_id)
+
+    def inbound(self, message: dict[str, Any]) -> list[tuple[Client, dict[str, Any]]]:
+        """Where an upstream message goes, with the client's own id on a reply."""
+        if "id" in message:
+            entry = self.pending.pop(int(message["id"]), None)
+            if entry is None:
+                return []
+            client, own_id, method, params = entry
+            result = message.get("result") if isinstance(message.get("result"), dict) else {}
+            if method == "Target.attachToTarget" and isinstance(result.get("sessionId"), str):
+                self.session_targets[result["sessionId"]] = str(params.get("targetId") or "")
+                if client:
+                    self.own(client, result["sessionId"])
+            if method == "Target.createTarget" and isinstance(result.get("targetId"), str):
+                self.seen({"targetId": result["targetId"], "type": "page", "url": params.get("url") or "about:blank"})
+                self.front(result["targetId"])
+            if client is None:
+                return []
+            return [(client, {**chromium_shaped(method, message), "id": own_id})]
+        method = message.get("method")
+        params = message.get("params") if isinstance(message.get("params"), dict) else {}
+        if method in ("Target.targetCreated", "Target.targetInfoChanged"):
+            info = params.get("targetInfo")
+            if isinstance(info, dict):
+                self.seen(info)
+        elif method == "Target.targetDestroyed":
+            self.gone(str(params.get("targetId") or ""))
+        elif method == "Target.attachedToTarget" and isinstance(params.get("sessionId"), str):
+            info = params.get("targetInfo") if isinstance(params.get("targetInfo"), dict) else {}
+            self.session_targets[params["sessionId"]] = str(info.get("targetId") or "")
+            owner = self.auto_attacher
+            if owner is not None:
+                self.own(owner, params["sessionId"])
+                return [(owner, message)]
+        elif method == "Target.detachedFromTarget":
+            self.session_targets.pop(str(params.get("sessionId") or ""), None)
+            owners = self.owners.pop(str(params.get("sessionId") or ""), set())
+            return [(client, message) for client in owners]
+        session = message.get("sessionId")
+        if isinstance(session, str):
+            return [(client, message) for client in self.owners.get(session, ())]
+        return [(client, message) for client in self.clients()]
+
+    def own(self, client: Client, session: str) -> None:
+        self.owners.setdefault(session, set()).add(client)
+        client.sessions.add(session)
+
+    def seen(self, info: dict[str, Any]) -> None:
+        target_id = str(info.get("targetId") or "")
+        if not target_id or info.get("type", "page") != "page":
+            return
+        known = self.targets.setdefault(target_id, {})
+        known.update({key: info[key] for key in ("url", "title", "type") if key in info})
+        if target_id not in self.order:
+            self.order.insert(0, target_id)
+
+    def gone(self, target_id: str) -> None:
+        self.targets.pop(target_id, None)
+        with contextlib.suppress(ValueError):
+            self.order.remove(target_id)
+
+    def clients(self) -> set[Client]:
+        found: set[Client] = set()
+        for owners in self.owners.values():
+            found |= owners
+        return found | self.connected
+
+    def leave(self, client: Client) -> list[str]:
+        """Sessions only this client held, to detach upstream."""
+        self.connected.discard(client)
+        if self.auto_attacher is client:
+            self.auto_attacher = None
+        orphaned = []
+        for session in client.sessions:
+            owners = self.owners.get(session)
+            if owners is None:
+                continue
+            owners.discard(client)
+            if not owners:
+                del self.owners[session]
+                orphaned.append(session)
+        for upstream_id, entry in list(self.pending.items()):
+            if entry[0] is client:
+                self.pending[upstream_id] = (None, *entry[1:])
+        return orphaned
+
+    def tabs(self, port: int) -> list[dict[str, Any]]:
+        return [{
+            "description": "",
+            "devtoolsFrontendUrl": "",
+            "id": target_id,
+            "title": str(self.targets[target_id].get("title") or ""),
+            "type": "page",
+            "url": str(self.targets[target_id].get("url") or ""),
+            "webSocketDebuggerUrl": f"ws://127.0.0.1:{port}/devtools/page/{target_id}",
+        } for target_id in self.order if target_id in self.targets]
+
+
+# --- Broker ------------------------------------------------------------------------------------------
+
+class Broker:
+    def __init__(self, port: int, engine_port: int, profile: str, stealth: bool) -> None:
+        self.port, self.engine_port, self.profile, self.stealth = port, engine_port, profile, stealth
+        self.token = secrets.token_hex(32)
+        self.router = Router()
+        self.process: subprocess.Popen[bytes] | None = None
+        self.upstream: asyncio.StreamWriter | None = None
+        self.upstream_lock = asyncio.Lock()
+        self.waiters: dict[int, asyncio.Future[dict[str, Any]]] = {}
+        self.version: dict[str, Any] = {}
+        self.ready = asyncio.Event()
+        # A session of the broker's own per tab, so an emulated screen size outlives the client that set it.
+        self.pinned: dict[str, str] = {}
+
+    async def start_engine(self) -> None:
+        os.makedirs(self.profile, mode=0o700, exist_ok=True)
+        argv = [ENGINE, "serve", "--port", str(self.engine_port), "--storage-dir", self.profile]
+        if self.stealth:
+            argv.append("--stealth")
+        # The image's system fonts (Noto CJK, Thai, emoji...), so pages in any script render as text.
+        for font_dir in FONT_DIRS:
+            if os.path.isdir(font_dir):
+                argv += ["--font-dir", font_dir]
+        env = {**os.environ, "OBSCURA_CDP_TOKEN": self.token}
+        self.process = subprocess.Popen(argv, env=env, stdin=subprocess.DEVNULL,
+                                        stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        loop = asyncio.get_running_loop()
+        deadline = loop.time() + ENGINE_START_SECONDS
+        while True:
+            try:
+                reader, writer = await asyncio.open_connection("127.0.0.1", self.engine_port)
+                break
+            except OSError:
+                if self.process.poll() is not None or loop.time() > deadline:
+                    raise RuntimeError("headless browser did not start") from None
+                await asyncio.sleep(0.1)
+        key = base64.b64encode(os.urandom(16)).decode("ascii")
+        writer.write((f"GET /devtools/browser HTTP/1.1\r\nHost: 127.0.0.1:{self.engine_port}\r\n"
+                      f"Upgrade: websocket\r\nConnection: Upgrade\r\nSec-WebSocket-Key: {key}\r\n"
+                      f"Sec-WebSocket-Version: 13\r\nAuthorization: Bearer {self.token}\r\n\r\n").encode("ascii"))
+        await writer.drain()
+        head = await reader.readuntil(b"\r\n\r\n")
+        if b" 101 " not in head.split(b"\r\n", 1)[0]:
+            raise RuntimeError("headless browser refused the connection")
+        self.upstream = writer
+        asyncio.create_task(self.pump(reader))
+        self.version = (await self.call("Browser.getVersion")).get("result") or {}
+        await self.call("Target.setDiscoverTargets", {"discover": True})
+        found = (await self.call("Target.getTargets")).get("result") or {}
+        for info in found.get("targetInfos") or []:
+            self.router.seen(info)
+        if not self.router.targets:
+            # Chromium starts with a tab; the page tools expect one.
+            await self.call("Target.createTarget", {"url": "about:blank"})
+        self.ready.set()
+
+    async def call(self, method: str, params: dict[str, Any] | None = None) -> dict[str, Any]:
+        """A call of the broker's own, answered to it rather than to a client."""
+        future: asyncio.Future[dict[str, Any]] = asyncio.get_running_loop().create_future()
+        message = self.router.outbound(None, {"method": method, "params": params or {}})
+        self.waiters[message["id"]] = future
+        await self.send_upstream(message)
+        return await asyncio.wait_for(future, 20)
+
+    async def send_upstream(self, message: dict[str, Any]) -> None:
+        if self.upstream is None:
+            raise ConnectionError("no headless browser")
+        async with self.upstream_lock:
+            self.upstream.write(frame(0x1, json.dumps(message).encode("utf-8"), mask=True))
+            await self.upstream.drain()
+
+    async def pump(self, reader: asyncio.StreamReader) -> None:
+        try:
+            while True:
+                opcode, payload = await read_message(reader)
+                if opcode == 0x8:
+                    break
+                if opcode != 0x1:
+                    continue
+                message = json.loads(payload)
+                waiter = self.waiters.pop(int(message["id"]), None) if "id" in message else None
+                if waiter is not None:
+                    waiter.set_result(message)
+                for client, out in self.router.inbound(message):
+                    await client.send(out)
+        except (asyncio.IncompleteReadError, ConnectionError, ValueError):
+            pass
+        # Without the engine nothing here works: exit, and the next page tool starts it again.
+        os.kill(os.getpid(), signal.SIGTERM)
+
+    async def serve(self, reader: asyncio.StreamReader, writer: asyncio.StreamWriter) -> None:
+        try:
+            head = await asyncio.wait_for(reader.readuntil(b"\r\n\r\n"), 10)
+        except (asyncio.TimeoutError, asyncio.IncompleteReadError, asyncio.LimitOverrunError):
+            writer.close()
+            return
+        lines = head.decode("latin-1").split("\r\n")
+        try:
+            verb, target, _ = lines[0].split(" ", 2)
+        except ValueError:
+            writer.close()
+            return
+        headers = {line.split(":", 1)[0].strip().lower(): line.split(":", 1)[1].strip()
+                   for line in lines[1:] if ":" in line}
+        # Only this computer's own tools: a page's script sends its own origin.
+        if headers.get("origin") and not headers["origin"].startswith(("http://127.0.0.1", "http://localhost")):
+            await self.respond(writer, 403, {"error": "forbidden"})
+            return
+        await self.ready.wait()
+        url = urlsplit(target)
+        path = url.path.rstrip("/")
+        if headers.get("upgrade", "").lower() == "websocket":
+            await self.upgrade(reader, writer, path, headers)
+            return
+        if path == "/json/version":
+            await self.respond(writer, 200, {
+                "Browser": self.version.get("product") or "HeadlessBrowser",
+                "Protocol-Version": self.version.get("protocolVersion") or "1.3",
+                "User-Agent": self.version.get("userAgent") or "",
+                "webSocketDebuggerUrl": f"ws://127.0.0.1:{self.port}/devtools/browser/shared",
+            })
+        elif path in ("/json", "/json/list"):
+            await self.respond(writer, 200, self.router.tabs(self.port))
+        elif path.startswith("/json/close/"):
+            await self.call("Target.closeTarget", {"targetId": unquote(path.rsplit("/", 1)[1])})
+            await self.respond(writer, 200, "Target is closing")
+        elif path.startswith("/json/activate/"):
+            await self.call("Target.activateTarget", {"targetId": unquote(path.rsplit("/", 1)[1])})
+            await self.respond(writer, 200, "Target activated")
+        elif path == "/json/new" and verb in ("GET", "PUT"):
+            address = url.query and (parse_qs(url.query).get("url") or [unquote(url.query)])[0]
+            created = await self.call("Target.createTarget", {"url": address or "about:blank"})
+            target_id = ((created.get("result") or {}).get("targetId")) or ""
+            tab = next((tab for tab in self.router.tabs(self.port) if tab["id"] == target_id), {})
+            await self.respond(writer, 200, tab)
+        else:
+            await self.respond(writer, 404, {"error": "not found"})
+
+    async def respond(self, writer: asyncio.StreamWriter, status: int, body: Any) -> None:
+        data = json.dumps(body).encode("utf-8")
+        writer.write(f"HTTP/1.1 {status} OK\r\nContent-Type: application/json\r\nContent-Length: {len(data)}\r\n"
+                     f"Connection: close\r\n\r\n".encode("ascii") + data)
+        with contextlib.suppress(ConnectionError):
+            await writer.drain()
+        writer.close()
+
+    async def upgrade(self, reader: asyncio.StreamReader, writer: asyncio.StreamWriter,
+                      path: str, headers: dict[str, str]) -> None:
+        key = headers.get("sec-websocket-key")
+        if not key:
+            await self.respond(writer, 400, {"error": "bad request"})
+            return
+        page_session = None
+        if path.startswith("/devtools/page/"):
+            target_id = unquote(path.rsplit("/", 1)[1])
+            attached = await self.call("Target.attachToTarget", {"targetId": target_id, "flatten": True})
+            page_session = (attached.get("result") or {}).get("sessionId")
+            if not page_session:
+                await self.respond(writer, 404, {"error": "no such target"})
+                return
+        elif not path.startswith("/devtools/browser"):
+            await self.respond(writer, 404, {"error": "not found"})
+            return
+        writer.write(("HTTP/1.1 101 Switching Protocols\r\nUpgrade: websocket\r\nConnection: Upgrade\r\n"
+                      f"Sec-WebSocket-Accept: {accept_key(key)}\r\n\r\n").encode("ascii"))
+        await writer.drain()
+        client = Client(writer, page_session)
+        self.router.connected.add(client)
+        if page_session:
+            self.router.own(client, page_session)
+        try:
+            while True:
+                opcode, payload = await read_message(reader)
+                if opcode == 0x8:
+                    break
+                if opcode == 0x9:
+                    async with client.lock:
+                        writer.write(frame(0xA, payload, mask=False))
+                    continue
+                if opcode != 0x1:
+                    continue
+                message = json.loads(payload)
+                if not isinstance(message, dict) or "id" not in message:
+                    continue
+                if page_session and "sessionId" not in message:
+                    message["sessionId"] = page_session
+                if message.get("method") in PINNED_METHODS and isinstance(message.get("sessionId"), str):
+                    message["sessionId"] = await self.pinned_session(message["sessionId"])
+                # The engine is shared: one client closing it would close it for every other.
+                if message.get("method") == "Browser.close":
+                    await client.send({"id": message["id"], "result": {}})
+                    continue
+                await self.send_upstream(self.router.outbound(client, message))
+        except (asyncio.IncompleteReadError, ConnectionError, ValueError):
+            pass
+        finally:
+            for session in self.router.leave(client):
+                with contextlib.suppress(ConnectionError):
+                    await self.send_upstream(self.router.outbound(None, {
+                        "method": "Target.detachFromTarget", "params": {"sessionId": session}}))
+            writer.close()
+
+    async def pinned_session(self, session: str) -> str:
+        target = self.router.session_targets.get(session)
+        if not target:
+            return session
+        if target not in self.pinned or self.pinned[target] not in self.router.session_targets:
+            attached = await self.call("Target.attachToTarget", {"targetId": target, "flatten": True})
+            self.pinned[target] = str((attached.get("result") or {}).get("sessionId") or session)
+        return self.pinned[target]
+
+    def stop(self) -> None:
+        if self.process and self.process.poll() is None:
+            # SIGTERM lets the engine save its cookies.
+            self.process.terminate()
+            with contextlib.suppress(subprocess.TimeoutExpired):
+                self.process.wait(5)
+
+
+async def main(argv: list[str]) -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--port", type=int, required=True)
+    parser.add_argument("--engine-port", type=int, required=True)
+    parser.add_argument("--profile", required=True)
+    parser.add_argument("--no-stealth", action="store_true")
+    args = parser.parse_args(argv)
+    broker = Broker(args.port, args.engine_port, args.profile, not args.no_stealth)
+    server = await asyncio.start_server(broker.serve, "127.0.0.1", args.port)
+    stop = asyncio.Event()
+    loop = asyncio.get_running_loop()
+    for sig in (signal.SIGTERM, signal.SIGINT):
+        loop.add_signal_handler(sig, stop.set)
+    try:
+        await broker.start_engine()
+        await stop.wait()
+    finally:
+        server.close()
+        broker.stop()
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(asyncio.run(main(sys.argv[1:])))

@@ -11,6 +11,23 @@ export function useBotTemplateCopy(): (template: BotTemplate) => BotTemplateCopy
   const { t } = useLingui();
   return (template) => {
     switch (template.id) {
+      case "chief":
+        return {
+          name: t`Chief`,
+          summary: t`Builds a team of bots for big jobs and hands you the tested result`,
+          sample: t`**Bakery website: ready**
+
+Team: Architect, Designer, Frontend dev, Reviewer, Tester
+
+**Checks**
+- Builds, and all 24 tests pass
+- Home, Menu and Order pages work on desktop and phone
+- Review found 3 issues, all fixed: form validation, image sizes, a broken link
+
+**Where it is**: the bakery-site folder on the Team Computer
+
+Keep the team, or archive it?`,
+        };
       case "morning-briefing":
         return {
           name: t`Morning briefing`,

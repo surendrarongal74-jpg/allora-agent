@@ -192,6 +192,9 @@ RUN set -eux; \
 COPY --chmod=755 install-agent-browser.sh /tmp/install-agent-browser.sh
 RUN /tmp/install-agent-browser.sh /usr/local/bin && rm /tmp/install-agent-browser.sh \
   && mkdir -p /usr/local/lib/rakazo
+# The page tools browse in a headless browser by default, pinned and checked by sha256 (see NOTICE).
+COPY --chmod=755 install-headless-browser.sh /tmp/install-headless-browser.sh
+RUN /tmp/install-headless-browser.sh /usr/local/bin && rm /tmp/install-headless-browser.sh
 ENV DISPLAY=:1
 ENV HOME=/home/rakazo
 # Keep UTF-8 explicit (an empty LANG broke non-ASCII file handling in the
@@ -216,6 +219,8 @@ COPY --chmod=755 rakazo-browser /usr/local/bin/rakazo-browser
 COPY --chmod=755 rakazo-focus-or-launch /usr/local/bin/rakazo-focus-or-launch
 COPY --chmod=755 rakazo-page-browser /usr/local/bin/rakazo-page-browser
 COPY --chmod=644 page_secrets.py /usr/local/lib/rakazo/page_secrets.py
+COPY --chmod=644 page_view.py /usr/local/lib/rakazo/page_view.py
+COPY --chmod=755 rakazo-cdp-broker /usr/local/bin/rakazo-cdp-broker
 COPY --chmod=644 rakazo-browser.desktop /usr/share/applications/rakazo-browser.desktop
 # Every type start.sh would register for rakazo-browser, so a boot whose home does not
 # override them skips the slow xdg-mime and xdg-settings calls.

@@ -13,6 +13,7 @@ import {
   BOT_DESCRIPTION_MAX_LENGTH,
   BOT_INSTRUCTIONS_MAX_LENGTH,
   GROUP_MEMBER_MIN,
+  SPAWNED_BOT_LIMIT,
 } from "@rakazo/contracts";
 import { ACTIVE_RUN_STATUSES, retry } from "@rakazo/core";
 import type { Prisma, PrismaClient, ThreadEvents } from "@rakazo/db";
@@ -86,6 +87,25 @@ export async function spawnBot(
   const name = input.name.trim();
   if (!name) return { error: "Bot name is required." };
 
+  const spawnedKey = {
+    spaceId_spawnKey: { spaceId: input.spawnedBy.spaceId, spawnKey: input.spawnKey },
+  };
+  const active = await deps.prisma.bot.count({
+    where: {
+      ...createdByWhere({ botId: input.spawnedBy.id, spaceId: input.spawnedBy.spaceId }),
+      archivedAt: null,
+    },
+  });
+  // A retried spawn still returns the bot it made; only a new bot is refused.
+  if (
+    active >= SPAWNED_BOT_LIMIT &&
+    !(await deps.prisma.bot.findUnique({ where: spawnedKey, select: { id: true } }))
+  ) {
+    return {
+      error: `You already have ${SPAWNED_BOT_LIMIT} bots you created. Reuse one, or archive bots whose work is done, before creating another.`,
+    };
+  }
+
   const actor: Actor = {
     userId: input.spawnedBy.userId,
     spaceId: input.spawnedBy.spaceId,
@@ -112,12 +132,7 @@ export async function spawnBot(
     });
   } catch (error) {
     const existing = await deps.prisma.bot.findUnique({
-      where: {
-        spaceId_spawnKey: {
-          spaceId: input.spawnedBy.spaceId,
-          spawnKey: input.spawnKey,
-        },
-      },
+      where: spawnedKey,
       include: { thread: true },
     });
     if (!existing) throw error;
