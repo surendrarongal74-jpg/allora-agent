@@ -16,4 +16,13 @@
   <string name="rakazo_attention_failed">%1$s hit a problem</string>
   <string name="rakazo_attention_takeover">%1$s needs you on screen</string>
   <string name="rakazo_attention_input">%1$s needs your input</string>
+
+  <string name="rakazo_widget_bots_name">Bots</string>
+  <string name="rakazo_widget_bots_description">Your bots and what each is doing</string>
+  <string name="rakazo_widget_bot_name">Bot</string>
+  <string name="rakazo_widget_bot_description">The bot that needs you most</string>
+  <string name="rakazo_widget_empty">No bots at work</string>
+  <string name="rakazo_widget_needs_you">Needs you</string>
+  <string name="rakazo_widget_done">Done</string>
+  <string name="rakazo_widget_idle">Idle</string>
 </resources>

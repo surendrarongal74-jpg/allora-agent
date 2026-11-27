@@ -83,9 +83,23 @@ class RakazoNotificationsModule : Module() {
         storage.token = ""
         storage.headers = ""
         storage.spaceId = ""
+        BotWidgets.clear(context)
       } else {
         RakazoNotificationService.stop(context)
       }
+    }
+
+    Function("hasBotWidgets") { BotWidgets.placed(context()) }
+
+    // The same `runs/list` rows the poll reads, so the app and the poll show bots alike.
+    AsyncFunction("setBotWidgets") { spaceId: String, active: String, recent: String ->
+      BotWidgets.publish(
+        context(),
+        botWidgetBots(
+          parseRunRows(org.json.JSONArray(active), spaceId),
+          parseRunRows(org.json.JSONArray(recent), spaceId),
+        ),
+      )
     }
 
     AsyncFunction("setOpenThread") { botId: String?, threadId: String? ->

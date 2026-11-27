@@ -104,9 +104,12 @@ describe("Android mobile platform contract", () => {
     );
     expect(service).not.toContain("private fun postCompletion(");
     expect(service).toContain('"rakazo://group-thread?groupId=');
-    expect(service).toMatch(/&spaceId=\$\{Uri\.encode\(run\.spaceId\)\}/);
+    expect(service).toContain(
+      "chatLink(run.spaceId, run.botId, run.botName, run.groupId, run.groupName, run.threadId)",
+    );
+    expect(service).toMatch(/&spaceId=\$\{Uri\.encode\(spaceId\)\}/);
     expect(service).toContain('putString("rakazo.spaceId", run.spaceId)');
-    expect(service).toMatch(/&threadId=\$\{Uri\.encode\(run\.threadId\)\}/);
+    expect(service).toMatch(/&threadId=\$\{Uri\.encode\(threadId\)\}/);
     expect(service).toContain('if (run.groupId != null) put("groupId", run.groupId)');
     expect(service).toContain('if (message.optString("runId") != run.runId) continue');
     expect(service).toContain('if (block.optString("kind") == "handoff") return null');

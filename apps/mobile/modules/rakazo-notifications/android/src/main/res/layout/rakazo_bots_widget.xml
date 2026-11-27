@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:id="@+id/rakazo_widget_root"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:background="@drawable/rakazo_widget_background"
+  android:orientation="vertical"
+  android:paddingStart="16dp"
+  android:paddingTop="12dp"
+  android:paddingEnd="16dp"
+  android:paddingBottom="12dp">
+
+  <TextView
+    android:id="@+id/rakazo_widget_empty"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:text="@string/rakazo_widget_empty"
+    android:textColor="@color/rakazo_widget_muted"
+    android:textSize="14sp"
+    android:visibility="gone" />
+
+  <LinearLayout
+    android:id="@+id/rakazo_widget_rows"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" />
+</LinearLayout>

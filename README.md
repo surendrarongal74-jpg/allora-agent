@@ -364,6 +364,7 @@ Chinese guides cover [self-hosting](./docs/zh-CN/self-host.md), [models](./docs/
 - [Apps and clients](./docs/self-host-clients.md)
 - [Billing](./docs/self-host-billing.md)
 - [Computer runtime and isolation](./docs/computer-runtime.md)
+- [Lightweight headless page reader](./docs/computer-runtime.md#computer-contract) (`BROWSER_PROVIDER=lightpanda`)
 - [Desktop releases](./docs/desktop-release.md)
 - [Mobile releases](./docs/mobile-release.md)
 - [Performance testing](./docs/performance.md)

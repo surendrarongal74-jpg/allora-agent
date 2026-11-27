@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The app redraws it when bots change, so the launcher never polls (updatePeriodMillis 0). -->
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+  android:description="@string/rakazo_widget_bots_description"
+  android:initialLayout="@layout/rakazo_bots_widget"
+  android:minWidth="250dp"
+  android:minHeight="110dp"
+  android:minResizeWidth="180dp"
+  android:minResizeHeight="70dp"
+  android:previewLayout="@layout/rakazo_bots_widget"
+  android:resizeMode="horizontal|vertical"
+  android:targetCellWidth="4"
+  android:targetCellHeight="2"
+  android:updatePeriodMillis="0"
+  android:widgetCategory="home_screen" />

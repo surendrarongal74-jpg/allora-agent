@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The dark tokens from @rakazo/ui-tokens: card, cardForeground, mutedForeground, statusWorking, warning, success. -->
+<resources>
+  <color name="rakazo_widget_background">#FF202020</color>
+  <color name="rakazo_widget_foreground">#FFFFFFFF</color>
+  <color name="rakazo_widget_muted">#99EBEBF5</color>
+  <color name="rakazo_widget_working">#FF459FFE</color>
+  <color name="rakazo_widget_waiting">#FFDB941E</color>
+  <!-- botEyeColor: the ink drawn on a bot's body colour, the same in both themes. -->
+  <color name="rakazo_widget_on_avatar">#FF101014</color>
+  <color name="rakazo_widget_done">#FF3FA266</color>
+</resources>
