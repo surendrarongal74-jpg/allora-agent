@@ -8,6 +8,7 @@ import {
   isRunWaitingOnUser,
   isRunWorking,
   liveActivityLine,
+  liveBrowsing,
   liveMessageComposing,
   newClientId,
   newestPageCards,
@@ -80,6 +81,7 @@ import {
 import { liveEndRunError } from "../../lib/thread/thread-window";
 import { RunErrorSheet } from "../cards/run-error-sheet";
 import { ThreadComposer } from "../composer/thread-composer";
+import { BrowserLiveCard } from "../computers/browser-live-card";
 import { SelectTextSheet } from "../messages/select-text-sheet";
 import { FailedSendBubble } from "./failed-send-bubble";
 import { createThreadHeaderStyles } from "./header/thread-header-styles";
@@ -558,18 +560,30 @@ export function Thread({ sessionEpoch, userId }: { sessionEpoch: number; userId:
             status: bot.status,
           }))
         : [];
+  // Once the bot opens a page this run, its live view stays until the run ends.
+  const botRunning = !inGroup && Boolean(botId) && isRunWorking(currentBotStatus);
+  const [watchingPage, setWatchingPage] = useState(false);
+  if (botRunning && !watchingPage && liveBrowsing(snap?.messages ?? [])) setWatchingPage(true);
+  if (!botRunning && watchingPage) setWatchingPage(false);
+  const browserCard =
+    watchingPage && botId ? (
+      <BrowserLiveCard key={botId} botId={botId} name={titleBot?.name} step={activityLine} />
+    ) : null;
   const workingFooter = (
-    <ThreadWorkingFooter
-      bots={workingBots.map((bot) => ({
-        ...bot,
-        composing: composingBots.split(",").includes(bot.id),
-      }))}
-      atBottom={!scroll.state.detached}
-      label={
-        activityLine ??
-        (workingRoutine ? t`Running ${ph({ name: workingRoutine })}…` : t`Thinking…`)
-      }
-    />
+    <>
+      {browserCard}
+      <ThreadWorkingFooter
+        bots={workingBots.map((bot) => ({
+          ...bot,
+          composing: composingBots.split(",").includes(bot.id),
+        }))}
+        atBottom={!scroll.state.detached}
+        label={
+          activityLine ??
+          (workingRoutine ? t`Running ${ph({ name: workingRoutine })}…` : t`Thinking…`)
+        }
+      />
+    </>
   );
 
   const loadEarlierControl =
