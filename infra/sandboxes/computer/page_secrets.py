@@ -18,7 +18,7 @@ import struct
 import time
 import urllib.request
 from typing import Any
-from urllib.parse import urlsplit
+from urllib.parse import urlsplit, urlunsplit
 
 WORLD_NAME = "rakazo-page-browser"
 # The largest CDP message read whole; a larger one (a page event) is skipped.
@@ -87,9 +87,10 @@ def discover_ws_url(port: int) -> str:
     if not isinstance(ws, str) or not ws:
         raise RuntimeError("CDP version endpoint missing webSocketDebuggerUrl")
     parsed = urlsplit(ws)
-    if parsed.scheme != "ws" or parsed.hostname != "127.0.0.1" or parsed.port != port:
+    # Some CDP servers name the loopback host "localhost"; the socket still goes to 127.0.0.1.
+    if parsed.scheme != "ws" or parsed.hostname not in ("127.0.0.1", "localhost") or parsed.port != port:
         raise RuntimeError("Unexpected CDP endpoint")
-    return ws
+    return urlunsplit(parsed._replace(netloc=f"127.0.0.1:{port}"))
 
 
 class CdpClient:

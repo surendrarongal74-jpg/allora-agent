@@ -65,6 +65,7 @@ import {
   withViewOnly,
 } from "../computers/computer-control.js";
 import { scrollPoint } from "../computers/computer-input.js";
+import { drivePage, readPageView, restorePageViewport } from "../computers/page-view.js";
 import type { RouterContext } from "./context.js";
 import { computerContext } from "./shared.js";
 
@@ -397,6 +398,7 @@ export function computerRoutes(ctx: RouterContext) {
         const handBack = async () => {
           const bot = await repos.getBot(context.actor, input.botId);
           if (bot.computer) {
+            restorePageViewport(deps, context.actor, bot);
             await releaseComputerControl(
               deps,
               context.actor,
@@ -780,6 +782,20 @@ export function computerRoutes(ctx: RouterContext) {
         if (!observation || !(await stillWaiting())) return { image: null };
         const data = Buffer.from(observation.image).toString("base64");
         return { image: `data:${observation.mimeType};base64,${data}` };
+      }),
+      pageView: authed.computer.pageView.handler(async ({ context, input }) =>
+        readPageView(
+          deps,
+          context.actor,
+          await repos.getBot(context.actor, input.botId),
+          input.large === true,
+        ),
+      ),
+      pageInput: authed.computer.pageInput.handler(async ({ context, input }) => {
+        const bot = await repos.getBot(context.actor, input.botId);
+        const view = await drivePage(deps, context.actor, bot, input.input);
+        if (bot.computer) scheduleComputerSleep(deps.jobs, bot.computer.id);
+        return view;
       }),
       heartbeat: authed.computer.heartbeat.handler(async ({ context, input }) => {
         const bot = await repos.getBot(context.actor, input.botId);

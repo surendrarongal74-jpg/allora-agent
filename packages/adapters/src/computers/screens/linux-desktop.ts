@@ -35,6 +35,7 @@ import {
   stopAllDesktopBrowsersCommand,
 } from "@rakazo/core/node/desktop-runtime";
 import { getLogger } from "@rakazo/logging";
+import { resolvePageBrowserEngine } from "../../browser/page-browser-engine.js";
 import {
   BrowserStillRunningError,
   BrowserStoppedReleaseError,
@@ -295,6 +296,7 @@ export class LinuxDesktop {
         [
           `DISPLAY=${layout.display}`,
           `RAKAZO_CDP_PORT=${layout.debugPort}`,
+          `RAKAZO_PAGE_BROWSER_ENGINE=${resolvePageBrowserEngine()}`,
           // Uploads are confined to the bot's home, which is the workspace here.
           `HOME=${shellQuote(env.workspaceDir)}`,
           "RAKAZO_BROWSER_ARGS_STDIN=1",

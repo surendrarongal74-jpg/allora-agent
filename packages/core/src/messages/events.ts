@@ -413,6 +413,19 @@ export function liveActivityLine(
   return (tail?.kind === "progress" && tail.activity && tail.text.trim()) || undefined;
 }
 
+const PAGE_TOOLS = new Set(["browser_navigate", "browser_snapshot", "browser_act"]);
+
+/** Whether the bot is using its page tools right now, by the tools its live progress is running. */
+export function liveBrowsing(
+  messages: readonly { id: string; blocks: readonly MessageBlock[] }[],
+): boolean {
+  const live = messages.findLast((message) => message.id.startsWith("progress:"));
+  const tail = live?.blocks.findLast((block) => block.kind === "progress");
+  return Boolean(
+    tail?.kind === "progress" && tail.pendingToolNames?.some((name) => PAGE_TOOLS.has(name)),
+  );
+}
+
 export type ToolStepOutcome = "succeeded" | "failed" | "stopped";
 export type ToolStep = Extract<MessageBlock, { kind: "steps" }>["steps"][number];
 

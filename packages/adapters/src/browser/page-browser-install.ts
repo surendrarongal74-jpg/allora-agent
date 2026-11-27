@@ -40,25 +40,45 @@ export function installAgentBrowserCommand(): string {
 }
 
 /**
- * Writes the page-browser wrapper and its secrets helper where the computer image keeps them,
+ * Installs the pinned headless browser the page tools use by default, with the computer image's own
+ * script. Like agent-browser it changes only with its pinned version.
+ */
+export function installHeadlessBrowserCommand(): string {
+  return [
+    "set -eu",
+    asRoot,
+    `$root sh -c ${shellQuote(computerFile("install-headless-browser.sh"))} sh /usr/local/bin >/dev/null`,
+  ].join("\n");
+}
+
+/** The page-browser files, each with its mode and where the computer image keeps it. */
+const PAGE_BROWSER_FILES = [
+  ["rakazo-page-browser", 0o755, "/usr/local/bin/rakazo-page-browser"],
+  ["rakazo-cdp-broker", 0o755, "/usr/local/bin/rakazo-cdp-broker"],
+  ["page_secrets.py", 0o644, "/usr/local/lib/rakazo/page_secrets.py"],
+  ["page_view.py", 0o644, "/usr/local/lib/rakazo/page_view.py"],
+] as const;
+
+/**
+ * Writes the page-browser wrapper and its helpers where the computer image keeps them,
  * from this release's copy, unless they already match it. Small enough to run on every boot,
  * so a hosted computer always runs the helper its API was released with.
  */
 export function installPageBrowserFilesCommand(): string {
-  const wrapper = computerFile("rakazo-page-browser");
-  const secrets = computerFile("page_secrets.py");
-  const version = createHash("sha256").update(wrapper).update("\0").update(secrets).digest("hex");
-  // One archive, so both files change together.
-  const archive = gzipSync(
-    JSON.stringify({ "rakazo-page-browser": wrapper, "page_secrets.py": secrets }),
-    { level: 9 },
-  ).toString("base64");
+  const files = Object.fromEntries(PAGE_BROWSER_FILES.map(([name]) => [name, computerFile(name)]));
+  const hash = createHash("sha256");
+  for (const [name] of PAGE_BROWSER_FILES) hash.update(files[name]!).update("\0");
+  const version = hash.digest("hex");
+  // One archive, so the files change together.
+  const archive = gzipSync(JSON.stringify(files), { level: 9 }).toString("base64");
+  const targets = PAGE_BROWSER_FILES.map(
+    ([name, mode, target]) => `(${JSON.stringify(name)}, 0o${mode.toString(8)}, ${JSON.stringify(target)})`,
+  ).join(", ");
   const unpack = [
     "import gzip, json, os, sys",
     "files = json.loads(gzip.decompress(sys.stdin.buffer.read()))",
     "os.makedirs('/usr/local/lib/rakazo', exist_ok=True)",
-    "for name, mode, target in (('page_secrets.py', 0o644, '/usr/local/lib/rakazo/page_secrets.py'),",
-    "                           ('rakazo-page-browser', 0o755, '/usr/local/bin/rakazo-page-browser')):",
+    `for name, mode, target in (${targets}):`,
     "    with open(target + '.new', 'w', encoding='utf-8') as file:",
     "        file.write(files[name])",
     "    os.chmod(target + '.new', mode)",
@@ -75,9 +95,12 @@ export function installPageBrowserFilesCommand(): string {
 
 /** Everything a hosted Linux computer needs for the page tools; idempotent and cheap once done. */
 export function installPageBrowserCommand(): string {
-  return [installAgentBrowserCommand(), installPageBrowserFilesCommand()]
-    .map((script) => `( ${script}\n)`)
-    .join(" && ");
+  // Without the headless browser the page tools use the desktop's Chromium, so its install may fail.
+  return [
+    `( ${installAgentBrowserCommand()}\n)`,
+    `{ ( ${installHeadlessBrowserCommand()}\n) || true; }`,
+    `( ${installPageBrowserFilesCommand()}\n)`,
+  ].join(" && ");
 }
 
 /**

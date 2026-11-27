@@ -1715,10 +1715,28 @@ export type PageBrowserCommand =
       enter?: boolean;
       points?: BrowserPurchaseCheckRequest["points"];
       unplaced?: boolean;
-    };
+    }
+  /** The tab as the person would see it; `large` for a full-screen view. */
+  | { command: "view"; large?: boolean }
+  /** One input from the person holding control, applied to the tab the page tools use. */
+  | { command: "drive"; input: PageBrowserInput };
+
+/** Mirrors the contracts' page input; CSS pixels of the visible viewport. */
+export type PageBrowserInput =
+  | { kind: "tap"; x: number; y: number }
+  | { kind: "scroll"; x: number; y: number; dx: number; dy: number }
+  | { kind: "text"; text: string }
+  | { kind: "key"; key: string }
+  | { kind: "navigate"; url: string }
+  | { kind: "back" | "forward" | "reload" | "phone" | "desktop" };
 
 export type PageBrowserResult = Partial<BrowserSnapshotResult & BrowserActResult> & {
   ok: boolean;
+  /** A view: the tab as a JPEG data URL, its visible size in CSS pixels, and its history. */
+  image?: string | null;
+  viewport?: { width: number; height: number };
+  canGoBack?: boolean;
+  canGoForward?: boolean;
   /** A purchase check: the page's host, and what the purchase is as the page shows it. */
   site?: string;
   purchase?: unknown;
