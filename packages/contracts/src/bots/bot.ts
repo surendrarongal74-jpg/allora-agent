@@ -126,6 +126,8 @@ export type BotSection = z.infer<typeof BotSectionSchema>;
 export const BOT_NAME_MAX_LENGTH = 80;
 export const BOT_DESCRIPTION_MAX_LENGTH = 4000;
 export const BOT_INSTRUCTIONS_MAX_LENGTH = 20000;
+/** Unarchived bots one bot may have created, so a planning loop cannot fill the roster. */
+export const SPAWNED_BOT_LIMIT = 20;
 
 export const CreateBotInput = z.object({
   /** Optional reserved identity so a creation preview uses the final bot seed. */

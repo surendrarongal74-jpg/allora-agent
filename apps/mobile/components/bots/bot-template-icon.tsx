@@ -7,6 +7,7 @@ import { NativeSymbol } from "../native/native-symbol";
 type TemplateSymbol = { ios: string; android: ComponentProps<typeof Ionicons>["name"] };
 
 const SYMBOLS: Record<string, TemplateSymbol> = {
+  chief: { ios: "person.3", android: "people-outline" },
   "morning-briefing": { ios: "sun.max", android: "sunny-outline" },
   "inbox-triage": { ios: "tray", android: "file-tray-outline" },
   "pr-reviewer": { ios: "arrow.triangle.pull", android: "git-pull-request-outline" },
