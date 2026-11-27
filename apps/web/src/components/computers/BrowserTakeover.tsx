@@ -81,7 +81,8 @@ export function BrowserTakeover({ botId, onClose }: { botId: string; onClose: ()
   // Control lapses unless the page checks in while it is open.
   const tick = useNow(leaseId ? COMPUTER_CONTROL_HEARTBEAT_MS : null);
   useEffect(() => {
-    if (leaseId && tick) void bestEffort("page.takeover_heartbeat", rpc.computer.heartbeat({ botId }));
+    if (leaseId && tick)
+      void bestEffort("page.takeover_heartbeat", rpc.computer.heartbeat({ botId }));
   }, [botId, leaseId, tick]);
 
   const view = useQuery({
@@ -96,7 +97,10 @@ export function BrowserTakeover({ botId, onClose }: { botId: string; onClose: ()
   const handBack = async () => {
     await queue.current;
     if (leaseId) {
-      await bestEffort("page.takeover_desktop", rpc.computer.pageInput({ botId, input: { kind: "desktop" } }));
+      await bestEffort(
+        "page.takeover_desktop",
+        rpc.computer.pageInput({ botId, input: { kind: "desktop" } }),
+      );
       await bestEffort("page.takeover_release", rpc.computer.release({ botId, leaseId }));
     }
     onClose();
@@ -200,7 +204,9 @@ export function BrowserTakeover({ botId, onClose }: { botId: string; onClose: ()
               if (Math.hypot(moved.x, moved.y) < SWIPE_PX) void send({ kind: "tap", ...point });
               else void send({ kind: "scroll", ...point, dx: -moved.x * 2, dy: -moved.y * 2 });
             }}
-            onWheel={(event) => void send({ kind: "scroll", ...at(event), dx: event.deltaX, dy: event.deltaY })}
+            onWheel={(event) =>
+              void send({ kind: "scroll", ...at(event), dx: event.deltaX, dy: event.deltaY })
+            }
           />
         ) : (
           <Spinner className="self-center" />

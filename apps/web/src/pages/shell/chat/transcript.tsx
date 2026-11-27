@@ -320,7 +320,8 @@ export const Transcript = memo(function Transcript({
   const [watchingPage, setWatchingPage] = useState(false);
   if (running && !watchingPage && liveBrowsing(messages)) setWatchingPage(true);
   if (!running && watchingPage) setWatchingPage(false);
-  const browsingBotId = watchingPage && workingBots.length === 1 ? workingBots[0]?.botId : undefined;
+  const browsingBotId =
+    watchingPage && workingBots.length === 1 ? workingBots[0]?.botId : undefined;
   const [quoteDraft, setQuoteDraft] = useState<{
     message: ThreadMessage;
     text: string;

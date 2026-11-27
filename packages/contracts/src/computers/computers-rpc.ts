@@ -120,8 +120,6 @@ export const computersRpc = {
       .input(z.object({ botId: Id, large: z.boolean().optional() }))
       .output(PageViewSchema),
     /** One tap, swipe, key or navigation from the person holding control, then the page again. */
-    pageInput: oc
-      .input(z.object({ botId: Id, input: PageInputSchema }))
-      .output(PageViewSchema),
+    pageInput: oc.input(z.object({ botId: Id, input: PageInputSchema })).output(PageViewSchema),
   },
 };

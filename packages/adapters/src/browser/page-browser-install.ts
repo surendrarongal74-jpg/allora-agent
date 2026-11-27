@@ -72,7 +72,8 @@ export function installPageBrowserFilesCommand(): string {
   // One archive, so the files change together.
   const archive = gzipSync(JSON.stringify(files), { level: 9 }).toString("base64");
   const targets = PAGE_BROWSER_FILES.map(
-    ([name, mode, target]) => `(${JSON.stringify(name)}, 0o${mode.toString(8)}, ${JSON.stringify(target)})`,
+    ([name, mode, target]) =>
+      `(${JSON.stringify(name)}, 0o${mode.toString(8)}, ${JSON.stringify(target)})`,
   ).join(", ");
   const unpack = [
     "import gzip, json, os, sys",
