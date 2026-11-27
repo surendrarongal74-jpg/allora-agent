@@ -28,6 +28,7 @@ import {
   ScrollText,
   Sun,
   Telescope,
+  Users,
   X,
 } from "lucide-react";
 import { useId, useState } from "react";
@@ -38,6 +39,7 @@ import { PluginLogo, ROW_HOVER } from "../integrations/plugin-marketplace";
 import { useBotTemplateCopy } from "./bot-template-copy";
 
 const ICONS: Record<string, LucideIcon> = {
+  chief: Users,
   "morning-briefing": Sun,
   "inbox-triage": Inbox,
   "pr-reviewer": GitPullRequest,

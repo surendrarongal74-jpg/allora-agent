@@ -1,4 +1,4 @@
-import { BotTemplateSchema } from "@rakazo/contracts";
+import { BotTemplateSchema, isBuiltinToolName } from "@rakazo/contracts";
 import { describe, expect, it } from "vitest";
 import { looksLikeCredential } from "../agent-import/index.js";
 import { matchFeaturedConnectorId } from "../integrations/featured-connectors.js";
@@ -51,6 +51,16 @@ describe("bot templates", () => {
     // Featured apps match by alias; the code host is matched by its own slug.
     for (const app of BOT_TEMPLATES.flatMap((template) => template.apps)) {
       expect(app === "github" || matchFeaturedConnectorId(app) !== null).toBe(true);
+    }
+  });
+
+  it("name only built-in tools that exist", () => {
+    for (const template of BOT_TEMPLATES) {
+      const named = template.instructions.match(/\b[a-z]+(?:_[a-z]+)+\b/g) ?? [];
+      expect(
+        named.filter((name) => !isBuiltinToolName(name)),
+        template.id,
+      ).toEqual([]);
     }
   });
 });

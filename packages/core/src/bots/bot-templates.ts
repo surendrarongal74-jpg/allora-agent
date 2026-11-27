@@ -1,5 +1,6 @@
 import type { BotTemplate, ConnectionCatalogItem } from "@rakazo/contracts";
 import { matchConnectedAppCatalog } from "../integrations/app-connect.js";
+import { CHIEF_TEMPLATE_INSTRUCTIONS } from "./chief-template.prompt.js";
 
 /**
  * Reviewed, ready-made bots. Bump a template's `version` whenever any of its content changes:
@@ -7,6 +8,31 @@ import { matchConnectedAppCatalog } from "../integrations/app-connect.js";
  * summaries and samples are shown in the apps' languages; the rest is written for the bot.
  */
 export const BOT_TEMPLATES: readonly BotTemplate[] = [
+  {
+    id: "chief",
+    version: 1,
+    name: "Chief",
+    summary: "Builds a team of bots for big jobs and hands you the tested result",
+    sample: [
+      "**Bakery website: ready**",
+      "",
+      "Team: Architect, Designer, Frontend dev, Reviewer, Tester",
+      "",
+      "**Checks**",
+      "- Builds, and all 24 tests pass",
+      "- Home, Menu and Order pages work on desktop and phone",
+      "- Review found 3 issues, all fixed: form validation, image sizes, a broken link",
+      "",
+      "**Where it is**: the bakery-site folder on the Team Computer",
+      "",
+      "Keep the team, or archive it?",
+    ].join("\n"),
+    description: "Leads a team of bots on big jobs",
+    instructions: CHIEF_TEMPLATE_INSTRUCTIONS,
+    skills: [],
+    routines: [],
+    apps: [],
+  },
   {
     id: "morning-briefing",
     version: 1,

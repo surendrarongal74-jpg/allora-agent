@@ -23,6 +23,7 @@ import type {
   SemanticMemoryProvider,
 } from "@rakazo/adapter-kit";
 import { SandboxDamagedError } from "@rakazo/adapter-kit";
+import { SPAWNED_BOT_LIMIT } from "@rakazo/contracts";
 import { browserProfilePathForScreen } from "@rakazo/core/node/desktop-runtime";
 import { deferred } from "@rakazo/core/test-async";
 import type { createRepos, PrismaClient } from "@rakazo/db";
@@ -147,7 +148,7 @@ describe("spawned bot creation", () => {
 
     const result = await spawnBot(
       {
-        prisma: {} as PrismaClient,
+        prisma: { bot: { count: vi.fn().mockResolvedValue(0) } } as unknown as PrismaClient,
         jobs: { enqueue: vi.fn() } as unknown as JobPublisher,
       },
       {
@@ -184,7 +185,55 @@ describe("spawned bot creation", () => {
     });
     createReposSpy.mockRestore();
   });
+
+  async function spawnAtLimit(
+    existing: { id: string; name: string; thread: { id: string } } | null,
+  ) {
+    const count = vi.fn().mockResolvedValue(SPAWNED_BOT_LIMIT);
+    const createBot = vi.fn().mockRejectedValue(new Error("unique spawn key"));
+    const createReposSpy = vi
+      .spyOn(await import("@rakazo/db"), "createRepos")
+      .mockReturnValue({ createBot } as unknown as ReturnType<typeof createRepos>);
+    const prisma = {
+      bot: { count, findUnique: vi.fn().mockResolvedValue(existing) },
+    } as unknown as PrismaClient;
+    try {
+      const result = await spawnBot(
+        { prisma, jobs: { enqueue: vi.fn() } as unknown as JobPublisher },
+        {
+          spawnedBy: { id: "parent-1", name: "Chief", spaceId: "workspace-1", userId: "user-1" },
+          runId: "run-1",
+          spawnKey: "tool-call-3",
+          name: "Tester",
+        },
+      );
+      return { result, count, createBot };
+    } finally {
+      createReposSpy.mockRestore();
+    }
+  }
+
+  it("refuses a new bot once its creator has the limit of unarchived bots", async () => {
+    const spawn = await spawnAtLimit(null);
+    expect(spawn.result).toEqual({ error: expect.stringContaining("archive") });
+    expect(spawn.count).toHaveBeenCalledWith({
+      where: { parentBotId: "parent-1", spaceId: "workspace-1", archivedAt: null },
+    });
+    expect(spawn.createBot).not.toHaveBeenCalled();
+  });
+
+  it("still returns the bot a retried spawn made at the limit", async () => {
+    const spawn = await spawnAtLimit({ id: "child-3", name: "Tester", thread: { id: "thread-3" } });
+    expect(spawn.result).toEqual({
+      ok: true,
+      duplicate: true,
+      botId: "child-3",
+      name: "Tester",
+      threadId: "thread-3",
+    });
+  });
 });
+
 describe("spawned bot archival", () => {
   it("scopes management to the space without requiring a creator", () => {
     expect(managedBotsWhere({ spaceId: "space-1" })).toEqual({ spaceId: "space-1" });
