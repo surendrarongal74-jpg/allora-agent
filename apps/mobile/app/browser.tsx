@@ -1,15 +1,22 @@
 import { useLingui } from "@lingui/react/macro";
+import { useNow } from "@rakazo/chat-ui/hooks";
 import type { PageInput, PageView } from "@rakazo/contracts";
 import { COMPUTER_CONTROL_HEARTBEAT_MS } from "@rakazo/core";
+import { bestEffort } from "@rakazo/logging/best-effort";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { GestureResponderEvent, LayoutChangeEvent, TextInputInstance } from "react-native";
 import { ActivityIndicator, Image, Pressable, Text, TextInput, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { usePageView } from "../components/computers/browser-live-card";
-import { rpc } from "../lib/api/api";
 import { errorText } from "../lib/api/user-error";
 import { mobileTokens } from "../lib/appearance/appearance";
+import {
+  handBackPage,
+  pageControlHeartbeat,
+  sendPageInput,
+  takeOverPage,
+} from "../lib/computers/page-takeover";
 import { useAppForeground } from "../lib/platform/app-foreground";
 
 const TAKEOVER_REFRESH_MS = 1000;
@@ -55,7 +62,7 @@ export default function Browser() {
     (input: PageInput) => {
       queue.current = queue.current.then(async () => {
         try {
-          setLatest(await rpc("computer/pageInput", { botId, input }));
+          setLatest(await sendPageInput(botId, input));
           setError(null);
         } catch (failure) {
           setError(errorText(failure, t`That did not reach the page`));
@@ -71,14 +78,14 @@ export default function Browser() {
     let cancelled = false;
     void (async () => {
       try {
-        const taken = await rpc("computer/takeover", { botId });
+        const taken = await takeOverPage(botId);
         if (cancelled) {
-          await rpc("computer/release", { botId, leaseId: taken.leaseId }).catch(() => {});
+          await bestEffort("page.takeover_release", handBackPage(botId, taken));
           return;
         }
-        lease.current = taken.leaseId;
-        setLeaseId(taken.leaseId);
-        setLatest(await rpc("computer/pageInput", { botId, input: { kind: "phone" } }));
+        lease.current = taken;
+        setLeaseId(taken);
+        setLatest(await sendPageInput(botId, { kind: "phone" }));
       } catch (failure) {
         if (!cancelled) setError(errorText(failure, t`Could not take over`));
       }
@@ -88,23 +95,15 @@ export default function Browser() {
       // Leaving the screen any way hands the page back.
       const held = lease.current;
       lease.current = null;
-      if (held) {
-        void rpc("computer/pageInput", { botId, input: { kind: "desktop" } })
-          .catch(() => {})
-          .then(() => rpc("computer/release", { botId, leaseId: held }))
-          .catch(() => {});
-      }
+      if (held) void bestEffort("page.takeover_handback", handBackPage(botId, held));
     };
   }, [botId, t]);
 
   // Control lapses unless the screen checks in while it is open.
+  const tick = useNow(leaseId && foreground ? COMPUTER_CONTROL_HEARTBEAT_MS : null);
   useEffect(() => {
-    if (!leaseId || !foreground) return;
-    const timer = setInterval(() => {
-      void rpc("computer/heartbeat", { botId }).catch(() => {});
-    }, COMPUTER_CONTROL_HEARTBEAT_MS);
-    return () => clearInterval(timer);
-  }, [botId, leaseId, foreground]);
+    if (leaseId && tick) void pageControlHeartbeat(botId);
+  }, [botId, leaseId, tick]);
 
   const { view } = usePageView(botId, Boolean(leaseId) && foreground, TAKEOVER_REFRESH_MS, true);
   const page = view ?? latest;
@@ -114,10 +113,7 @@ export default function Browser() {
     await queue.current;
     const held = lease.current;
     lease.current = null;
-    if (held) {
-      await rpc("computer/pageInput", { botId, input: { kind: "desktop" } }).catch(() => {});
-      await rpc("computer/release", { botId, leaseId: held }).catch(() => {});
-    }
+    if (held) await handBackPage(botId, held);
     if (router.canGoBack()) router.back();
     else router.replace("/");
   };

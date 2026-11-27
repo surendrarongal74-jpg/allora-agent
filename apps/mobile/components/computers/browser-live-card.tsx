@@ -1,11 +1,11 @@
 import { useLingui } from "@lingui/react/macro";
 import type { PageView } from "@rakazo/contracts";
+import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "expo-router";
-import { useEffect, useState } from "react";
 import { Image, Pressable, Text, View } from "react-native";
-import { rpc } from "../../lib/api/api";
 import { mobileTokens } from "../../lib/appearance/appearance";
 import { useAppForeground } from "../../lib/platform/app-foreground";
+import { rpcQuery } from "../../lib/query/query";
 
 /** How often the card's still of the page is taken again while someone watches it. */
 export const PAGE_VIEW_REFRESH_MS = 1500;
@@ -15,33 +15,16 @@ export function pageHost(url: string): string {
   return match?.[1] ?? url;
 }
 
-/** Reads the bot's page again every `everyMs` while `enabled`, one read at a time. */
+/** Reads the bot's page again every `everyMs` while `enabled`, like the live screen. */
 export function usePageView(botId: string, enabled: boolean, everyMs: number, large = false) {
-  const [view, setView] = useState<PageView | null>(null);
-  const [failed, setFailed] = useState(false);
-  useEffect(() => {
-    if (!enabled) return;
-    let cancelled = false;
-    let timer: ReturnType<typeof setTimeout> | undefined;
-    const read = async () => {
-      try {
-        const next = await rpc("computer/pageView", { botId, large });
-        if (!cancelled) {
-          setView(next);
-          setFailed(false);
-        }
-      } catch {
-        if (!cancelled) setFailed(true);
-      }
-      if (!cancelled) timer = setTimeout(() => void read(), everyMs);
-    };
-    void read();
-    return () => {
-      cancelled = true;
-      if (timer) clearTimeout(timer);
-    };
-  }, [botId, enabled, everyMs, large]);
-  return { view, setView, failed };
+  const view = useQuery({
+    ...rpcQuery("computer/pageView", { botId, large }),
+    enabled: enabled && Boolean(botId),
+    refetchInterval: enabled ? everyMs : false,
+    retry: false,
+    gcTime: 0,
+  });
+  return { view: (view.data as PageView | undefined) ?? null, failed: view.isError };
 }
 
 /** The page the bot is using, live, with what it is doing there and a way to take it over. */
