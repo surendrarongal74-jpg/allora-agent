@@ -10,7 +10,7 @@ import { dockerDownloadUrl, isDesktopSetupLink } from "../this-computer/docker-c
 import type { createAppOpener } from "../windows/app-opener.js";
 import { developmentIcon, markOnce } from "../windows/app-window.js";
 import { setupWindowOptions } from "../windows/window-options.js";
-import { managedLocalOpenUrl, parseSetupInput, RAKAZO_CLOUD_URL } from "./setup-config.js";
+import { DEFAULT_SERVER_URL, managedLocalOpenUrl, parseSetupInput } from "./setup-config.js";
 import { writeSetup } from "./setup-store.js";
 
 let setupSaveInProgress = false;
@@ -145,7 +145,7 @@ export function registerSetupIpc({
   }));
   handleIpc("desktop.setup.state", () => ({
     defaultLocalUrl: desktop.localStack.webUrl(),
-    cloudUrl: RAKAZO_CLOUD_URL,
+    cloudUrl: DEFAULT_SERVER_URL,
     saved: desktop.currentSetup,
     error: desktop.setupError ?? undefined,
   }));

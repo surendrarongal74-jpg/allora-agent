@@ -1,3 +1,4 @@
+import { isPrivateNetworkHost } from "@rakazo/contracts/network-host";
 import type { ConfigContext, ExpoConfig } from "expo/config";
 
 const RELEASE_PROFILES = new Set(["production", "android-apk", "diagnostic"]);
@@ -6,22 +7,28 @@ const APPLE_TEAM_ID = /^[A-Z0-9]{10}$/;
 const EXPO_PROJECT_ID = /^[A-Za-z0-9-]+$/;
 
 export default ({ config }: ConfigContext): ExpoConfig => {
-  if (RELEASE_PROFILES.has(process.env.EAS_BUILD_PROFILE ?? "")) {
-    const apiUrl = process.env.EXPO_PUBLIC_API_URL;
-    if (!apiUrl) {
-      throw new Error(
-        "EXPO_PUBLIC_API_URL must be set in the EAS production environment before building a release.",
-      );
-    }
-
+  const release = RELEASE_PROFILES.has(process.env.EAS_BUILD_PROFILE ?? "");
+  const apiUrl = process.env.EXPO_PUBLIC_API_URL;
+  if (release && !apiUrl) {
+    throw new Error(
+      "EXPO_PUBLIC_API_URL must be set in the EAS production environment before building a release.",
+    );
+  }
+  // The default server the app opens on. Refuse a value it would ignore, so a build never quietly
+  // falls back to asking for a server address.
+  if (apiUrl) {
     let parsed: URL;
     try {
       parsed = new URL(apiUrl);
     } catch {
       throw new Error("EXPO_PUBLIC_API_URL must be a valid URL.");
     }
-    if (parsed.protocol !== "https:") {
+    if (release && parsed.protocol !== "https:") {
       throw new Error("EXPO_PUBLIC_API_URL must use HTTPS for production builds.");
+    }
+    const localHttp = parsed.protocol === "http:" && isPrivateNetworkHost(parsed.hostname);
+    if (parsed.protocol !== "https:" && !localHttp) {
+      throw new Error("EXPO_PUBLIC_API_URL must use https:// (http:// only on a local network).");
     }
   }
 
