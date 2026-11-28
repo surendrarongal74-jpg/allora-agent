@@ -1,7 +1,8 @@
 import type { ComponentProps } from "react";
 import Animated from "react-native-reanimated";
 import Svg, { Defs, LinearGradient, Rect, Stop } from "react-native-svg";
-import { mobileTokens } from "../../lib/appearance/appearance";
+import { glassGradient } from "../../lib/appearance/glass";
+import { useResolvedAppearance } from "../../lib/native/native";
 
 /**
  * Fades messages scrolling under the header or the composer into the thread background.
@@ -14,7 +15,9 @@ export function ThreadEdgeFade({
   edge: "top" | "bottom";
   style: ComponentProps<typeof Animated.View>["style"];
 }) {
-  const color = mobileTokens().background;
+  // Fade into the backdrop's own color at that edge, so no band shows over the gradient.
+  const { stops } = glassGradient(useResolvedAppearance());
+  const color = edge === "top" ? stops[0] : stops[2];
   const id = `thread-fade-${edge}`;
   return (
     <Animated.View

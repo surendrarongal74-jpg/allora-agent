@@ -2,7 +2,7 @@
 import { deferred } from "@rakazo/core/test-async";
 import { tokensForAppearance } from "@rakazo/ui-tokens";
 import type { ReactNode } from "react";
-import { act } from "react";
+import { act, createElement } from "react";
 import type { Root } from "react-dom/client";
 import { createRoot } from "react-dom/client";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
@@ -138,6 +138,17 @@ vi.mock("expo-apple-authentication", () => ({
   AppleAuthenticationButtonType: { CONTINUE: 1, SIGN_IN: 0, SIGN_UP: 2 },
   AppleAuthenticationButtonStyle: { WHITE: 0, WHITE_OUTLINE: 1, BLACK: 2 },
 }));
+vi.mock("../../components/ui/glass-backdrop", () => ({ GlassBackdrop: () => null }));
+vi.mock("../../components/native/glass-surface", () => ({
+  GlassSurface: ({ children }: { children?: unknown }) => children,
+}));
+vi.mock("../../components/ui/liquid-pressable", async () => {
+  const { Pressable } = await import("react-native");
+  return {
+    LiquidPressable: ({ stretch: _stretch, ...props }: Record<string, unknown>) =>
+      createElement(Pressable as never, props),
+  };
+});
 vi.mock("react-native-svg", () => ({
   default: () => null,
   Path: () => null,

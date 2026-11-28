@@ -20,6 +20,7 @@ import type { MobileBot, MobileMessage, MobileSnapshot } from "../../lib/api/mob
 import { blockText } from "../../lib/api/mobile-types";
 import { errorText } from "../../lib/api/user-error";
 import { mobileTokens } from "../../lib/appearance/appearance";
+import { BUBBLE_RADIUS, chatBubbleStyle, glassSurfaceStyle } from "../../lib/appearance/glass";
 import type { MobileArtifactTarget } from "../../lib/artifacts/artifact-open";
 import { openMobileArtifact } from "../../lib/artifacts/artifact-open";
 import { allowsSpace } from "../../lib/cards/ask-action-label";
@@ -63,6 +64,7 @@ import { MessageMentions } from "../messages/bot-mention";
 import { MessageCaption } from "../messages/message-caption";
 import { NativeSymbol } from "../native/native-symbol";
 import { AskBlock } from "./ask-block";
+import { BubbleGloss } from "./bubble-gloss";
 import { McpAppCard } from "./mcp-app-card";
 import type { MessageRowActions } from "./message-row";
 import { PeerReceiptLine } from "./peer-receipt-line";
@@ -463,7 +465,8 @@ const MessageBubbleContent = memo(function MessageBubbleContent({
           style={{
             // No percentage width: the iOS menu host has no definite width to resolve it against.
             maxWidth: 576,
-            borderRadius: 18,
+            borderRadius: BUBBLE_RADIUS,
+            ...(askBlock.outgoingDraft ? {} : glassSurfaceStyle(tokens, colorScheme)),
             backgroundColor: askBlock.outgoingDraft ? undefined : tokens.card,
             paddingHorizontal: askBlock.outgoingDraft ? 0 : 16,
             paddingVertical: askBlock.outgoingDraft ? 0 : 14,
@@ -623,8 +626,8 @@ const MessageBubbleContent = memo(function MessageBubbleContent({
     );
     const bubbleStyle = {
       maxWidth: "100%",
-      borderRadius: 20,
-      backgroundColor: outgoing ? tokens.chatUser : tokens.muted,
+      borderRadius: BUBBLE_RADIUS,
+      ...chatBubbleStyle(outgoing, tokens, colorScheme),
       paddingHorizontal: 14,
       paddingVertical: 12,
       gap: 8,
@@ -895,12 +898,13 @@ function MessageTextCard({
         flexShrink: 1,
         minWidth: 0,
         maxWidth: "100%",
-        backgroundColor: outgoing ? tokens.chatUser : tokens.muted,
+        ...chatBubbleStyle(outgoing, tokens, colorScheme),
         paddingHorizontal: 14,
-        paddingVertical: 9,
-        borderRadius: 20,
+        paddingVertical: 10,
+        borderRadius: BUBBLE_RADIUS,
       }}
     >
+      {outgoing ? <BubbleGloss /> : null}
       {speaker ? (
         <Text
           style={{
@@ -964,7 +968,8 @@ function AgentEventLabel({
           style={{
             width: "100%",
             marginTop: 6,
-            borderRadius: 14,
+            borderRadius: 16,
+            ...glassSurfaceStyle(tokens, colorScheme),
             backgroundColor: tokens.card,
             paddingHorizontal: 14,
             paddingVertical: 10,

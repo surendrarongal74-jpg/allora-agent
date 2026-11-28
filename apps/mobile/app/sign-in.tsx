@@ -27,6 +27,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import Svg, { Path } from "react-native-svg";
 import { NativeActionButton } from "../components/native/native-action-button";
 import { SocialSignInButtons } from "../components/settings/social-sign-in-buttons";
+import { GlassBackdrop } from "../components/ui/glass-backdrop";
 import { currentApiBase } from "../lib/api/api";
 import { displayApiHost, usesCustomApiBase } from "../lib/api/endpoint";
 import { loadSessionToken } from "../lib/api/session";
@@ -277,6 +278,7 @@ export default function SignIn() {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: tokens.background }}>
+      <GlassBackdrop />
       <KeyboardAvoidingView
         enabled={!call}
         style={{ flex: 1 }}

@@ -42,6 +42,7 @@ import {
   useWindowDimensions,
   View,
 } from "react-native";
+import { glassBrand } from "../../lib/appearance/glass";
 import { useComposerDictation } from "../../lib/composer/composer-dictation";
 import type { ComposerDraftScope } from "../../lib/composer/composer-draft";
 import { readComposerDraft, writeComposerDraft } from "../../lib/composer/composer-draft";
@@ -51,6 +52,7 @@ import { useMobileTokens, useResolvedAppearance } from "../../lib/native/native"
 import type { ComposerSnapshot } from "../../lib/thread/send/thread-feedback";
 import { GlassSurface } from "../native/glass-surface";
 import { NativeSymbol } from "../native/native-symbol";
+import { LiquidPressable } from "../ui/liquid-pressable";
 import { ComposerKeyboard } from "./composer-keyboard";
 import { ComposerMentionPicker } from "./composer-mention-picker";
 import { ModelChip, TrailingControls } from "./composer-model-chip";
@@ -514,27 +516,23 @@ export function ThreadComposer({
   }
 
   const sendButton = (
-    <Pressable
+    <LiquidPressable
       accessibilityRole="button"
       accessibilityLabel={t`Send`}
       disabled={sendBlocked}
       hitSlop={pillHitSlop}
       onPress={sendOrFinish}
+      stretch={0.12}
       style={{ marginBottom: pillInset, opacity: sendBlocked ? 0.5 : 1 }}
     >
       <GlassSurface
-        tint={tokens.primary}
+        tint={glassBrand.fill}
         style={composerPillStyle}
-        fallbackStyle={{ backgroundColor: tokens.primary }}
+        fallbackStyle={{ backgroundColor: glassBrand.fill }}
       >
-        <NativeSymbol
-          ios="arrow.up"
-          android="arrow-up"
-          size={15}
-          color={tokens.primaryForeground}
-        />
+        <NativeSymbol ios="arrow.up" android="arrow-up" size={15} color={glassBrand.foreground} />
       </GlassSurface>
-    </Pressable>
+    </LiquidPressable>
   );
 
   return (
@@ -928,26 +926,27 @@ export function ThreadComposer({
                 </Pressable>
               )}
               {!canSend && botId && !onCall ? (
-                <Pressable
+                <LiquidPressable
                   accessibilityRole="button"
                   accessibilityLabel={t`Call`}
                   hitSlop={pillHitSlop}
                   onPress={() => void startVoiceCall()}
+                  stretch={0.12}
                   style={{ marginBottom: pillInset }}
                 >
                   <GlassSurface
-                    tint={tokens.primary}
+                    tint={glassBrand.fill}
                     style={composerPillStyle}
-                    fallbackStyle={{ backgroundColor: tokens.primary }}
+                    fallbackStyle={{ backgroundColor: glassBrand.fill }}
                   >
                     <NativeSymbol
                       ios="waveform"
                       android="pulse-outline"
                       size={15}
-                      color={tokens.primaryForeground}
+                      color={glassBrand.foreground}
                     />
                   </GlassSurface>
-                </Pressable>
+                </LiquidPressable>
               ) : (
                 sendButton
               )}

@@ -3,6 +3,7 @@ import { foregroundStyle, glassEffect } from "@expo/ui/swift-ui/modifiers";
 import { StyleSheet, View } from "react-native";
 import { useResolvedAppearance } from "../../lib/native/native";
 import { iosAtLeast } from "../../lib/native/native-controls";
+import { drawnRadius, LiquidRim } from "../ui/liquid-rim";
 import type { GlassSurfaceProps } from "./glass-surface";
 
 /** Liquid Glass behind React Native children on iOS 26; `fallbackStyle` elsewhere. */
@@ -15,7 +16,13 @@ export function GlassSurface({
   children,
 }: GlassSurfaceProps) {
   const scheme = useResolvedAppearance();
-  if (!iosAtLeast(26)) return <View style={[style, fallbackStyle]}>{children}</View>;
+  if (!iosAtLeast(26))
+    return (
+      <View style={[style, fallbackStyle]}>
+        <LiquidRim radius={drawnRadius(style, fallbackStyle)} />
+        {children}
+      </View>
+    );
   const modifiers = [
     foregroundStyle("transparent"),
     glassEffect({

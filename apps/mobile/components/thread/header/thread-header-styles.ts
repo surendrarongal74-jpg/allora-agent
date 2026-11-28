@@ -1,10 +1,12 @@
 import { typeScale } from "@rakazo/ui-tokens";
 import { StyleSheet } from "react-native";
 import { mobileTokens } from "../../../lib/appearance/appearance";
+import { glassShadow, tokensAppearance } from "../../../lib/appearance/glass";
 import { HEADER_CONTROL_SIZE } from "../../../lib/native/native-controls";
 
 export function createThreadHeaderStyles() {
   const tokens = mobileTokens();
+  const shadow = glassShadow(tokensAppearance(tokens));
   return StyleSheet.create({
     titleCapsule: {
       flexDirection: "row",
@@ -18,6 +20,7 @@ export function createThreadHeaderStyles() {
     },
     titleCapsuleFill: {
       backgroundColor: tokens.glassFill,
+      ...shadow,
     },
     title: {
       // A long name gives way to the avatars beside it and ends in "…".
@@ -40,6 +43,8 @@ export function createThreadHeaderStyles() {
       borderWidth: StyleSheet.hairlineWidth,
       borderColor: tokens.glassStroke,
       backgroundColor: tokens.glassFill,
+      // The composer floats as a curved glass pill above the thread.
+      ...shadow,
     },
   });
 }

@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import type { StyleProp, ViewStyle } from "react-native";
 import { View } from "react-native";
+import { drawnRadius, LiquidRim } from "../ui/liquid-rim";
 
 export type GlassSurfaceProps = {
   shape?: "capsule" | "circle" | "roundedRectangle";
@@ -14,7 +15,15 @@ export type GlassSurfaceProps = {
   children?: ReactNode;
 };
 
-/** Android and older iOS draw the fallback fill; iOS 26 renders Liquid Glass. */
+/**
+ * Android and older iOS draw the fallback fill with an emulated liquid glass rim (a specular
+ * top-left edge and a soft inner glow); iOS 26 renders Liquid Glass.
+ */
 export function GlassSurface({ style, fallbackStyle, children }: GlassSurfaceProps) {
-  return <View style={[style, fallbackStyle]}>{children}</View>;
+  return (
+    <View style={[style, fallbackStyle]}>
+      <LiquidRim radius={drawnRadius(style, fallbackStyle)} />
+      {children}
+    </View>
+  );
 }

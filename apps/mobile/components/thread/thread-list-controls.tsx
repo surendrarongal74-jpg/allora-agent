@@ -5,6 +5,7 @@ import { mobileTokens } from "../../lib/appearance/appearance";
 import type { ActivityMarkBot } from "../bots/activity-mark";
 import { ActivityMark } from "../bots/activity-mark";
 import { ScrollToBottomButton } from "./scroll-to-bottom-button";
+import { TypingBubble } from "./typing-bubble";
 
 /** The bots still working on a reply, under the newest message. */
 export function ThreadWorkingFooter({
@@ -29,6 +30,7 @@ export function ThreadWorkingFooter({
       style={{ minHeight: 40, marginTop: 12, justifyContent: "center" }}
     >
       <ActivityMark bots={bots} atBottom={atBottom} label={label} />
+      <TypingBubble />
     </View>
   );
 }

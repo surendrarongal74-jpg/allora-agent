@@ -60,6 +60,7 @@ import {
   subscribeSessionGeneration,
 } from "../lib/api/session";
 import { loadAppearancePreference, mobileTokens } from "../lib/appearance/appearance";
+import { useReduceMotion } from "../lib/appearance/motion";
 import { capTextScaling } from "../lib/appearance/text-scale";
 import { replaceWithSignIn } from "../lib/auth/auth-routing";
 import { useReferral } from "../lib/billing/referral";
@@ -298,7 +299,8 @@ function LayoutContent() {
   const { split, inboxHidden, foldActive } = useSplitView();
   const canInvite = Boolean(useReferral());
   const router = useRouter();
-  const chatAnimation = split ? "none" : undefined;
+  const reduceMotion = useReduceMotion();
+  const chatAnimation = split || reduceMotion ? "none" : undefined;
   const [ready, setReady] = useState(false);
   useNavigatorMounted(ready);
   useNotificationResponses(ready);
@@ -473,6 +475,12 @@ function LayoutContent() {
                         headerShadowVisible: false,
                         headerBackButtonDisplayMode: "minimal",
                         contentStyle: { backgroundColor: String(native.page) },
+                        // Screens glide in; reduce motion swaps them without movement.
+                        animation: reduceMotion
+                          ? "none"
+                          : Platform.OS === "android"
+                            ? "fade_from_bottom"
+                            : "default",
                       }}
                     >
                       <Stack.Screen

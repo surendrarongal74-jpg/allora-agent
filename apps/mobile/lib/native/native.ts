@@ -10,6 +10,7 @@ import {
   subscribeAppearance,
 } from "../appearance/appearance";
 import { translucentColor } from "../appearance/color";
+import { withGlass } from "../appearance/glass";
 
 function systemColor(iosName: string, fallback: string): ColorValue {
   // PlatformColor follows the OS scheme, not an explicit app Light/Dark choice.
@@ -88,5 +89,6 @@ export function useThemedStyles<T>(factory: () => T): T {
 
 /** Subscribe custom surfaces to the same appearance as native navigation. */
 export function useMobileTokens() {
-  return tokensForAppearance(useResolvedAppearance());
+  const appearance = useResolvedAppearance();
+  return withGlass(tokensForAppearance(appearance), appearance);
 }

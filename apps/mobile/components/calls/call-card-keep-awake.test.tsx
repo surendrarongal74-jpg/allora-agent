@@ -84,6 +84,7 @@ vi.mock("react-native", () => {
     StyleSheet: { create: <T,>(styles: T) => styles, hairlineWidth: 1 },
   };
 });
+vi.mock("../ui/liquid-rim", () => ({ LiquidRim: () => null, drawnRadius: () => 0 }));
 vi.mock("../native/glass-icon-button", () => ({
   GlassIconButton: ({
     accessibilityLabel,

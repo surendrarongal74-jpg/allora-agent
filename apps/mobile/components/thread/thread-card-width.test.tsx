@@ -303,12 +303,12 @@ describe("thread cards", () => {
         expect(style).not.toHaveProperty("paddingVertical");
       }
       expect(styleOf(outer.firstElementChild)).toMatchObject({
-        borderRadius: 20,
+        borderRadius: 22,
         paddingHorizontal: 14,
         paddingVertical: 12,
       });
       expect(styleOf(outer.lastElementChild)).toMatchObject({
-        borderRadius: 20,
+        borderRadius: 22,
         paddingHorizontal: 14,
         paddingVertical: 12,
       });

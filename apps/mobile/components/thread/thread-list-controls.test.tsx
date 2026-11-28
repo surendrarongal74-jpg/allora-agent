@@ -11,6 +11,7 @@ vi.mock("../../lib/appearance/appearance", () => ({
   mobileTokens: () => ({ mutedForeground: "#777" }),
 }));
 vi.mock("../bots/activity-mark", () => ({ ActivityMark: () => null }));
+vi.mock("./typing-bubble", () => ({ TypingBubble: () => null }));
 vi.mock("./scroll-to-bottom-button", () => ({ ScrollToBottomButton: () => null }));
 vi.mock("react-native", () => ({
   ActivityIndicator: ({ accessibilityLabel }: { accessibilityLabel: string }) => (

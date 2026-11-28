@@ -6,7 +6,9 @@ import type { ReactNode } from "react";
 import { Pressable, Text, useWindowDimensions, View } from "react-native";
 import Svg, { Path } from "react-native-svg";
 import { useMobileTokens, useResolvedAppearance } from "../../lib/native/native";
+import { GlassSurface } from "../native/glass-surface";
 import { NativeProviderButton } from "../native/native-provider-button";
+import { LiquidPressable } from "../ui/liquid-pressable";
 
 export function SocialSignInButtons({
   providers,
@@ -128,11 +130,17 @@ export function SocialSignInButtons({
 
 function providerStyle(variant: string | undefined, tokens: ReturnType<typeof useMobileTokens>) {
   return variant === "outline"
-    ? { backgroundColor: tokens.background, borderColor: tokens.border, color: tokens.foreground }
+    ? // Frosted glass, so the Google and email choices float over the warm backdrop.
+      {
+        backgroundColor: tokens.glassFill,
+        borderColor: tokens.glassStroke,
+        color: tokens.foreground,
+      }
     : {
         backgroundColor: tokens.primary,
         borderColor: tokens.primary,
         color: tokens.primaryForeground,
+        tint: tokens.primary,
       };
 }
 
@@ -149,34 +157,44 @@ function Choice({
   onPress: () => void;
   mark: ReactNode;
   fill?: boolean;
-  style: { backgroundColor: string; borderColor: string; color: string };
+  style: { backgroundColor: string; borderColor: string; color: string; tint?: string };
 }) {
   return (
-    <Pressable
+    <LiquidPressable
       accessibilityRole="button"
+      accessibilityLabel={label}
       disabled={disabled}
       onPress={onPress}
+      stretch={0.03}
       style={{
         flex: fill ? undefined : 1,
         alignSelf: fill ? "stretch" : undefined,
-        minHeight: 48,
-        borderRadius: 12,
-        borderWidth: 1,
-        borderColor: style.borderColor,
-        backgroundColor: style.backgroundColor,
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "center",
-        gap: 8,
-        paddingHorizontal: 16,
         opacity: disabled ? 0.45 : 1,
       }}
     >
-      {mark}
-      <Text numberOfLines={1} style={{ color: style.color, fontSize: 16, fontWeight: "600" }}>
-        {label}
-      </Text>
-    </Pressable>
+      <GlassSurface
+        tint={style.tint}
+        style={{
+          minHeight: 50,
+          borderRadius: 25,
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: 8,
+          paddingHorizontal: 18,
+        }}
+        fallbackStyle={{
+          borderWidth: 1,
+          borderColor: style.borderColor,
+          backgroundColor: style.backgroundColor,
+        }}
+      >
+        {mark}
+        <Text numberOfLines={1} style={{ color: style.color, fontSize: 16, fontWeight: "600" }}>
+          {label}
+        </Text>
+      </GlassSurface>
+    </LiquidPressable>
   );
 }
 

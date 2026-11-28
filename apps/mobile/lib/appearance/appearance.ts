@@ -8,6 +8,7 @@ import {
 import * as SecureStore from "expo-secure-store";
 import type { ColorSchemeName } from "react-native";
 import { Appearance } from "react-native";
+import { withGlass } from "./glass";
 
 export type { AppearancePreference, ResolvedAppearance };
 
@@ -57,7 +58,8 @@ export function mobileTokens(
   preference: AppearancePreference = getCachedAppearancePreference(),
   scheme?: ColorSchemeName | null,
 ) {
-  return tokensForAppearance(resolveMobileAppearance(preference, scheme));
+  const appearance = resolveMobileAppearance(preference, scheme);
+  return withGlass(tokensForAppearance(appearance), appearance);
 }
 
 export function subscribeAppearance(listener: () => void): () => void {

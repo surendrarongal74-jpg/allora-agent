@@ -82,7 +82,8 @@ describe("mobile appearance", () => {
     await loadAppearancePreference();
 
     expect(listener).toHaveBeenCalledOnce();
-    expect(mobileTokens()).toEqual(lightTokens);
+    const { withGlass } = await import("./glass");
+    expect(mobileTokens()).toEqual(withGlass(lightTokens, "light"));
   });
 
   it("notifies subscribers when the OS scheme flips under System preference", async () => {

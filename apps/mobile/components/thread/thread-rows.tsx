@@ -22,6 +22,7 @@ import { threadHeaderFloats } from "../../lib/thread/scroll/thread-edges";
 import { previewMessageText } from "../../lib/thread/thread-message-text";
 import type { useThreadTranscript } from "../../lib/thread/thread-transcript";
 import { VoiceChatCard } from "../calls/VoiceChatCard";
+import { SlideUpFadeIn } from "../ui/enter-animation";
 import { hasSenderLabelContent } from "./message-bubble";
 import type { MessageRowActions } from "./message-row";
 import { MessageRow } from "./message-row";
@@ -131,6 +132,28 @@ export function useThreadRows({
     );
     return { liveItems: items.reverse(), continuedSenderIds };
   }, [visibleMessages, separatorIds, unreadDividerId]);
+  // Messages already in the chat when it opened draw in place; ones that arrive later slide in.
+  const knownIds = useRef<Set<string> | null>(null);
+  const streamedReply = useRef(false);
+  if (knownIds.current === null && snap)
+    knownIds.current = new Set(visibleMessages.map((message) => message.id));
+  const arrives = useCallback((message: MobileMessage, index: number) => {
+    const known = knownIds.current;
+    if (!known || known.has(message.id)) return false;
+    known.add(message.id);
+    // Older pages load at the far end; only the newest rows animate.
+    if (index > 2) return false;
+    if (message.id.startsWith("progress:")) {
+      streamedReply.current = true;
+      return true;
+    }
+    // A finished reply replaces the text that streamed in; it should not slide in again.
+    if (message.role === "bot" && streamedReply.current) {
+      streamedReply.current = false;
+      return false;
+    }
+    return true;
+  }, []);
   const messagesById = useMemo(
     () => new Map((snap?.messages ?? []).map((message) => [message.id, message])),
     [snap?.messages],
@@ -249,7 +272,7 @@ export function useThreadRows({
   );
 
   const renderItem = useCallback(
-    ({ item }: ListRenderItemInfo<ThreadItem<MobileMessage>>) =>
+    ({ item, index }: ListRenderItemInfo<ThreadItem<MobileMessage>>) =>
       item.kind === "voiceChat" ? (
         <View
           style={[
@@ -275,9 +298,12 @@ export function useThreadRows({
           />
         </View>
       ) : (
-        renderMessageRow(item.message)
+        <SlideUpFadeIn inverted animate={arrives(item.message, index)}>
+          {renderMessageRow(item.message)}
+        </SlideUpFadeIn>
       ),
     [
+      arrives,
       renderMessageRow,
       rowActions.startSelection,
       rowActions.toggleSelection,

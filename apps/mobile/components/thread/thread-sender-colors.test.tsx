@@ -3,12 +3,13 @@ import {
   resolvePersonaColorDef,
   shouldShowBotSenderName,
 } from "@rakazo/core";
-import { botColors, darkTokens } from "@rakazo/ui-tokens";
+import { darkTokens as baseDarkTokens, botColors } from "@rakazo/ui-tokens";
 import type { ComponentProps } from "react";
 import { createContext } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { expect, it, vi } from "vitest";
 import type { MobileBot, MobileSnapshot } from "../../lib/api/mobile-types";
+import { withGlass } from "../../lib/appearance/glass";
 
 vi.mock("react-native", () => ({
   Alert: { alert: vi.fn() },
@@ -72,6 +73,9 @@ vi.mock("../native/native-symbol", () => ({ NativeSymbol: () => null }));
 vi.mock("../native/native-action-button", () => ({ NativeActionButton: () => null }));
 
 import { hasSenderLabelContent, MessageBubble } from "./message-bubble";
+
+/** The glass palette the chat draws with. */
+const darkTokens = withGlass(baseDarkTokens, "dark");
 
 type BubbleProps = ComponentProps<typeof MessageBubble>;
 
@@ -166,7 +170,7 @@ it.each(["text", "image"] as const)("keeps per-bot sender colours on %s messages
     );
     const senderColor = resolvePersonaColorDef(id, color).hex;
     expect(html).toContain(`color:${senderColor}`);
-    for (const surface of [darkTokens.muted, darkTokens.background]) {
+    for (const surface of [baseDarkTokens.muted, darkTokens.background]) {
       expect(contrastRatio(senderColor, surface)).toBeGreaterThanOrEqual(3);
     }
     expect(html).toContain(">Sender</span>");

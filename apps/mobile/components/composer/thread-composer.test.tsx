@@ -248,6 +248,17 @@ vi.mock("../native/glass-surface", () => ({
   }) =>
     createElement("div", { "data-glass": shape, "data-style": JSON.stringify(style) }, children),
 }));
+vi.mock("../ui/liquid-pressable", async () => {
+  const { Pressable } = await import("react-native");
+  return {
+    LiquidPressable: ({
+      stretch: _stretch,
+      sweepRadius: _sweepRadius,
+      ...props
+    }: ComponentProps<typeof Pressable> & { stretch?: number; sweepRadius?: number }) =>
+      createElement(Pressable, props),
+  };
+});
 vi.mock("../native/native-symbol", () => ({ NativeSymbol: () => null }));
 vi.mock("../models/model-mark", () => ({ ModelMarkIcon: () => null }));
 vi.mock("../bots/bot-avatar", () => ({

@@ -4,7 +4,6 @@ import type { AgentSkillCatalogEntry } from "@rakazo/contracts";
 import {
   buildComposerMentionOptions,
   channelMessageSender,
-  chatUserBubbleColors,
   isRunWaitingOnUser,
   isRunWorking,
   liveActivityLine,
@@ -83,10 +82,12 @@ import { RunErrorSheet } from "../cards/run-error-sheet";
 import { ThreadComposer } from "../composer/thread-composer";
 import { BrowserLiveCard } from "../computers/browser-live-card";
 import { SelectTextSheet } from "../messages/select-text-sheet";
+import { GlassBackdrop } from "../ui/glass-backdrop";
 import { FailedSendBubble } from "./failed-send-bubble";
 import { createThreadHeaderStyles } from "./header/thread-header-styles";
 import { QuoteSheet } from "./quote-sheet";
 import { SelectionBar } from "./selection-bar";
+import { SuggestionChips } from "./suggestion-chips";
 import { ThreadComposerDock } from "./thread-composer-dock";
 import { ThreadEdgeFade } from "./thread-edge-fade";
 import { ThreadErrorNotice, ThreadFetchErrorNotice } from "./thread-error-notice";
@@ -293,10 +294,8 @@ export function Thread({ sessionEpoch, userId }: { sessionEpoch: number; userId:
   );
   const activityLine = liveActivityLine(snap?.messages ?? []);
   const workingRoutine = workingRoutineName(snap?.activeRuns ?? (snap?.run ? [snap.run] : []));
-  const userBubble = useMemo(
-    () => (!inGroup && titleBot ? chatUserBubbleColors(titleBot.color, titleBot.id) : undefined),
-    [inGroup, titleBot?.color, titleBot?.id],
-  );
+  // Your bubbles are always the brand orange glass, in every chat.
+  const userBubble = undefined;
   const activeGroupBots = useMemo(() => {
     if (!inGroup) return [];
     const seen = new Set<string>();
@@ -619,7 +618,8 @@ export function Thread({ sessionEpoch, userId }: { sessionEpoch: number; userId:
   );
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, backgroundColor: tokens.background }}>
+      <GlassBackdrop />
       <KeyboardAvoidingView
         enabled={!rootAvoidsKeyboard && keyboard.avoiding}
         // Padding always settles to zero. "height" stays shrunk when the keyboard hides without
@@ -630,10 +630,7 @@ export function Thread({ sessionEpoch, userId }: { sessionEpoch: number; userId:
           floatingHeader: threadHeaderFloats(),
           nativeHeaderHeight,
         })}
-        style={{
-          flex: 1,
-          backgroundColor: tokens.background,
-        }}
+        style={{ flex: 1 }}
       >
         {/* The keyboard's padding shrinks this, so the floating composer rides above it. */}
         <View style={{ flex: 1 }}>
@@ -669,7 +666,14 @@ export function Thread({ sessionEpoch, userId }: { sessionEpoch: number; userId:
             hidden={readOnly}
             keyboardProgress={keyboard.progress}
             columnPadding={columnPadding}
-            notice={<ThreadFetchErrorNotice error={error} showingSaved={showingSaved} />}
+            notice={
+              <>
+                {snap && visibleMessages.length === 0 && !readOnly ? (
+                  <SuggestionChips onPick={(text) => composer.composerRef.current?.insert(text)} />
+                ) : null}
+                <ThreadFetchErrorNotice error={error} showingSaved={showingSaved} />
+              </>
+            }
             onHeight={setDockHeight}
             replyTarget={replyTarget}
             replyAuthor={
