@@ -6,7 +6,7 @@ appId: com.rakazo.app
       notVisible:
         id: "server-address"
     commands:
-      - tapOn: "Use a custom server|Custom server.*"
+      - tapOn: "Advanced.*|Custom server.*"
 - tapOn:
     id: "server-address"
 - eraseText

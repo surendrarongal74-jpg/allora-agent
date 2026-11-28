@@ -29,7 +29,7 @@ tags:
     commands:
       - assertVisible: "Sign in to ALLORA"
       - takeScreenshot: "01-sign-in"
-      - tapOn: "Use a custom server"
+      - tapOn: "Advanced.*"
 - assertVisible: "Server"
 - takeScreenshot: "03-server"
 - runFlow: helpers/server.yaml

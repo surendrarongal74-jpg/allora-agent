@@ -23,6 +23,8 @@ jobs:
     timeout-minutes: 90
     env:
       CI: "1"
+      # The server a fresh install signs up on. Set the repo variable ALLORA_SERVER_URL to change it.
+      EXPO_PUBLIC_DEFAULT_SERVER_URL: ${{ vars.ALLORA_SERVER_URL || 'https://didactic-space-goggles-7775gxr7xqqhp97w-5173.app.github.dev' }}
     steps:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
@@ -71,6 +73,6 @@ jobs:
           else
             gh release create android "$RUNNER_TEMP/allora.apk" --repo "$GITHUB_REPOSITORY" \
               --target "$GITHUB_SHA" --title "ALLORA for Android" \
-              --notes "Install allora.apk on your Android phone. On first launch, enter your ALLORA server URL." \
+              --notes "Install allora.apk on your Android phone, open it, and sign up or sign in." \
               --latest=false
           fi

@@ -30,7 +30,7 @@ import { SocialSignInButtons } from "../components/settings/social-sign-in-butto
 import { currentApiBase } from "../lib/api/api";
 import { displayApiHost, usesCustomApiBase } from "../lib/api/endpoint";
 import { loadSessionToken } from "../lib/api/session";
-import { credentialIssueText, errorText } from "../lib/api/user-error";
+import { credentialIssueText, errorText, loadFailureKind } from "../lib/api/user-error";
 import type { PasswordResetCapabilities } from "../lib/auth/api-auth";
 import {
   passwordResetCapabilities,
@@ -73,7 +73,7 @@ export default function SignIn() {
   const [hasSession, setHasSession] = useState(false);
   const [apiBase, setApiBase] = useState(() => currentApiBase());
   const [reset, setReset] = useState<PasswordResetCapabilities | null>(null);
-  const [capabilityError, setCapabilityError] = useState(false);
+  const [capabilityError, setCapabilityError] = useState<unknown>(null);
   const [capabilityAttempt, setCapabilityAttempt] = useState(0);
   const [resetSent, setResetSent] = useState(false);
   const [code, setCode] = useState("");
@@ -105,7 +105,7 @@ export default function SignIn() {
   useEffect(() => {
     let active = true;
     setReset(null);
-    setCapabilityError(false);
+    setCapabilityError(null);
     // A code belongs to the server that sent it.
     setCodeSent(false);
     setCode("");
@@ -113,8 +113,8 @@ export default function SignIn() {
       .then((capabilities) => {
         if (active) setReset(capabilities);
       })
-      .catch(() => {
-        if (active) setCapabilityError(true);
+      .catch((err: unknown) => {
+        if (active) setCapabilityError(err ?? new Error("unavailable"));
       });
     return () => {
       active = false;
@@ -230,7 +230,7 @@ export default function SignIn() {
       }
       await openApp();
     } catch (err) {
-      setError(errorText(err, t`Could not continue`));
+      setError(friendlyError(err, t`Could not continue`));
     } finally {
       setPending(false);
     }
@@ -257,13 +257,21 @@ export default function SignIn() {
       if (!(await confirmUnsentSendLoss("sign-in"))) return;
       if (await run()) await openApp();
     } catch (err) {
-      setError(errorText(err, t`Could not continue`));
+      setError(friendlyError(err, t`Could not continue`));
     } finally {
       setPending(false);
     }
   }
 
   const custom = usesCustomApiBase(apiBase);
+  const wakingMessage = t`ALLORA's server is waking up or offline, try again in a minute`;
+  /** No answer from the server, or a server fault: say so plainly instead of a technical error. */
+  function friendlyError(err: unknown, fallback: string) {
+    const kind = loadFailureKind(err);
+    return !custom && (kind === "offline" || kind === "server")
+      ? wakingMessage
+      : errorText(err, fallback);
+  }
   // Inside the card, fields take the page color: the muted fill matches the card.
   const fieldBackground = presented ? tokens.background : tokens.muted;
 
@@ -392,7 +400,7 @@ export default function SignIn() {
                     {capabilityError ? (
                       <View accessibilityRole="alert">
                         <Text style={{ color: tokens.destructive }}>
-                          {t`Could not load sign-in options`}
+                          {custom ? t`Could not load sign-in options` : wakingMessage}
                         </Text>
                         <NativeActionButton
                           label={t`Retry`}
@@ -691,7 +699,7 @@ export default function SignIn() {
               accessibilityLabel={
                 custom
                   ? t`Custom server ${ph({ host: displayApiHost(apiBase) })}`
-                  : t`Use a custom server`
+                  : t`Advanced: use a custom server`
               }
               hitSlop={12}
               onPress={() => router.push("/server")}
@@ -712,9 +720,7 @@ export default function SignIn() {
                   </Text>
                 </>
               ) : (
-                <Text style={{ color: tokens.mutedForeground, fontSize: 13 }}>
-                  {t`Use a custom server`}
-                </Text>
+                <Text style={{ color: tokens.mutedForeground, fontSize: 12 }}>{t`Advanced`}</Text>
               )}
             </Pressable>
           </View>
