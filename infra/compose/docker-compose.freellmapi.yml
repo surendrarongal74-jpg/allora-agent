@@ -1,0 +1,106 @@
+# FreeLLMAPI (https://github.com/tashfeenahmed/freellmapi, MIT) as ALLORA's default AI, with no
+# API key from anyone. Layer it on any stack:
+#
+#   docker compose -f docker-compose.images.yml -f docker-compose.freellmapi.yml up -d
+#
+# or save it as docker-compose.override.yml next to docker-compose.images.yml, which
+# install-images.sh picks up by itself.
+#
+# The router runs beside the api and worker on the private Compose network and publishes no port.
+# On its first start it turns on the providers that need no account (Kilo Gateway, OVH AI
+# Endpoints, AI Horde and the others its catalog lists), and the model "auto" routes each request
+# across them with failover. Its own access key and encryption key come from .env
+# (FREELLMAPI_UNIFIED_KEY, FREELLMAPI_ENCRYPTION_KEY: `openssl rand -hex 32` each); the startup
+# script below pins that access key into the router, so nobody ever copies one from its dashboard.
+#
+# Leave this file out to use another deployment default (PI_DEFAULT_PROVIDER). Users can still
+# connect any other provider in Settings -> Models either way.
+
+x-freellmapi-default-model: &freellmapi-default-model
+  PI_DEFAULT_PROVIDER: local
+  PI_DEFAULT_MODEL: auto
+  PI_DEFAULT_CREDENTIALS: host
+  RAKAZO_LOCAL_MODELS: auto
+  RAKAZO_LOCAL_MODELS_NAME: FreeLLMAPI
+  RAKAZO_LOCAL_MODELS_URL: http://freellmapi:3001/v1
+  RAKAZO_LOCAL_MODELS_API_KEY: ${FREELLMAPI_UNIFIED_KEY:?Set FREELLMAPI_UNIFIED_KEY in .env (openssl rand -hex 32)}
+  RAKAZO_LOCAL_CONTEXT_WINDOW: ${RAKAZO_LOCAL_CONTEXT_WINDOW:-32768}
+  RAKAZO_LOCAL_MAX_TOKENS: ${RAKAZO_LOCAL_MAX_TOKENS:-4096}
+
+services:
+  freellmapi:
+    image: ${FREELLMAPI_IMAGE:-ghcr.io/tashfeenahmed/freellmapi:latest}
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: "3001"
+      ENCRYPTION_KEY: ${FREELLMAPI_ENCRYPTION_KEY:?Set FREELLMAPI_ENCRYPTION_KEY in .env (openssl rand -hex 32)}
+      FREELLMAPI_UNIFIED_KEY: ${FREELLMAPI_UNIFIED_KEY:?Set FREELLMAPI_UNIFIED_KEY in .env (openssl rand -hex 32)}
+      # Only the api and worker reach it, from one address, so its per-IP limit would throttle
+      # every user at once. The free providers' own limits still apply.
+      PROXY_RATE_LIMIT_RPM: "0"
+      FREELLMAPI_UPDATE_CHECK: "off"
+    # Start the router, wait until it answers, then pin the access key from .env into its settings
+    # (it reads the key on every request). Runs on every start, so a rotated key takes effect.
+    entrypoint:
+      - /bin/sh
+      - -c
+      - |
+        set -e
+        if [ "$${#FREELLMAPI_UNIFIED_KEY}" -lt 30 ]; then
+          echo "freellmapi: FREELLMAPI_UNIFIED_KEY must be at least 30 characters" >&2
+          exit 1
+        fi
+        /usr/local/bin/docker-entrypoint.sh node server/dist/index.js &
+        server=$$!
+        trap 'kill -TERM $$server 2>/dev/null' TERM INT
+        until node -e "fetch('http://127.0.0.1:3001/api/ping').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"; do
+          kill -0 $$server 2>/dev/null || { wait $$server; exit 1; }
+          sleep 1
+        done
+        cd /app/server
+        setpriv --reuid=node --regid=node --init-groups -- node -e "
+          const Database = require('better-sqlite3');
+          const db = new Database(process.env.FREEAPI_DB_PATH || '/app/server/data/freeapi.db');
+          db.prepare(\"INSERT INTO settings (key, value) VALUES ('unified_api_key', ?) ON CONFLICT(key) DO UPDATE SET value = excluded.value\").run(process.env.FREELLMAPI_UNIFIED_KEY);
+          db.close();
+        "
+        echo "freellmapi: access key pinned from FREELLMAPI_UNIFIED_KEY"
+        wait $$server
+    volumes:
+      - freellmapi-data:/app/server/data
+    networks:
+      - default
+      - app
+    # Healthy once the pinned key opens the OpenAI-compatible endpoint.
+    healthcheck:
+      test:
+        - CMD
+        - node
+        - -e
+        - fetch('http://127.0.0.1:3001/v1/models',{headers:{Authorization:'Bearer '+process.env.FREELLMAPI_UNIFIED_KEY}}).then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))
+      interval: 15s
+      timeout: 5s
+      start_period: 30s
+      retries: 10
+
+  api:
+    environment:
+      <<: *freellmapi-default-model
+    depends_on:
+      freellmapi:
+        condition: service_healthy
+
+  worker:
+    environment:
+      <<: *freellmapi-default-model
+    depends_on:
+      freellmapi:
+        condition: service_healthy
+
+volumes:
+  freellmapi-data:
+
+networks:
+  default:
+  app:

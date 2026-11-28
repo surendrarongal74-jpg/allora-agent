@@ -109,6 +109,9 @@ with `--api-key`, or a company gateway. Every request to `RAKAZO_LOCAL_MODELS_UR
 keys, it stays on the API and worker and is redacted from run output. Use HTTPS unless the network
 is trusted. To make a local model the deployment model, set `PI_DEFAULT_PROVIDER=local`,
 `PI_DEFAULT_MODEL` to one of `RAKAZO_LOCAL_MODELS` and `PI_DEFAULT_CREDENTIALS=host`.
+`RAKAZO_LOCAL_MODELS_NAME` sets what **Settings → Models** calls the server (default
+"Local (Ollama / LM Studio)"). `infra/compose/docker-compose.freellmapi.yml` uses all of this to
+make the FreeLLMAPI router, with its model `auto`, the deployment model with no API key.
 
 A model in `RAKAZO_LOCAL_REASONING_MODELS` offers thinking levels and sends the chosen level as
 `reasoning_effort` (`medium` by default, `none` when thinking is off). Other local models never
