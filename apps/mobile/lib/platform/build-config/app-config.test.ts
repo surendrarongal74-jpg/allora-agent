@@ -94,11 +94,10 @@ describe("mobile app config", () => {
   });
 
   it.each([
-    "http://app.example.com",
+    "http://192.168.1.20:3100",
     "https://localhost:3100",
     "https://192.168.1.20",
     "https://[::1]",
-    "not a url",
   ])("skips passkey domains for %s", (url) => {
     vi.stubEnv("EAS_BUILD_PROFILE", "development");
     vi.stubEnv("EXPO_PUBLIC_API_URL", url);
@@ -106,6 +105,16 @@ describe("mobile app config", () => {
 
     expect(appConfig(context(config))).toBe(config);
   });
+
+  it.each(["http://app.example.com", "ftp://app.example.com", "not a url"])(
+    "refuses %s as the default server of any build",
+    (url) => {
+      vi.stubEnv("EAS_BUILD_PROFILE", "development");
+      vi.stubEnv("EXPO_PUBLIC_API_URL", url);
+
+      expect(() => appConfig(context(config))).toThrow("EXPO_PUBLIC_API_URL");
+    },
+  );
 
   it("moves iOS bundle ID, team ID, share app group, and EAS extensions, and detaches upstream Expo defaults when no project ID is given", () => {
     vi.stubEnv("RAKAZO_IOS_BUNDLE_ID", "com.example.rakazo");

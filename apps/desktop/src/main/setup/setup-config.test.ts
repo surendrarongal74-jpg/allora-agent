@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 import {
   DEFAULT_LOCAL_WEB_URL,
+  defaultServerUrl,
   desktopStackImageTag,
   isRakazoHealth,
   managedLocalOpenUrl,
@@ -193,6 +194,13 @@ describe("startup target", () => {
       source: "cloud",
     });
     expect(resolveStartupTarget({ saved: null })).toMatchObject({ source: "cloud" });
+  });
+
+  it("opens a build's default server on a first launch", () => {
+    expect(defaultServerUrl(undefined)).toBe(RAKAZO_CLOUD_URL);
+    expect(defaultServerUrl(" https://allora.example.com/app ")).toBe("https://allora.example.com");
+    expect(defaultServerUrl("http://127.0.0.1:5173")).toBe("http://127.0.0.1:5173");
+    expect(defaultServerUrl("http://allora.example.com")).toBe(RAKAZO_CLOUD_URL);
   });
 
   it("opens the saved instance on later launches", () => {

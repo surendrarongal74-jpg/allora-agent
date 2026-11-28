@@ -19,6 +19,21 @@ for the configuration and checks; an entry key does not replace the ALLORA accou
 
 Native apps need a setting on the server before they can use its [passkeys](./self-host-accounts.md#passkeys).
 
+## Build apps that open your server
+
+Builds you make yourself can open your server directly, so people sign in without typing an
+address. Set the server's HTTPS origin (the same as `WEB_ORIGIN`) when building:
+
+- Mobile: `EXPO_PUBLIC_API_URL`. The `build-allora-apk` workflow takes it from the repository
+  variable `DEFAULT_SERVER_URL`, or from its `server_url` input when run by hand.
+- Desktop: `RAKAZO_DEFAULT_SERVER_URL` for `pnpm --filter @rakazo/desktop build`. The
+  `release-desktop` workflow takes it from the same `DEFAULT_SERVER_URL` variable.
+
+The build fails on an `http://` address, except a local one for development. People can still
+pick another server: **Use a custom server** on the mobile sign-in screen, or **Change ALLORA
+Server…** in the desktop app menu. Without the setting, mobile builds ask for a server address
+and desktop builds open ALLORA Cloud, as before.
+
 ## Connecting a phone on the same network
 
 In the Compose stack's `.env`, set `RAKAZO_WEB_BIND=0.0.0.0` (or the host's LAN IP),

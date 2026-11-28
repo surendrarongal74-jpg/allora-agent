@@ -2,6 +2,11 @@ name: build-allora-apk
 
 on:
   workflow_dispatch:
+    inputs:
+      server_url:
+        description: "Server the app opens on (https://...). Overrides the DEFAULT_SERVER_URL variable."
+        required: false
+        default: ""
   push:
     branches: [main]
     paths:
@@ -41,6 +46,18 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      # Optional: with a default server the app opens straight to its sign-in. Unset, people
+      # enter their server's address in the app. app.config.ts refuses a value the app would ignore.
+      - name: Set the default server
+        env:
+          SERVER_URL: ${{ inputs.server_url || vars.DEFAULT_SERVER_URL }}
+        run: |
+          set -euo pipefail
+          if [ -n "$SERVER_URL" ]; then
+            [[ "$SERVER_URL" =~ ^https?://[^[:space:]]+$ ]] || { echo "Invalid server URL" >&2; exit 1; }
+            echo "EXPO_PUBLIC_API_URL=$SERVER_URL" >> "$GITHUB_ENV"
+          fi
+
       - name: Generate Android project
         run: |
           pnpm --filter @rakazo/mobile exec expo prebuild --platform android --no-install
@@ -66,11 +83,15 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
+          notes="Install allora.apk on your Android phone. On first launch, enter your ALLORA server URL."
+          if [ -n "${EXPO_PUBLIC_API_URL:-}" ]; then
+            notes="Install allora.apk on your Android phone and sign in."
+          fi
           if gh release view android --repo "$GITHUB_REPOSITORY" > /dev/null 2>&1; then
             gh release upload android "$RUNNER_TEMP/allora.apk" --clobber --repo "$GITHUB_REPOSITORY"
           else
             gh release create android "$RUNNER_TEMP/allora.apk" --repo "$GITHUB_REPOSITORY" \
               --target "$GITHUB_SHA" --title "ALLORA for Android" \
-              --notes "Install allora.apk on your Android phone. On first launch, enter your ALLORA server URL." \
+              --notes "$notes" \
               --latest=false
           fi

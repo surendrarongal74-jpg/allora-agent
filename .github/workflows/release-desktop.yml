@@ -108,6 +108,8 @@ jobs:
         env:
           RAKAZO_ALLOW_DEV_SECRETS: "1"
           RAKAZO_DESKTOP_RELEASE: "1"
+          # Optional: the server a first launch opens instead of ALLORA Cloud.
+          RAKAZO_DEFAULT_SERVER_URL: ${{ vars.DEFAULT_SERVER_URL }}
       - name: Build the server bundle This computer downloads on Apple silicon
         if: runner.os == 'macOS'
         shell: bash
