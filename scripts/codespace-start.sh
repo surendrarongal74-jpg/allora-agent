@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Starts the ALLORA server stack inside a GitHub Codespace and makes port 5173 public.
 set -euo pipefail
+REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 for i in $(seq 1 60); do docker info >/dev/null 2>&1 && break; sleep 2; done
 DIR="$HOME/allora-server"
 mkdir -p "$DIR" && cd "$DIR"
@@ -11,6 +12,12 @@ if [ ! -f install-images.sh ]; then
 fi
 if [ ! -f .env ]; then bash install-images.sh --prepare-only; fi
 setenv() { if grep -q "^$1=" .env; then sed -i "s|^$1=.*|$1=$2|" .env; else echo "$1=$2" >> .env; fi; }
+for key in FREELLMAPI_UNIFIED_KEY FREELLMAPI_ENCRYPTION_KEY; do
+  grep -Eq "^$key=[^[:space:]]" .env || setenv "$key" "$(openssl rand -hex 32)"
+done
+# Default AI: FreeLLMAPI beside the server, so chat works with no API key. install-images.sh
+# layers docker-compose.override.yml on its own; the keys above must exist first.
+cp "$REPO/infra/compose/docker-compose.freellmapi.yml" docker-compose.override.yml
 setenv BETTER_AUTH_URL "$ORIGIN"
 setenv WEB_ORIGIN "$ORIGIN"
 setenv API_URL "$ORIGIN"

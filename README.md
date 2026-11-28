@@ -1,4 +1,4 @@
-> **ALLORA** is a modified fork of [Rakazo](https://github.com/elie222/rakazo), used under the Apache License 2.0. See `LICENSE` and `NOTICE`. Changes: rebranded to ALLORA, new icons, and Groq (free tier, `GROQ_API_KEY`) as the default AI model.
+> **ALLORA** is a modified fork of [Rakazo](https://github.com/elie222/rakazo), used under the Apache License 2.0. See `LICENSE` and `NOTICE`. Changes: rebranded to ALLORA, new icons, and [FreeLLMAPI](https://github.com/tashfeenahmed/freellmapi) (model `auto`, no API key needed) as the default AI.
 
 # ALLORA
 
@@ -129,6 +129,17 @@ script URL — see
 [Restricted networks / mirror downloads](./docs/self-host.md#restricted-networks--mirror-downloads).
 
 For an agent-assisted install, use [SETUP_PROMPT.md](./SETUP_PROMPT.md).
+
+### Default AI with no API key (FreeLLMAPI)
+
+ALLORA's default AI is [FreeLLMAPI](https://github.com/tashfeenahmed/freellmapi) (MIT), a free
+router that runs next to the server. Its model `auto` spreads each request over providers that
+need no account (Kilo Gateway, OVH AI Endpoints, AI Horde and others) and fails over between them.
+To turn it on, save `infra/compose/docker-compose.freellmapi.yml` as `docker-compose.override.yml`
+next to `docker-compose.images.yml` before running `install-images.sh`; the installer generates the
+router's keys and nobody pastes one. Codespaces do this automatically. These free tiers are slow
+and rate-limited per server IP, so for heavier use connect your own provider in
+**Settings → Models**; every other provider stays available there.
 
 ## Run on a server
 

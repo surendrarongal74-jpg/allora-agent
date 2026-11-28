@@ -14,6 +14,7 @@ const ENV_KEYS = [
   "RAKAZO_LOCAL_MAX_TOKENS",
   "RAKAZO_LOCAL_TOKENS_PER_MINUTE",
   "RAKAZO_LOCAL_REASONING_MODELS",
+  "RAKAZO_LOCAL_MODELS_NAME",
 ] as const;
 
 const saved = new Map<string, string | undefined>();
@@ -49,6 +50,14 @@ describe("local model provider", () => {
     const provider = localProvider();
     expect(provider?.id).toBe(LOCAL_PROVIDER_ID);
     expect(provider?.getModels().map((model) => model.id)).toEqual(["qwen3:4b", "llama3.1:8b"]);
+  });
+
+  it("names the server as the operator chose, or Local by default", () => {
+    setModels("auto");
+    delete process.env.RAKAZO_LOCAL_MODELS_NAME;
+    expect(localProvider()?.name).toBe("Local (Ollama / LM Studio)");
+    process.env.RAKAZO_LOCAL_MODELS_NAME = " FreeLLMAPI ";
+    expect(localProvider()?.name).toBe("FreeLLMAPI");
   });
 
   it("bills nothing, because the model runs on the operator's own hardware", () => {

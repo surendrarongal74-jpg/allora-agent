@@ -29,3 +29,8 @@ export function localModelIds(env: NodeJS.ProcessEnv = process.env): string[] {
 export function localModelsApiKey(env: NodeJS.ProcessEnv = process.env): string | undefined {
   return env.RAKAZO_LOCAL_MODELS_API_KEY?.trim() || undefined;
 }
+
+/** What Models calls the local server; unset keeps "Local (Ollama / LM Studio)". */
+export function localModelsName(env: NodeJS.ProcessEnv = process.env): string {
+  return env.RAKAZO_LOCAL_MODELS_NAME?.trim() || "Local (Ollama / LM Studio)";
+}

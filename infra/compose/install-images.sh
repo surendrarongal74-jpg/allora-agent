@@ -291,6 +291,18 @@ add_missing_secrets() {
     printf 'POSTGRES_APP_PASSWORD=%s\n' "$(openssl rand -hex 16)" >> "$ENV_FILE"
     echo "Added POSTGRES_APP_PASSWORD to .env."
   fi
+  # The FreeLLMAPI overlay (docker-compose.freellmapi.yml saved as the override) needs its own
+  # access and encryption keys; generate them so the default AI works with no key from anyone.
+  if [[ -n "$override_present" ]] && grep -q FREELLMAPI_UNIFIED_KEY "$OVERRIDE_FILE"; then
+    local name
+    for name in FREELLMAPI_UNIFIED_KEY FREELLMAPI_ENCRYPTION_KEY; do
+      if ! grep -Eq "^${name}=[^[:space:]]" "$ENV_FILE"; then
+        [[ ! -s "$ENV_FILE" || -z "$(tail -c 1 "$ENV_FILE")" ]] || printf '\n' >> "$ENV_FILE"
+        printf '%s=%s\n' "$name" "$(openssl rand -hex 32)" >> "$ENV_FILE"
+        echo "Added ${name} to .env."
+      fi
+    done
+  fi
 }
 
 validate_required_secrets() {
@@ -416,6 +428,7 @@ if [[ -e "$ENV_FILE" ]]; then
   add_missing_secrets
 else
   create_env
+  add_missing_secrets
 fi
 
 validate_required_secrets
